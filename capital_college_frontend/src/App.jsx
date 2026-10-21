@@ -180,8 +180,9 @@ export default function App() {
           setCurrentPage('governing-body');
         } else if (path === 'college-administration') {
           setCurrentPage('college-administration');
-        } else if (path === 'dep' || path === 'faculty') {
-          setCurrentPage('faculty');
+        } else if (path === 'dep' || path === 'faculty' || path === 'departments') {
+          setCurrentPage('department-english');
+          window.history.replaceState(null, '', '/department/english');
         } else if (path === 'mous' || path === 'mou') {
           setCurrentPage('mous');
         } else if (path === 'internal-quality-assurance-cell-iqac' || path === 'iqac') {
@@ -317,12 +318,14 @@ export default function App() {
       setCurrentPage(normalizedTarget);
       window.history.pushState(null, '', `/department/${dSlug}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (normalizedTarget === 'faculty' || normalizedTarget === 'dep') {
+      setCurrentPage('department-english');
+      window.history.pushState(null, '', '/department/english');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       setCurrentPage(normalizedTarget);
       const urlSlug =
-        normalizedTarget === 'faculty'
-          ? '/dep'
-          : normalizedTarget === 'profile'
+        normalizedTarget === 'profile'
           ? '/college-profile-1'
           : normalizedTarget === 'programs'
           ? '/programs-and-courses'

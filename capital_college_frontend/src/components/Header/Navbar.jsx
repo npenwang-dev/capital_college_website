@@ -53,7 +53,7 @@ export default function Navbar({
 
     // 2. Faculty & Departments
     if (/faculty|teacher|lecturer|prof|hod|department|staff/i.test(query)) {
-      onNavigate('faculty');
+      onNavigate('department-english');
       return;
     }
 

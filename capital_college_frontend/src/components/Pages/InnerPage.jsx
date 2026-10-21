@@ -4753,9 +4753,14 @@ export default function InnerPage({ pageId, onNavigate, onOpenAdmission, onOpenA
       render: () => <CollegeAdministrationSection onNavigate={onNavigate} />
     },
     faculty: {
-      title: 'Faculty Directory',
-      breadcrumbTitle: 'Faculty',
-      render: () => <FacultySection onNavigate={onNavigate} />
+      title: 'Programs and Courses',
+      breadcrumbTitle: 'Academic Departments',
+      render: () => (
+        <ProgramsAndCoursesSection
+          onNavigate={onNavigate}
+          onOpenAdmission={onOpenAdmission}
+        />
+      )
     },
     iqac: {
       title: 'INTERNAL QUALITY ASSURANCE CELL (IQAC)',
@@ -5151,10 +5156,11 @@ export default function InnerPage({ pageId, onNavigate, onOpenAdmission, onOpenA
 
   const aliases = {
     'college-profile-1': 'profile',
-    'dep': 'faculty',
-    'dep/#': 'faculty',
-    'departments': 'faculty',
-    'academic-departments': 'faculty',
+    'dep': 'programs',
+    'dep/#': 'programs',
+    'faculty': 'programs',
+    'departments': 'programs',
+    'academic-departments': 'programs',
     'mou': 'mous',
     'programs-and-courses': 'programs',
     'programs-and-courses/': 'programs',

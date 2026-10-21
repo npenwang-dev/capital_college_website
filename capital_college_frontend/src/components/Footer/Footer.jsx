@@ -85,8 +85,8 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
       if (onNavigate) onNavigate('principal-message');
       else window.location.href = '/principal-message';
     } else if (term.includes('facul') || term.includes('dep') || term.includes('teacher') || term.includes('prof')) {
-      if (onNavigate) onNavigate('faculty');
-      else window.location.href = '/dep';
+      if (onNavigate) onNavigate('department-english');
+      else window.location.href = '/department/english';
     } else if (term.includes('routine') || term.includes('exam')) {
       if (onNavigate) onNavigate('under-graduate-exam-routine-2023');
       else window.location.href = '/under-graduate-exam-routine-2023';

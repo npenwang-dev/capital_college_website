@@ -54,6 +54,13 @@ const BASELINE_FACULTY = {
         designation: 'Assistant Professor & IQAC Coordinator',
         specialization: 'Linguistics & Quality Assurance',
         email: 'iqac@capitalcollege.edu.in'
+      },
+      {
+        name: 'Ms. Vezolu Puro',
+        qualification: 'M.A. (NET), Ph.D. Scholar',
+        designation: 'Visiting Faculty & Research Scholar (IIITDM Kurnool)',
+        specialization: 'Literary Theory & Research',
+        email: 'english.faculty@capitalcollege.edu.in'
       }
     ]
   },
@@ -140,7 +147,15 @@ const BASELINE_FACULTY = {
       bio: 'Championing pedagogical innovation, educational psychology, and child guidance methodologies.',
       email: 'education.hod@capitalcollege.edu.in'
     },
-    faculty: []
+    faculty: [
+      {
+        name: 'Ms. Sekulu Nienu',
+        qualification: 'M.A. (JRF), B.Ed., M.Ed.',
+        designation: 'Visiting Faculty & Research Scholar (Nagaland University)',
+        specialization: 'Educational Foundations & Pedagogical Research',
+        email: 'education.faculty@capitalcollege.edu.in'
+      }
+    ]
   },
   economics: {
     hod: {
@@ -170,7 +185,15 @@ const BASELINE_FACULTY = {
       bio: 'Leading research in Himalayan plant systematics, ethnobotany, and conservation of medicinal bio-resources in Nagaland.',
       email: 'botany.hod@capitalcollege.edu.in'
     },
-    faculty: []
+    faculty: [
+      {
+        name: 'Mr. Pelo-o',
+        qualification: 'M.Sc. in Botany',
+        designation: 'Visiting Faculty Member',
+        specialization: 'Plant Anatomy & Botanical Studies',
+        email: 'botany.faculty@capitalcollege.edu.in'
+      }
+    ]
   },
   zoology: {
     hod: {
@@ -198,7 +221,15 @@ const BASELINE_FACULTY = {
       bio: 'Advancing chemical education, organic reaction mechanisms, and green laboratory practices.',
       email: 'chemistry.hod@capitalcollege.edu.in'
     },
-    faculty: []
+    faculty: [
+      {
+        name: 'Mr. Kenneth Punyü',
+        qualification: 'M.Sc. in Chemistry',
+        designation: 'Visiting Faculty (Associate Professor, Science College Jotsoma)',
+        specialization: 'Organic & Analytical Chemistry',
+        email: 'chemistry.faculty@capitalcollege.edu.in'
+      }
+    ]
   },
   mathematics: {
     hod: {
@@ -208,7 +239,29 @@ const BASELINE_FACULTY = {
       bio: 'Teaching calculus, linear algebra, and computational mathematics across science programs.',
       email: 'mathematics.hod@capitalcollege.edu.in'
     },
-    faculty: []
+    faculty: [
+      {
+        name: 'Mr. M.N. Murali',
+        qualification: 'M.Sc. in Mathematics',
+        designation: 'Visiting Faculty (Associate Professor Rtd, Science College Jotsoma)',
+        specialization: 'Pure Mathematics & Calculus',
+        email: 'mathematics.faculty@capitalcollege.edu.in'
+      },
+      {
+        name: 'Dr. Khrietuo Doulo',
+        qualification: 'Ph.D. in Mathematics',
+        designation: 'Visiting Faculty (Assistant Professor Rtd, Science College Jotsoma)',
+        specialization: 'Applied Mathematics & Statistics',
+        email: 'mathematics.faculty@capitalcollege.edu.in'
+      },
+      {
+        name: 'Dr. Abhijit Bora',
+        qualification: 'Ph.D. in Physics',
+        designation: 'Visiting Faculty (Associate Professor Rtd, Science College Jotsoma)',
+        specialization: 'Physical Sciences',
+        email: 'physics.faculty@capitalcollege.edu.in'
+      }
+    ]
   }
 };
 
@@ -343,10 +396,10 @@ export default function DepartmentPage({
             </button>
             <ChevronRight size={12} className="text-slate-400" />
             <button
-              onClick={() => onNavigate && onNavigate('faculty')}
+              onClick={() => onNavigate && onNavigate('programs')}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Academic Streams
+              Academic Programmes
             </button>
             <ChevronRight size={12} className="text-slate-400" />
             <span className="text-[#8fc35e] font-semibold">{dept.streamLabel}</span>
@@ -626,10 +679,10 @@ export default function DepartmentPage({
             </div>
 
             <button
-              onClick={() => onNavigate && onNavigate('faculty')}
+              onClick={() => onNavigate && onNavigate('programs')}
               className="text-xs font-bold text-[#4a6b28] hover:text-[#002147] flex items-center gap-1 cursor-pointer"
             >
-              <span>View All Streams &amp; Directory</span>
+              <span>View All Programmes &amp; Courses</span>
               <ArrowRight size={13} />
             </button>
           </div>
