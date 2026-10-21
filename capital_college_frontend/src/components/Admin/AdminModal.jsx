@@ -3701,7 +3701,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                         }`}
                                       >
                                         <Sparkles size={11} className={notice.is_featured ? 'text-amber-600' : 'text-slate-400'} />
-                                        <span>{notice.is_featured ? '★ Pinned' : 'Pin'}</span>
+                                        <span>{notice.is_featured ? 'Pinned' : 'Pin'}</span>
                                       </button>
                                     ) : (
                                       <span className="text-[10.5px] font-medium text-gray-400">
@@ -3787,8 +3787,9 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                 )}
                               </div>
                               {notice.is_featured ? (
-                                <span className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
-                                  ★ Featured
+                                <span className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow flex items-center gap-1">
+                                  <Sparkles size={10} />
+                                  <span>Featured</span>
                                 </span>
                               ) : null}
                             </div>
@@ -3863,7 +3864,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                     title={notice.is_featured ? 'Click to unpin from Homepage Showcase' : 'Click to pin to Homepage Showcase'}
                                   >
                                     <Sparkles size={11} className={notice.is_featured ? 'text-amber-600' : 'text-slate-400'} />
-                                    <span>{notice.is_featured ? '★ Pinned to Showcase' : 'Pin to Showcase'}</span>
+                                    <span>{notice.is_featured ? 'Pinned to Showcase' : 'Pin to Showcase'}</span>
                                   </button>
                                 )}
                               </div>
@@ -4254,7 +4255,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                           <div className="flex items-center justify-between text-[11px] font-bold text-gray-500">
                             <span>Select Department to Edit HOD &amp; Faculty:</span>
                             <span className="text-[10px] text-gray-400 font-normal">
-                              ★ = Head of Department Designated
+                              HOD = Head of Department Designated
                             </span>
                           </div>
 
@@ -4283,9 +4284,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                   }`}
                                 >
                                   {hasHOD && (
-                                    <span className="text-amber-600 font-black text-xs" title="HOD Assigned">
-                                      ★
-                                    </span>
+                                    <Award size={12} className="text-amber-600 shrink-0" title="HOD Assigned" />
                                   )}
                                   <span>{deptClean}</span>
                                   <span
@@ -4374,7 +4373,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                               <div className="bg-gradient-to-br from-white via-white to-amber-50/50 rounded-2xl border-2 border-amber-400 shadow-md p-5 sm:p-6 relative">
                                 <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-amber-600 text-white text-[10px] font-black uppercase tracking-wider py-1 px-4 rounded-bl-xl shadow-xs flex items-center gap-1">
                                   <Award size={12} />
-                                  <span>★ HEAD OF DEPARTMENT</span>
+                                  <span>HEAD OF DEPARTMENT</span>
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
@@ -4440,8 +4439,8 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                               </div>
                             ) : (
                               <div className="bg-amber-50/60 rounded-2xl border-2 border-dashed border-amber-300 p-6 text-center space-y-3">
-                                <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto font-black text-xl">
-                                  ★
+                                <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto shadow-2xs">
+                                  <Award size={20} className="text-amber-700" />
                                 </div>
                                 <div>
                                   <h4 className="text-sm font-bold text-amber-950">
@@ -4551,13 +4550,14 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                   </div>
 
                                   <div className="pt-3 border-t border-gray-200/70 flex items-center justify-between gap-1.5 text-xs">
-                                    <button
-                                      onClick={() => handleSetHOD(teacher.id, true)}
-                                      className="text-[11px] font-bold text-amber-800 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 px-2 py-1 rounded-md border border-amber-300 transition-colors cursor-pointer"
-                                      title="Designate this teacher as Head of Department"
-                                    >
-                                      ★ Make HOD
-                                    </button>
+                                      <button
+                                        onClick={() => handleSetHOD(teacher.id, true)}
+                                        className="text-[11px] font-bold text-amber-800 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 px-2 py-1 rounded-md border border-amber-300 transition-colors cursor-pointer flex items-center gap-1"
+                                        title="Designate this teacher as Head of Department"
+                                      >
+                                        <Award size={11} className="text-amber-700" />
+                                        <span>Designate HOD</span>
+                                      </button>
                                     <div className="flex items-center gap-1.5">
                                       <button
                                         onClick={() => {
@@ -4648,7 +4648,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                         <span>{f.name}</span>
                                         {f.is_hod && (
                                           <span className="bg-amber-100 text-amber-900 font-extrabold px-1.5 py-0.5 rounded text-[9px] border border-amber-300">
-                                            ★ HOD
+                                            HOD
                                           </span>
                                         )}
                                       </div>
@@ -7198,10 +7198,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                   />
                   <div>
                     <label htmlFor="hodCheck" className="font-bold text-xs cursor-pointer block">
-                      ★ Mark as Head of Department (HOD)
+                      Designate as Head of Department (HOD)
                     </label>
                     <p className="text-[11px] text-gray-500 mt-0.5">
-                      When checked, this professor will be highlighted as the official Head of Department with a gold leadership badge at the top of the department card.
+                      When checked, this professor will be highlighted as the official Head of Department with leadership distinction at the top of the department card.
                     </p>
                   </div>
                 </div>
@@ -7280,14 +7280,6 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                       {governingFormData.name ? governingFormData.name.split(' ').map((n) => n[0]).filter(Boolean).slice(0, 2).join('') : 'GB'}
                     </div>
                   )}
-                  {governingFormData.member_type === 'OFFICER' && (
-                    <span
-                      className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#002147] text-white flex items-center justify-center text-[10px] font-bold shadow-xs border border-white"
-                      title="Council Executive Officer"
-                    >
-                      ★
-                    </span>
-                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5 mb-0.5">
@@ -7297,7 +7289,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                         : governingFormData.member_type === 'ADMINISTRATION'
                         ? 'College Administration'
                         : governingFormData.member_type === 'OFFICER'
-                        ? '★ Council Executive Officer'
+                        ? 'Council Executive Officer'
                         : 'Council Member Matrix'}
                     </span>
                     <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-white border border-gray-200 text-gray-600">

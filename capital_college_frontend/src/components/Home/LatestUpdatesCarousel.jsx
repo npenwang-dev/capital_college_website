@@ -505,7 +505,8 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
                           </span>
                           {item.is_featured ? (
                             <span className="bg-amber-500 text-white text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1 border border-amber-300">
-                              ★ Featured
+                              <Sparkles size={11} className="text-amber-100" />
+                              <span>Featured</span>
                             </span>
                           ) : null}
                         </div>

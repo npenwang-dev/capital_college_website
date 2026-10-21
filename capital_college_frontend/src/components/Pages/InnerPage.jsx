@@ -3005,12 +3005,6 @@ function FacultySection({ onNavigate }) {
                           {getFacultyInitials(dept.hod)}
                         </div>
                       )}
-                      <div
-                        className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center text-[10px] font-black shadow-xs border border-white"
-                        title="Head of Department"
-                      >
-                        ★
-                      </div>
                     </div>
 
                     <div className="min-w-0 flex-1">
@@ -3142,12 +3136,6 @@ function FacultySection({ onNavigate }) {
                           {getFacultyInitials(dept.hod)}
                         </div>
                       )}
-                      <div
-                        className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center text-[10px] font-black shadow-xs border border-white"
-                        title="Head of Department"
-                      >
-                        ★
-                      </div>
                     </div>
 
                     <div className="min-w-0 flex-1">
