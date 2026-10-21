@@ -29,6 +29,10 @@ import {
   Feather,
   Info,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  LayoutGrid,
+  List,
   X,
   Calendar,
   Check,
@@ -381,6 +385,8 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
   const [streamFilter, setStreamFilter] = useState('ALL'); // 'ALL' | 'ARTS' | 'SCIENCE'
   const [search, setSearch] = useState('');
   const [selectedDiscipline, setSelectedDiscipline] = useState(null);
+  const [expandedDisciplines, setExpandedDisciplines] = useState({});
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
 
   const allDisciplines = [
     // 7 Arts Disciplines (P.R. Hill Campus, Kohima)
@@ -697,70 +703,79 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
       item.keyAreas.some(k => k.toLowerCase().includes(q)) ||
       item.careerPaths.some(c => c.toLowerCase().includes(q))
     );
-  });
-
-  const artsCount = allDisciplines.filter(d => d.stream === 'ARTS').length;
+  });  const artsCount = allDisciplines.filter(d => d.stream === 'ARTS').length;
   const scienceCount = allDisciplines.filter(d => d.stream === 'SCIENCE').length;
 
-  return (
-    <div className="space-y-8 text-slate-800 text-sm md:text-base leading-relaxed font-sans">
+  const toggleExpand = (id) => {
+    setExpandedDisciplines(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
-      {/* Refined Institutional Header */}
-      <div className="bg-gradient-to-br from-emerald-50/70 via-white to-slate-50 border border-emerald-200/90 rounded-2xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
-        <div className="flex flex-wrap items-center gap-2.5 mb-3.5">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#4a6b28] text-white shadow-xs">
-            <Sparkles size={14} />
-            <span>FYUGP • NEP 2020 Framework</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider bg-white text-[#002147] border border-slate-300/80 shadow-2xs">
-            <span>Permanently Affiliated to Nagaland University</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100">
-            <span>UGC 2(f) &amp; 12(B) Recognized</span>
-          </span>
+  const allExpanded = filteredDisciplines.length > 0 && filteredDisciplines.every(d => expandedDisciplines[d.id]);
+  const toggleAll = () => {
+    const nextState = {};
+    filteredDisciplines.forEach(d => {
+      nextState[d.id] = !allExpanded;
+    });
+    setExpandedDisciplines(nextState);
+  };
+
+  return (
+    <div className="space-y-6 text-slate-800 text-sm md:text-base leading-relaxed font-sans">
+
+      {/* Clean Institutional Header */}
+      <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 font-medium mb-2">
+          <span>FYUGP Degree Programmes</span>
+          <span>•</span>
+          <span>Permanently Affiliated to Nagaland University</span>
+          <span>•</span>
+          <span>NEP 2020 Framework</span>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#002147] tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#002147] tracking-tight">
           Undergraduate Programmes &amp; Academic Curricula
         </h2>
-        <p className="text-sm sm:text-base md:text-lg text-slate-600 mt-3 max-w-5xl leading-relaxed">
-          Capital College of Higher Education offers Four-Year Undergraduate Programmes (FYUGP) structured under the National Education Policy (NEP 2020) and Nagaland University guidelines. Students pursue single or double major pathways across dedicated campuses in Arts (P.R. Hill) and Science (Thegaba, Phezhu, Jotsoma) with flexible exit credentials and industry-recognized skill certifications.
+        <p className="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed max-w-4xl">
+          Capital College of Higher Education offers Four-Year Undergraduate Programmes (FYUGP) structured under the National Education Policy (NEP 2020) and Nagaland University regulations. Students pursue single or double major pathways across dedicated campuses in Arts and Science with flexible exit credentials.
         </p>
 
-        {/* 4-Item Metric Ribbon */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 mt-6 border-t border-slate-200/90">
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-            <p className="text-2xl sm:text-3xl font-black text-[#002147]">2 Campuses</p>
-            <p className="text-xs sm:text-sm font-bold text-[#4a6b28] uppercase tracking-wider mt-1">Arts &amp; Science</p>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-normal">P.R. Hill &amp; Thegaba, Phezhu</p>
+        {/* 4 Academic Coordinates */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 mt-4 border-t border-slate-100 text-xs">
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/70">
+            <span className="font-bold text-slate-500 uppercase tracking-wider text-[10px] block">Arts Stream</span>
+            <span className="font-bold text-[#002147] text-sm block mt-0.5">P.R. Hill Campus</span>
+            <span className="text-slate-500 text-[11px]">7 Honours Disciplines</span>
           </div>
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-            <p className="text-2xl sm:text-3xl font-black text-[#002147]">12 Disciplines</p>
-            <p className="text-xs sm:text-sm font-bold text-[#4a6b28] uppercase tracking-wider mt-1">Major &amp; Minor</p>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-normal">7 B.A. Arts + 5 B.Sc. Science</p>
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/70">
+            <span className="font-bold text-slate-500 uppercase tracking-wider text-[10px] block">Science Stream</span>
+            <span className="font-bold text-[#002147] text-sm block mt-0.5">Thegaba Campus</span>
+            <span className="text-slate-500 text-[11px]">5 Honours Disciplines</span>
           </div>
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-            <p className="text-2xl sm:text-3xl font-black text-[#002147]">4 Pathways</p>
-            <p className="text-xs sm:text-sm font-bold text-[#4a6b28] uppercase tracking-wider mt-1">Flexible Exits</p>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-normal">Cert • Dip • Degree • Hons/Res</p>
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/70">
+            <span className="font-bold text-slate-500 uppercase tracking-wider text-[10px] block">Exit Credentials</span>
+            <span className="font-bold text-[#002147] text-sm block mt-0.5">4 Pathways</span>
+            <span className="text-slate-500 text-[11px]">Cert • Dip • Degree • Hons</span>
           </div>
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-            <p className="text-2xl sm:text-3xl font-black text-[#002147]">10 : 1 Ratio</p>
-            <p className="text-xs sm:text-sm font-bold text-[#4a6b28] uppercase tracking-wider mt-1">Faculty Guidance</p>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-normal">Individual Student Mentorship</p>
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/70">
+            <span className="font-bold text-slate-500 uppercase tracking-wider text-[10px] block">Guidance</span>
+            <span className="font-bold text-[#002147] text-sm block mt-0.5">10 : 1 Mentorship</span>
+            <span className="text-slate-500 text-[11px]">Faculty Advisory</span>
           </div>
         </div>
       </div>
 
       {/* Main Tab Navigation Bar */}
-      <div className="bg-slate-100/90 p-2 sm:p-2.5 rounded-2xl border border-slate-200/90 shadow-2xs">
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+      <div className="border-b border-slate-200">
+        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-px scrollbar-none">
           {[
             { id: 'disciplines', label: `Academic Disciplines (${allDisciplines.length})`, icon: BookOpen },
             { id: 'fyugp', label: 'FYUGP 4-Year Framework', icon: Layers },
             { id: 'skill', label: 'Skill Certification (NSDC)', icon: Award },
             { id: 'evaluation', label: 'Marking & Evaluation', icon: FileText },
-            { id: 'eligibility', label: 'Eligibility & Combinations', icon: CheckCircle2 }
+            { id: 'eligibility', label: 'Eligibility & Requirements', icon: CheckCircle2 }
           ].map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -768,13 +783,13 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-xl text-xs sm:text-sm md:text-base font-bold whitespace-nowrap transition-all cursor-pointer ${
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
                   isActive
-                    ? 'bg-[#002147] text-white shadow-md'
-                    : 'text-slate-700 hover:bg-white hover:text-[#002147] shadow-2xs'
+                    ? 'border-[#002147] text-[#002147]'
+                    : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300'
                 }`}
               >
-                <Icon size={17} className={isActive ? 'text-[#8fc35e]' : 'text-slate-400'} />
+                <Icon size={15} className={isActive ? 'text-[#4a6b28]' : 'text-slate-400'} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -784,28 +799,24 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
       {/* Tab 1: Academic Disciplines & Courses */}
       {activeTab === 'disciplines' && (
-        <div className="space-y-6 animate-fadeIn">
+        <div className="space-y-4 animate-fadeIn">
           
-          {/* Sub-Filters: Stream Switcher & Live Search */}
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs">
-            {/* Stream Pills */}
-            <div className="flex flex-wrap items-center gap-2">
+          {/* Controls: Stream Filter, Search, View Mode & Expand All */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+            {/* Stream Filter Buttons */}
+            <div className="flex flex-wrap items-center gap-1.5">
               {[
-                { id: 'ALL', label: `All Disciplines (${allDisciplines.length})` },
-                { id: 'ARTS', label: `Arts Stream — B.A. (${artsCount})` },
-                { id: 'SCIENCE', label: `Science Stream — B.Sc. (${scienceCount})` }
+                { id: 'ALL', label: `All (${allDisciplines.length})` },
+                { id: 'ARTS', label: `Arts (${artsCount})` },
+                { id: 'SCIENCE', label: `Science (${scienceCount})` }
               ].map(st => (
                 <button
                   key={st.id}
                   onClick={() => setStreamFilter(st.id)}
-                  className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     streamFilter === st.id
-                      ? st.id === 'ARTS'
-                        ? 'bg-[#4a6b28] text-white shadow-sm'
-                        : st.id === 'SCIENCE'
-                        ? 'bg-[#002147] text-white shadow-sm'
-                        : 'bg-slate-900 text-white shadow-sm'
-                      : 'bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                      ? 'bg-[#002147] text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
                   {st.label}
@@ -813,143 +824,234 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
               ))}
             </div>
 
-            {/* Live Search Box */}
-            <div className="relative min-w-[260px] sm:min-w-[320px]">
-              <input
-                type="text"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder="Search discipline, syllabus, topic..."
-                className="w-full pl-10 pr-9 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 bg-slate-50/60 hover:bg-white focus:bg-white focus:outline-none focus:border-[#4a6b28] focus:ring-2 focus:ring-[#4a6b28]/20 transition-all"
-              />
-              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              {search && (
+            {/* Right Controls: Search, Expand All, Grid/List View */}
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1 sm:w-56">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Search subject or syllabus..."
+                  className="w-full pl-8 pr-7 py-1.5 text-xs rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:border-[#002147] transition-all"
+                />
+                <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                {search && (
+                  <button
+                    onClick={() => setSearch('')}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={toggleAll}
+                className="hidden md:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer whitespace-nowrap"
+              >
+                <span>{allExpanded ? 'Collapse all' : 'Expand all'}</span>
+              </button>
+
+              <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
                 <button
-                  onClick={() => setSearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm cursor-pointer"
-                  title="Clear search"
+                  type="button"
+                  onClick={() => setViewMode('grid')}
+                  className={`p-1.5 rounded text-xs cursor-pointer transition-colors ${
+                    viewMode === 'grid'
+                      ? 'bg-white text-[#002147] shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                  title="Grid View"
                 >
-                  ✕
+                  <LayoutGrid size={14} />
                 </button>
-              )}
+                <button
+                  type="button"
+                  onClick={() => setViewMode('list')}
+                  className={`p-1.5 rounded text-xs cursor-pointer transition-colors ${
+                    viewMode === 'list'
+                      ? 'bg-white text-[#002147] shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                  title="List View"
+                >
+                  <List size={14} />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Stream Information Callout Ribbons */}
-          {(streamFilter === 'ALL' || streamFilter === 'ARTS') && !search && (
-            <div className="bg-gradient-to-r from-emerald-50/90 via-emerald-50/40 to-white border border-emerald-200/90 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-2xs">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#4a6b28] text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
-                  <BookOpen size={22} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[#002147] text-base sm:text-lg">Arts Stream Campus: P.R. Hill, Kohima</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-0.5 leading-relaxed">
-                    Permanently affiliated to Nagaland University. Offers 4-Year B.A. Honours degrees with Major and Minor concentrations across 7 academic disciplines.
-                  </p>
-                </div>
-              </div>
-              <span className="text-xs sm:text-sm font-bold text-[#4a6b28] bg-white border border-emerald-200 px-4 py-1.5 rounded-full shadow-2xs whitespace-nowrap">
-                7 Major Disciplines
-              </span>
-            </div>
-          )}
-          {/* Disciplines Card Grid */}
+          {/* Disciplines Display */}
           {filteredDisciplines.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 p-8 shadow-xs">
-              <BookOpen size={44} className="mx-auto text-slate-400 mb-3" />
-              <h4 className="text-lg font-bold text-slate-800">No matching disciplines found</h4>
-              <p className="text-sm text-slate-500 mt-1">Try adjusting your search terms or clearing the filter.</p>
+            <div className="text-center py-12 bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
+              <BookOpen size={36} className="mx-auto text-slate-400 mb-2" />
+              <h4 className="text-base font-bold text-slate-800">No matching disciplines found</h4>
+              <p className="text-xs text-slate-500 mt-1">Try adjusting your search query or stream filter.</p>
               <button
                 onClick={() => { setSearch(''); setStreamFilter('ALL'); }}
-                className="mt-5 px-5 py-2.5 bg-[#002147] text-white rounded-xl text-sm font-bold cursor-pointer hover:bg-[#001736] transition-all shadow-xs"
+                className="mt-4 px-4 py-2 bg-[#002147] text-white rounded-lg text-xs font-bold cursor-pointer hover:bg-[#001736] transition-all shadow-xs"
               >
-                Reset All Filters
+                Reset Filters
               </button>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7">
-              {filteredDisciplines.map((item, idx) => {
+          ) : viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {filteredDisciplines.map((item) => {
                 const Icon = item.icon;
                 const isArts = item.stream === 'ARTS';
+                const isExpanded = Boolean(expandedDisciplines[item.id]);
+
                 return (
                   <div
                     key={item.id}
-                    style={{ animationDelay: `${idx * 40}ms` }}
-                    className="card-interactive animate-card-in bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-lg flex flex-col justify-between group cursor-default overflow-hidden hover:-translate-y-1 transition-all duration-300"
+                    className="bg-white rounded-xl border border-slate-200 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between overflow-hidden"
                   >
-                    {/* Top colored accent stripe */}
-                    <div className={`h-1.5 w-full ${isArts ? 'bg-[#4a6b28]' : 'bg-[#002147]'}`} />
-
-                    <div className="p-6 sm:p-7">
-                      {/* Top Header Strip */}
-                      <div className="flex items-center justify-between mb-3.5">
-                        <span className={`text-xs font-black uppercase px-3 py-1 rounded-full tracking-wider border ${
+                    <div className="p-5 sm:p-6">
+                      {/* Header: Stream & Degree + Campus */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${
                           isArts
-                            ? 'bg-emerald-50 text-[#4a6b28] border-emerald-200'
-                            : 'bg-blue-50 text-[#002147] border-blue-200'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : 'bg-blue-50 text-blue-900 border-blue-200'
                         }`}>
                           {item.degree}
                         </span>
-                        <span className="text-xs sm:text-sm text-slate-500 flex items-center gap-1.5 font-medium">
-                          <MapPin size={14} className={isArts ? 'text-[#4a6b28]' : 'text-[#002147]'} />
+                        <span className="text-xs text-slate-500 flex items-center gap-1 font-medium">
+                          <MapPin size={13} className="text-slate-400" />
                           <span>{item.campusShort}</span>
                         </span>
                       </div>
 
-                      {/* Title & Department Icon */}
-                      <div className="flex items-start gap-3.5 mb-3">
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-2xs ${
-                          isArts ? 'bg-emerald-50 text-[#4a6b28] border border-emerald-200/70' : 'bg-blue-50 text-[#002147] border border-blue-200/70'
+                      {/* Title */}
+                      <div className="flex items-center gap-3 mb-2.5">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                          isArts ? 'bg-emerald-50 text-emerald-800' : 'bg-blue-50 text-blue-900'
                         }`}>
-                          <Icon size={22} />
+                          <Icon size={20} />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
                             Department of
                           </span>
-                          <h3 className={`text-xl sm:text-2xl font-black transition-colors tracking-tight ${
-                            isArts ? 'text-[#002147] group-hover:text-[#4a6b28]' : 'text-[#002147] group-hover:text-blue-900'
-                          }`}>
+                          <h3 className="text-lg sm:text-xl font-bold text-[#002147] tracking-tight">
                             {item.name}
                           </h3>
                         </div>
                       </div>
 
-                      {/* Scope Description */}
-                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4">
-                        {item.desc}
-                      </p>
-
-                      {/* Key Curricular Focus Tags */}
-                      <div className="space-y-2 pt-3 border-t border-slate-100">
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                          Curricular Focus:
+                      {/* Description with Read more option */}
+                      <div className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <p>
+                          {isExpanded
+                            ? item.desc
+                            : (item.desc.length > 130
+                                ? `${item.desc.slice(0, 130).trim()}...`
+                                : item.desc
+                              )
+                          }
                         </p>
-                        <div className="flex flex-wrap gap-2">
-                          {item.keyAreas.slice(0, 3).map((tag, tIdx) => (
-                            <span
-                              key={tIdx}
-                              className="text-xs sm:text-sm font-semibold bg-slate-100/90 text-slate-700 px-3 py-1 rounded-lg border border-slate-200/60"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => toggleExpand(item.id)}
+                          className="mt-1.5 text-xs font-semibold text-[#002147] hover:text-[#4a6b28] inline-flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <span>{isExpanded ? 'Read less' : 'Read more'}</span>
+                          <ChevronDown size={13} className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
                       </div>
+
+                      {/* Expandable Details Area */}
+                      {isExpanded && (
+                        <div className="mt-4 pt-3.5 border-t border-slate-100 space-y-3 animate-fadeIn">
+                          {/* Core Syllabus Modules */}
+                          <div>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
+                              Core Syllabus Modules:
+                            </span>
+                            <ul className="space-y-1 text-xs text-slate-600">
+                              {item.coreModules.map((mod, mIdx) => (
+                                <li key={mIdx} className="flex items-start gap-1.5">
+                                  <span className="text-[#4a6b28] font-bold leading-none mt-1">•</span>
+                                  <span>{mod}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* Permissible Minors */}
+                          <div>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
+                              Permissible Minors:
+                            </span>
+                            <div className="flex flex-wrap gap-1">
+                              {item.minors.map((min, mIdx) => (
+                                <span key={mIdx} className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-xs">
+                                  {min}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Eligibility Requirement */}
+                          <div className="p-2 bg-slate-50 rounded border border-slate-200 text-xs text-slate-600">
+                            <span className="font-semibold text-slate-800">Eligibility: </span>
+                            <span>{item.eligibility}</span>
+                          </div>
+
+                          {/* Career Opportunities */}
+                          <div>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-0.5">
+                              Career Pathways:
+                            </span>
+                            <p className="text-xs text-slate-600 leading-normal">
+                              {item.careerPaths.join(' • ')}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Curricular Focus Tags (shown when not expanded) */}
+                      {!isExpanded && (
+                        <div className="mt-3 pt-3 border-t border-slate-100">
+                          <div className="flex flex-wrap gap-1.5">
+                            {item.keyAreas.slice(0, 3).map((tag, tIdx) => (
+                              <span
+                                key={tIdx}
+                                className="text-xs text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Card Action Footer */}
-                    <div className="px-6 sm:px-7 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between gap-3">
-                      <button
-                        onClick={() => setSelectedDiscipline(item)}
-                        className="text-xs sm:text-sm font-bold text-[#002147] hover:text-[#4a6b28] inline-flex items-center gap-1.5 transition-colors cursor-pointer py-1"
-                      >
-                        <Info size={15} />
-                        <span>Curriculum &amp; Scope</span>
-                      </button>
+                    <div className="px-5 sm:px-6 py-3 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => onNavigate && onNavigate(`department-${item.id}`)}
+                          className="text-xs font-semibold text-slate-700 hover:text-[#002147] inline-flex items-center gap-1 transition-colors cursor-pointer"
+                        >
+                          <span>Department Page</span>
+                          <ArrowRight size={12} />
+                        </button>
+                        <span className="text-slate-300">|</span>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedDiscipline(item)}
+                          className="text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer"
+                        >
+                          Full Syllabus
+                        </button>
+                      </div>
 
                       <button
+                        type="button"
                         onClick={() => {
                           if (onOpenAdmission) {
                             onOpenAdmission(item.stream, item.name);
@@ -957,39 +1059,128 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
                             onNavigate('criteria');
                           }
                         }}
-                        className={`text-xs sm:text-sm font-bold px-4 py-2 rounded-xl text-white transition-all shadow-2xs inline-flex items-center gap-1.5 cursor-pointer ${
+                        className={`text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition-all cursor-pointer ${
                           isArts
                             ? 'bg-[#4a6b28] hover:bg-[#3d5920]'
                             : 'bg-[#002147] hover:bg-[#001736]'
                         }`}
                       >
-                        <span>Select Major</span>
-                        <ChevronRight size={14} />
+                        Apply
                       </button>
                     </div>
                   </div>
                 );
               })}
             </div>
-          )}
+          ) : (
+            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs divide-y divide-slate-100">
+              {filteredDisciplines.map((item) => {
+                const isArts = item.stream === 'ARTS';
+                const isExpanded = Boolean(expandedDisciplines[item.id]);
+                const Icon = item.icon;
 
-          {/* Science Stream Campus Banner (Bottom Callout) */}
-          {(streamFilter === 'ALL' || streamFilter === 'SCIENCE') && !search && (
-            <div className="bg-gradient-to-r from-blue-50/90 via-blue-50/40 to-white border border-blue-200/90 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-2xs mt-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#002147] text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
-                  <Atom size={22} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-[#002147] text-base sm:text-lg">Science Stream Campus: Thegaba, Phezhu, Jotsoma</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-0.5 leading-relaxed">
-                    Modern research &amp; undergraduate science campus equipped with standard laboratories across Botany, Chemistry, Mathematics, Physics, and Zoology.
-                  </p>
-                </div>
-              </div>
-              <span className="text-xs sm:text-sm font-bold text-[#002147] bg-white border border-blue-200 px-4 py-1.5 rounded-full shadow-2xs whitespace-nowrap">
-                5 Science Disciplines
-              </span>
+                return (
+                  <div key={item.id} className="p-4 sm:p-5 hover:bg-slate-50/60 transition-colors">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
+                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                          isArts ? 'bg-emerald-50 text-emerald-800' : 'bg-blue-50 text-blue-900'
+                        }`}>
+                          <Icon size={18} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
+                            <h3 className="text-base font-bold text-[#002147]">
+                              Department of {item.name}
+                            </h3>
+                            <span className={`text-[11px] font-semibold px-2 py-0.5 rounded border ${
+                              isArts
+                                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                : 'bg-blue-50 text-blue-900 border-blue-200'
+                            }`}>
+                              {item.degree}
+                            </span>
+                            <span className="text-xs text-slate-400">
+                              • {item.campusShort}
+                            </span>
+                          </div>
+
+                          <div className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            <p>
+                              {isExpanded
+                                ? item.desc
+                                : (item.desc.length > 140
+                                    ? `${item.desc.slice(0, 140).trim()}...`
+                                    : item.desc
+                                  )
+                              }
+                            </p>
+                            <button
+                              type="button"
+                              onClick={() => toggleExpand(item.id)}
+                              className="mt-1 text-xs font-semibold text-[#002147] hover:text-[#4a6b28] inline-flex items-center gap-1 cursor-pointer transition-colors"
+                            >
+                              <span>{isExpanded ? 'Read less' : 'Read more'}</span>
+                              <ChevronDown size={13} className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                            </button>
+                          </div>
+
+                          {isExpanded && (
+                            <div className="mt-3 pt-3 border-t border-slate-100 space-y-2.5 text-xs text-slate-700 animate-fadeIn">
+                              <div>
+                                <span className="font-bold text-slate-700 block mb-0.5">Core Syllabus Modules:</span>
+                                <ul className="space-y-0.5 text-slate-600">
+                                  {item.coreModules.map((m, mIdx) => (
+                                    <li key={mIdx}>• {m}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                              <div>
+                                <span className="font-bold text-slate-700">Permissible Minors: </span>
+                                <span className="text-slate-600">{item.minors.join(', ')}</span>
+                              </div>
+                              <div>
+                                <span className="font-bold text-slate-700">Eligibility: </span>
+                                <span className="text-slate-600">{item.eligibility}</span>
+                              </div>
+                              <div>
+                                <span className="font-bold text-slate-700">Career Paths: </span>
+                                <span className="text-slate-600">{item.careerPaths.join(' • ')}</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 shrink-0 pt-2 sm:pt-0">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (onOpenAdmission) {
+                              onOpenAdmission(item.stream, item.name);
+                            } else if (onNavigate) {
+                              onNavigate('criteria');
+                            }
+                          }}
+                          className={`text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition-all cursor-pointer ${
+                            isArts ? 'bg-[#4a6b28] hover:bg-[#3d5920]' : 'bg-[#002147] hover:bg-[#001736]'
+                          }`}
+                        >
+                          Apply
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onNavigate && onNavigate(`department-${item.id}`)}
+                          className="text-xs font-medium text-slate-500 hover:text-[#002147] inline-flex items-center gap-1 cursor-pointer"
+                        >
+                          <span>Department</span>
+                          <ArrowRight size={11} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
 
@@ -998,108 +1189,104 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
       {/* Tab 2: FYUGP 4-Year Degree Framework */}
       {activeTab === 'fyugp' && (
-        <div className="space-y-7 animate-fadeIn">
-          
+        <div className="space-y-6 animate-fadeIn">
           <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-[#002147] mb-2">
+            <h3 className="text-lg sm:text-xl font-bold text-[#002147] mb-1.5">
               FYUGP Progressive Exit &amp; Certification Pathways (NEP 2020)
             </h3>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               Under the National Education Policy and Nagaland University FYUGP regulations, undergraduate students have the flexibility to exit at multiple levels with recognized certifications, or proceed to 4-Year Honours with Research:
             </p>
           </div>
 
-          {/* Visual 4-Stage Pathway Timeline */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* 4-Stage Pathway Timeline */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {exitOptions.map((opt, i) => (
               <div
                 key={i}
-                style={{ animationDelay: `${i * 60}ms` }}
-                className="card-interactive animate-card-in p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-md group cursor-default flex flex-col justify-between transition-all"
+                className="p-5 rounded-xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between transition-all"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3.5">
-                    <span className="px-3.5 py-1.5 bg-[#4a6b28] text-white text-xs sm:text-sm font-bold rounded-xl uppercase tracking-wider shadow-2xs">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="px-2.5 py-1 bg-[#002147] text-white text-xs font-semibold rounded-md">
                       {opt.year} • {opt.semesters}
                     </span>
-                    <span className="text-xs sm:text-sm font-extrabold text-[#002147] bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl">
+                    <span className="text-xs font-semibold text-slate-600 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-md">
                       {opt.credits} ({opt.badge})
                     </span>
                   </div>
 
-                  <h4 className="text-lg sm:text-xl font-bold text-[#002147] group-hover:text-[#4a6b28] transition-colors mt-2 mb-2 leading-snug">
+                  <h4 className="text-base font-bold text-[#002147] mt-1 mb-1.5 leading-snug">
                     {opt.title}
                   </h4>
 
-                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                     {opt.desc}
                   </p>
                 </div>
 
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs sm:text-sm text-slate-500 font-medium">
+                <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                   <span>Nagaland University FYUGP</span>
-                  <span className="text-[#4a6b28] font-semibold">UGC Approved</span>
+                  <span className="text-[#4a6b28] font-medium">UGC Approved</span>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Curricular Course Components Breakdown */}
-          <div className="bg-slate-50/80 p-6 sm:p-7 rounded-2xl border border-slate-200/90">
-            <h4 className="font-bold text-[#002147] text-base sm:text-lg mb-4 flex items-center gap-2.5">
-              <Layers size={18} className="text-[#4a6b28]" />
+          <div className="bg-slate-50 p-5 sm:p-6 rounded-xl border border-slate-200">
+            <h4 className="font-bold text-[#002147] text-sm sm:text-base mb-3 flex items-center gap-2">
+              <Layers size={16} className="text-[#4a6b28]" />
               <span>FYUGP Curricular Course Typology &amp; Components</span>
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {fyugpComponents.map((c, i) => (
                 <div
                   key={i}
-                  style={{ animationDelay: `${i * 40}ms` }}
-                  className="card-interactive animate-card-in bg-white p-5 rounded-xl border border-slate-200/90 shadow-2xs hover:shadow-xs group cursor-default transition-all"
+                  className="bg-white p-4 rounded-lg border border-slate-200 shadow-2xs transition-all"
                 >
-                  <span className="text-xs font-black text-[#4a6b28] bg-emerald-50 px-2.5 py-1 rounded-md uppercase border border-emerald-200">
+                  <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                     {c.code}
                   </span>
-                  <p className="text-sm sm:text-base font-bold text-[#002147] group-hover:text-[#4a6b28] transition-colors mt-2.5 mb-1.5">{c.name}</p>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{c.desc}</p>
+                  <p className="text-xs sm:text-sm font-bold text-[#002147] mt-2 mb-1">{c.name}</p>
+                  <p className="text-xs text-slate-600 leading-relaxed">{c.desc}</p>
                 </div>
               ))}
             </div>
           </div>
-
         </div>
       )}
 
       {/* Tab 3: Skill Development (NSDC) */}
       {activeTab === 'skill' && (
-        <div className="space-y-6 animate-fadeIn">
-          <div className="bg-gradient-to-br from-emerald-50/80 via-white to-blue-50/60 p-6 sm:p-8 rounded-2xl border border-emerald-200/90 shadow-xs">
-            <div className="flex items-center gap-2.5 text-[#4a6b28] text-xs sm:text-sm font-bold uppercase tracking-wider mb-2.5">
-              <Award size={18} />
+        <div className="space-y-5 animate-fadeIn">
+          <div className="bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-2xs">
+            <div className="flex items-center gap-2 text-[#4a6b28] text-xs font-semibold uppercase tracking-wider mb-2">
+              <Award size={15} />
               <span>Vocational Training &amp; Career Placement Partner</span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-[#002147] mb-3">
+            <h3 className="text-lg sm:text-xl font-bold text-[#002147] mb-2">
               Skill Development Course in Tourism and Marketing
             </h3>
-            <p className="text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed mb-6">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
               In formal institutional collaboration with the <strong>Indianeers Skills Academy</strong> (an authorized training partner of the <strong>National Skill Development Corporation — NSDC</strong>), Capital College of Higher Education conducts regular job-oriented skill development certifications.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              <div className="p-5 sm:p-6 bg-white rounded-2xl border border-slate-200/90 shadow-2xs">
-                <p className="text-xs sm:text-sm font-bold text-[#002147]">Course Duration</p>
-                <p className="text-base sm:text-lg font-extrabold text-[#4a6b28] mt-1">3 Months</p>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Intensive practical, interactive &amp; field training sessions</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
+              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Course Duration</p>
+                <p className="text-sm sm:text-base font-bold text-[#002147] mt-1">3 Months</p>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">Practical, interactive &amp; field training sessions</p>
               </div>
-              <div className="p-5 sm:p-6 bg-white rounded-2xl border border-slate-200/90 shadow-2xs">
-                <p className="text-xs sm:text-sm font-bold text-[#002147]">Target Group</p>
-                <p className="text-base sm:text-lg font-extrabold text-[#002147] mt-1">5th Semester Students</p>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">And educated unemployed youth seeking career skills</p>
+              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Target Group</p>
+                <p className="text-sm sm:text-base font-bold text-[#002147] mt-1">5th Semester Students</p>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">And educated unemployed youth seeking career skills</p>
               </div>
-              <div className="p-5 sm:p-6 bg-white rounded-2xl border border-slate-200/90 shadow-2xs">
-                <p className="text-xs sm:text-sm font-bold text-[#002147]">Placement Support</p>
-                <p className="text-base sm:text-lg font-extrabold text-[#4a6b28] mt-1">Direct Placement Linkages</p>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">Tourism, travel management, and regional marketing enterprises</p>
+              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Placement Support</p>
+                <p className="text-sm sm:text-base font-bold text-[#4a6b28] mt-1">Direct Placement Linkages</p>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">Tourism, travel management, and regional marketing enterprises</p>
               </div>
             </div>
           </div>
@@ -1108,69 +1295,69 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
       {/* Tab 4: Assessment & Evaluation Criteria */}
       {activeTab === 'evaluation' && (
-        <div className="space-y-6 animate-fadeIn">
+        <div className="space-y-5 animate-fadeIn">
           <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-[#002147] mb-2">
+            <h3 className="text-lg sm:text-xl font-bold text-[#002147] mb-1.5">
               Assessment Criteria &amp; Mark Distribution Scheme
             </h3>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               Official assessment scheme for all undergraduate papers as published in the CCHE Prospectus 2024-25 under Nagaland University guidelines:
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* 4-Credit Papers */}
-            <div className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/90 shadow-xs">
-              <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
-                <h4 className="text-base sm:text-lg font-bold text-[#002147]">
+            <div className="bg-white p-5 sm:p-6 rounded-xl border border-slate-200 shadow-2xs">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2.5">
+                <h4 className="text-sm sm:text-base font-bold text-[#002147]">
                   A) 4-Credit Papers (Total: 100 Marks)
                 </h4>
-                <span className="text-xs sm:text-sm font-extrabold text-[#4a6b28] bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
+                <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded border border-slate-200">
                   4 Credits
                 </span>
               </div>
-              <div className="space-y-2.5 text-xs sm:text-sm">
-                <div className="flex justify-between p-3 bg-slate-50 rounded-xl">
-                  <span className="font-semibold text-slate-800">End-Term University Examination</span>
+              <div className="space-y-2 text-xs sm:text-sm">
+                <div className="flex justify-between p-2.5 bg-slate-50 rounded-lg">
+                  <span className="font-medium text-slate-700">End-Term University Examination</span>
                   <span className="font-bold text-[#002147]">75 Marks (Pass: 30)</span>
                 </div>
-                <div className="flex justify-between p-3 bg-emerald-50/60 rounded-xl">
-                  <span className="font-semibold text-slate-800">Internal Assessment Total</span>
+                <div className="flex justify-between p-2.5 bg-slate-50 rounded-lg">
+                  <span className="font-medium text-slate-700">Internal Assessment Total</span>
                   <span className="font-bold text-[#4a6b28]">25 Marks (Pass: 10)</span>
                 </div>
-                <div className="pl-4 border-l-2 border-emerald-400 space-y-2 text-xs sm:text-sm text-slate-700 pt-1.5">
-                  <div className="flex justify-between"><span>• Class Test</span><span className="font-semibold">10 Marks</span></div>
-                  <div className="flex justify-between"><span>• Assignment Submission</span><span className="font-semibold">5 Marks</span></div>
-                  <div className="flex justify-between"><span>• Seminar Presentation</span><span className="font-semibold">5 Marks</span></div>
-                  <div className="flex justify-between"><span>• Class Attendance</span><span className="font-semibold">5 Marks</span></div>
+                <div className="pl-3 border-l-2 border-slate-300 space-y-1.5 text-xs text-slate-600 pt-1">
+                  <div className="flex justify-between"><span>• Class Test</span><span className="font-semibold text-slate-700">10 Marks</span></div>
+                  <div className="flex justify-between"><span>• Assignment Submission</span><span className="font-semibold text-slate-700">5 Marks</span></div>
+                  <div className="flex justify-between"><span>• Seminar Presentation</span><span className="font-semibold text-slate-700">5 Marks</span></div>
+                  <div className="flex justify-between"><span>• Class Attendance</span><span className="font-semibold text-slate-700">5 Marks</span></div>
                 </div>
               </div>
             </div>
 
             {/* 3 & 2-Credit Papers */}
-            <div className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/90 shadow-xs">
-              <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
-                <h4 className="text-base sm:text-lg font-bold text-[#002147]">
+            <div className="bg-white p-5 sm:p-6 rounded-xl border border-slate-200 shadow-2xs">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2.5">
+                <h4 className="text-sm sm:text-base font-bold text-[#002147]">
                   B) 3 &amp; 2-Credit Papers (Total: 50 Marks)
                 </h4>
-                <span className="text-xs sm:text-sm font-extrabold text-[#002147] bg-blue-50 px-3 py-1 rounded-lg border border-blue-200">
+                <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded border border-slate-200">
                   2 / 3 Credits
                 </span>
               </div>
-              <div className="space-y-2.5 text-xs sm:text-sm">
-                <div className="flex justify-between p-3 bg-slate-50 rounded-xl">
-                  <span className="font-semibold text-slate-800">End-Term University Examination</span>
+              <div className="space-y-2 text-xs sm:text-sm">
+                <div className="flex justify-between p-2.5 bg-slate-50 rounded-lg">
+                  <span className="font-medium text-slate-700">End-Term University Examination</span>
                   <span className="font-bold text-[#002147]">37.5 Marks (Pass: 15)</span>
                 </div>
-                <div className="flex justify-between p-3 bg-blue-50/60 rounded-xl">
-                  <span className="font-semibold text-slate-800">Internal Assessment Total</span>
+                <div className="flex justify-between p-2.5 bg-slate-50 rounded-lg">
+                  <span className="font-medium text-slate-700">Internal Assessment Total</span>
                   <span className="font-bold text-[#4a6b28]">12.5 Marks (Pass: 5)</span>
                 </div>
-                <div className="pl-4 border-l-2 border-blue-400 space-y-2 text-xs sm:text-sm text-slate-700 pt-1.5">
-                  <div className="flex justify-between"><span>• Class Test</span><span className="font-semibold">5 Marks</span></div>
-                  <div className="flex justify-between"><span>• Assignment Submission</span><span className="font-semibold">2.5 Marks</span></div>
-                  <div className="flex justify-between"><span>• Seminar Presentation</span><span className="font-semibold">2.5 Marks</span></div>
-                  <div className="flex justify-between"><span>• Class Attendance</span><span className="font-semibold">2.5 Marks</span></div>
+                <div className="pl-3 border-l-2 border-slate-300 space-y-1.5 text-xs text-slate-600 pt-1">
+                  <div className="flex justify-between"><span>• Class Test</span><span className="font-semibold text-slate-700">5 Marks</span></div>
+                  <div className="flex justify-between"><span>• Assignment Submission</span><span className="font-semibold text-slate-700">2.5 Marks</span></div>
+                  <div className="flex justify-between"><span>• Seminar Presentation</span><span className="font-semibold text-slate-700">2.5 Marks</span></div>
+                  <div className="flex justify-between"><span>• Class Attendance</span><span className="font-semibold text-slate-700">2.5 Marks</span></div>
                 </div>
               </div>
             </div>
@@ -1180,64 +1367,64 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
       {/* Tab 5: Eligibility & Subject Combinations */}
       {activeTab === 'eligibility' && (
-        <div className="space-y-6 animate-fadeIn">
+        <div className="space-y-5 animate-fadeIn">
           <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-[#002147] mb-2">
+            <h3 className="text-lg sm:text-xl font-bold text-[#002147] mb-1.5">
               Admission Eligibility &amp; Permissible Subject Combinations
             </h3>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               Admission requirements for FYUGP 4-Year Bachelor of Arts and Bachelor of Science programmes:
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Arts Stream Eligibility */}
-            <div className="p-6 sm:p-7 bg-white rounded-2xl border border-slate-200/90 shadow-xs space-y-4">
-              <div className="flex items-center gap-2.5 text-[#4a6b28]">
-                <BookOpen size={20} />
-                <h4 className="font-bold text-base sm:text-lg text-[#002147]">
+            <div className="p-5 sm:p-6 bg-white rounded-xl border border-slate-200 shadow-2xs space-y-3">
+              <div className="flex items-center gap-2 text-[#4a6b28]">
+                <BookOpen size={18} />
+                <h4 className="font-bold text-sm sm:text-base text-[#002147]">
                   Arts Stream Eligibility (B.A.)
                 </h4>
               </div>
-              <ul className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                <li className="flex items-start gap-2.5">
-                  <Check size={16} className="text-[#4a6b28] shrink-0 mt-0.5" />
+              <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <li className="flex items-start gap-2">
+                  <Check size={14} className="text-[#4a6b28] shrink-0 mt-0.5" />
                   <span>Passed 10+2 / HSSLC or equivalent examination from NBSE, CBSE, or any recognized State/Central Board in Arts, Science, or Commerce stream.</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <Check size={16} className="text-[#4a6b28] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <Check size={14} className="text-[#4a6b28] shrink-0 mt-0.5" />
                   <span>For Honours / Major in English: Minimum 45% in English in HSSLC is preferred.</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <Check size={16} className="text-[#4a6b28] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <Check size={14} className="text-[#4a6b28] shrink-0 mt-0.5" />
                   <span>Personal interview of the candidate along with parents/guardians before the Admission Committee.</span>
                 </li>
               </ul>
             </div>
 
             {/* Science Stream Eligibility */}
-            <div className="p-6 sm:p-7 bg-white rounded-2xl border border-slate-200/90 shadow-xs space-y-4">
-              <div className="flex items-center gap-2.5 text-[#002147]">
-                <Atom size={20} />
-                <h4 className="font-bold text-base sm:text-lg text-[#002147]">
+            <div className="p-5 sm:p-6 bg-white rounded-xl border border-slate-200 shadow-2xs space-y-3">
+              <div className="flex items-center gap-2 text-[#002147]">
+                <Atom size={18} />
+                <h4 className="font-bold text-sm sm:text-base text-[#002147]">
                   Science Stream Eligibility (B.Sc.)
                 </h4>
               </div>
-              <ul className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                <li className="flex items-start gap-2.5">
-                  <Check size={16} className="text-[#002147] shrink-0 mt-0.5" />
+              <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <li className="flex items-start gap-2">
+                  <Check size={14} className="text-[#002147] shrink-0 mt-0.5" />
                   <span>Passed 10+2 / HSSLC Science examination from a recognized board with minimum 45% aggregate in science subjects.</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <Check size={16} className="text-[#002147] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <Check size={14} className="text-[#002147] shrink-0 mt-0.5" />
                   <span>Major in Botany / Zoology requires Biology in 10+2.</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <Check size={16} className="text-[#002147] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <Check size={14} className="text-[#002147] shrink-0 mt-0.5" />
                   <span>Major in Physics / Mathematics requires Mathematics in 10+2.</span>
                 </li>
-                <li className="flex items-start gap-2.5">
-                  <Check size={16} className="text-[#002147] shrink-0 mt-0.5" />
+                <li className="flex items-start gap-2">
+                  <Check size={14} className="text-[#002147] shrink-0 mt-0.5" />
                   <span>Active practical laboratory records and marks verification during admission interview.</span>
                 </li>
               </ul>
@@ -1245,34 +1432,34 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
           </div>
 
           {/* Mandatory Documents Checklist */}
-          <div className="p-6 sm:p-7 bg-slate-50/90 rounded-2xl border border-slate-200/90">
-            <h4 className="text-xs sm:text-sm font-bold text-[#002147] uppercase tracking-wider mb-3.5 flex items-center gap-2.5">
-              <FileText size={18} className="text-[#4a6b28]" />
+          <div className="p-5 bg-slate-50 rounded-xl border border-slate-200">
+            <h4 className="text-xs font-bold text-[#002147] uppercase tracking-wider mb-3 flex items-center gap-2">
+              <FileText size={16} className="text-[#4a6b28]" />
               <span>Mandatory Documents Required for Admission (Hard Copy Verification)</span>
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs sm:text-sm text-slate-700">
-              <div className="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center gap-2.5 shadow-2xs">
-                <CheckCircle2 size={16} className="text-[#4a6b28] shrink-0" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs text-slate-700">
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-2 shadow-2xs">
+                <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0" />
                 <span>Original &amp; Attested HSSLC Marksheet</span>
               </div>
-              <div className="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center gap-2.5 shadow-2xs">
-                <CheckCircle2 size={16} className="text-[#4a6b28] shrink-0" />
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-2 shadow-2xs">
+                <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0" />
                 <span>HSLC (10th) Admit Card / DOB Proof</span>
               </div>
-              <div className="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center gap-2.5 shadow-2xs">
-                <CheckCircle2 size={16} className="text-[#4a6b28] shrink-0" />
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-2 shadow-2xs">
+                <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0" />
                 <span>Pass Certificate &amp; Transfer Certificate (TC)</span>
               </div>
-              <div className="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center gap-2.5 shadow-2xs">
-                <CheckCircle2 size={16} className="text-[#4a6b28] shrink-0" />
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-2 shadow-2xs">
+                <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0" />
                 <span>Migration Certificate (Non-NBSE Boards)</span>
               </div>
-              <div className="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center gap-2.5 shadow-2xs">
-                <CheckCircle2 size={16} className="text-[#4a6b28] shrink-0" />
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-2 shadow-2xs">
+                <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0" />
                 <span>ST / SC / OBC / Indigenous Certificate</span>
               </div>
-              <div className="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center gap-2.5 shadow-2xs">
-                <CheckCircle2 size={16} className="text-[#4a6b28] shrink-0" />
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-2 shadow-2xs">
+                <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0" />
                 <span>3 Recent Passport Size Photographs</span>
               </div>
             </div>
@@ -1318,24 +1505,20 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
       {/* Interactive Discipline Detail Modal */}
       {selectedDiscipline && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 sm:p-6 animate-fadeIn">
-          <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-scaleUp max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 sm:p-6 animate-fadeIn">
+          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden border border-slate-200 animate-scaleUp max-h-[90vh] flex flex-col">
             
             {/* Modal Header */}
-            <div className={`p-6 sm:p-7 flex items-center justify-between text-white border-b-2 ${
-              selectedDiscipline.stream === 'ARTS'
-                ? 'bg-gradient-to-r from-[#002147] via-[#001d40] to-[#4a6b28] border-[#4a6b28]'
-                : 'bg-gradient-to-r from-[#002147] via-[#001736] to-[#002858] border-[#002147]'
-            }`}>
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-white/10 backdrop-blur-xs rounded-2xl border border-white/20 shrink-0">
-                  {React.createElement(selectedDiscipline.icon, { size: 26, className: 'text-[#8fc35e]' })}
+            <div className="p-5 sm:p-6 flex items-center justify-between bg-[#002147] text-white">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0 text-white">
+                  {React.createElement(selectedDiscipline.icon, { size: 20 })}
                 </div>
                 <div>
-                  <span className="text-xs font-black uppercase tracking-widest text-[#b5d697] block mb-0.5">
-                    Department Curriculum &amp; Career Scope
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-300 block">
+                    Curriculum &amp; Career Scope
                   </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-white leading-tight">
                     Department of {selectedDiscipline.name}
                   </h3>
                 </div>
@@ -1343,37 +1526,37 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
               <button
                 onClick={() => setSelectedDiscipline(null)}
-                className="text-gray-300 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                className="text-slate-300 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label="Close Modal"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-sm sm:text-base text-slate-700 leading-relaxed">
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-5 text-xs sm:text-sm text-slate-700 leading-relaxed">
               {/* Stream, Degree & Campus Info Bar */}
-              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div>
-                  <span className="text-xs uppercase font-bold text-slate-400 block mb-0.5">Degree Awarded</span>
-                  <span className="font-black text-[#002147] text-base">{selectedDiscipline.degree}</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Degree</span>
+                  <span className="font-bold text-[#002147]">{selectedDiscipline.degree}</span>
                 </div>
                 <div>
-                  <span className="text-xs uppercase font-bold text-slate-400 block mb-0.5">Stream &amp; Campus</span>
-                  <span className="font-semibold text-slate-800 flex items-center gap-1.5">
-                    <MapPin size={14} className="text-[#4a6b28]" />
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Campus</span>
+                  <span className="font-medium text-slate-700 flex items-center gap-1">
+                    <MapPin size={12} className="text-[#4a6b28]" />
                     <span>{selectedDiscipline.campus}</span>
                   </span>
                 </div>
                 <div>
-                  <span className="text-xs uppercase font-bold text-slate-400 block mb-0.5">Duration</span>
-                  <span className="font-semibold text-slate-800">4 Years (8 Semesters)</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Duration</span>
+                  <span className="font-medium text-slate-700">4 Years (8 Semesters)</span>
                 </div>
               </div>
 
               {/* Course Overview */}
               <div>
-                <h4 className="font-bold text-xs sm:text-sm uppercase tracking-wider text-[#002147] mb-2">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#002147] mb-1.5">
                   Academic Overview &amp; Curriculum Scope
                 </h4>
                 <p className="text-slate-600 leading-relaxed">
@@ -1383,14 +1566,14 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
               {/* Core Syllabus Modules */}
               <div>
-                <h4 className="font-bold text-xs sm:text-sm uppercase tracking-wider text-[#002147] mb-3 flex items-center gap-2">
-                  <Layers size={16} className="text-[#4a6b28]" />
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#002147] mb-2 flex items-center gap-1.5">
+                  <Layers size={14} className="text-[#4a6b28]" />
                   <span>Key Course Papers &amp; Syllabus Modules</span>
                 </h4>
-                <div className="space-y-2 bg-slate-50/80 p-4 sm:p-5 rounded-2xl border border-slate-200/90 text-sm text-slate-700">
+                <div className="space-y-1.5 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700">
                   {selectedDiscipline.coreModules.map((mod, mIdx) => (
-                    <div key={mIdx} className="flex items-start gap-2.5">
-                      <CheckCircle2 size={16} className="text-[#4a6b28] shrink-0 mt-0.5" />
+                    <div key={mIdx} className="flex items-start gap-2">
+                      <span className="text-[#4a6b28] font-bold">•</span>
                       <span>{mod}</span>
                     </div>
                   ))}
@@ -1399,17 +1582,17 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
               {/* Permissible Minor Subject Combinations */}
               <div>
-                <h4 className="font-bold text-xs sm:text-sm uppercase tracking-wider text-[#002147] mb-2">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#002147] mb-1.5">
                   Permissible Minor Subject Combinations (Nagaland University)
                 </h4>
-                <p className="text-xs sm:text-sm text-slate-500 mb-3">
+                <p className="text-xs text-slate-500 mb-2">
                   Under the FYUGP NEP 2020 curriculum, students majoring in {selectedDiscipline.name} can select complementary minor subjects:
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {selectedDiscipline.minors.map((min, mIdx) => (
                     <span
                       key={mIdx}
-                      className="px-3.5 py-1.5 bg-emerald-50 text-[#4a6b28] border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold"
+                      className="px-2.5 py-1 bg-slate-100 text-slate-700 border border-slate-200 rounded-md text-xs font-medium"
                     >
                       + {min}
                     </span>
@@ -1419,14 +1602,14 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
 
               {/* Career & Competitive Horizons */}
               <div>
-                <h4 className="font-bold text-xs sm:text-sm uppercase tracking-wider text-[#002147] mb-3 flex items-center gap-2">
-                  <Briefcase size={16} className="text-[#4a6b28]" />
-                  <span>Career Horizons &amp; Postgraduate Pathways</span>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-[#002147] mb-2 flex items-center gap-1.5">
+                  <Briefcase size={14} className="text-[#4a6b28]" />
+                  <span>Career Pathways</span>
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                   {selectedDiscipline.careerPaths.map((cp, cIdx) => (
-                    <div key={cIdx} className="p-3.5 bg-white border border-slate-200/90 rounded-xl flex items-center gap-2.5 shadow-2xs">
-                      <Sparkles size={15} className="text-[#4a6b28] shrink-0" />
+                    <div key={cIdx} className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex items-center gap-2">
+                      <span className="text-[#4a6b28] text-xs">✔</span>
                       <span className="font-medium text-slate-700">{cp}</span>
                     </div>
                   ))}
@@ -1434,8 +1617,8 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
               </div>
 
               {/* Eligibility */}
-              <div className="p-4 sm:p-5 bg-amber-50/80 border border-amber-200/90 rounded-2xl text-xs sm:text-sm text-amber-900">
-                <span className="font-bold block mb-1">Eligibility Requirement:</span>
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700">
+                <span className="font-bold text-[#002147] block mb-0.5">Eligibility Requirement:</span>
                 <span>{selectedDiscipline.eligibility}</span>
               </div>
             </div>
