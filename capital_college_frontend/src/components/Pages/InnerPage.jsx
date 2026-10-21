@@ -386,7 +386,7 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
   const [search, setSearch] = useState('');
   const [selectedDiscipline, setSelectedDiscipline] = useState(null);
   const [expandedDisciplines, setExpandedDisciplines] = useState({});
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
+  const [viewMode, setViewMode] = useState('list'); // 'grid' | 'list'
 
   const allDisciplines = [
     // 7 Arts Disciplines (P.R. Hill Campus, Kohima)

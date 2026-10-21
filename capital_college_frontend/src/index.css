@@ -950,3 +950,31 @@ a:hover .icon-spring {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   PAGE ENTRANCE ANIMATION
+   Clean, minimal fade-up reveal that plays on every page navigation.
+   No colors, no icons — just a quiet, professional entrance.
+   ========================================================================== */
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Base state: invisible, no movement */
+.page-enter {
+  opacity: 0;
+}
+
+/* Active state: animate in */
+.page-enter-active {
+  animation: pageEnter 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: opacity, transform;
+}

@@ -11,6 +11,7 @@ import Footer from './components/Footer/Footer';
 import OpeningLogoAnimation from './components/Common/OpeningLogoAnimation';
 
 import InnerPage from './components/Pages/InnerPage';
+import PageTransition from './components/Common/PageTransition';
 
 // Modals
 import OnlineAdmissionModal from './components/Admission/OnlineAdmissionModal';
@@ -366,47 +367,49 @@ export default function App() {
 
         {/* Main Content */}
         <main className="flex-1">
-          {currentPage === 'home' ? (
-            <>
-              {/* 1. Hero Slider (Grand Collegiate Showcase with Integrated Quick-Access Dock) */}
-              <HeroSlider
-                onOpenAdmission={() => handleOpenAdmission('ARTS')}
+          <PageTransition pageKey={currentPage}>
+            {currentPage === 'home' ? (
+              <>
+                {/* 1. Hero Slider (Grand Collegiate Showcase with Integrated Quick-Access Dock) */}
+                <HeroSlider
+                  onOpenAdmission={() => handleOpenAdmission('ARTS')}
+                  onNavigate={handleNavigate}
+                />
+
+                {/* 2. Key Institutional Metrics Strip (Estd. 2004, UGC, 10:1 Ratio, Batches) */}
+                <QuickStats />
+
+                {/* 3. Office of the Principal Message Section */}
+                <PrincipalMessage
+                  onOpenFullMessage={() => handleNavigate('principal-message')}
+                  onNavigate={handleNavigate}
+                />
+
+                {/* 4. About College Section & Dual Campus Infrastructure Showcase */}
+                <AboutCollege
+                  onNavigate={handleNavigate}
+                  onOpenAdmission={() => handleOpenAdmission('ARTS')}
+                />
+
+                {/* 5. Latest Updates & Events Carousel */}
+                <LatestUpdatesCarousel
+                  onSelectNotice={(notice) => setSelectedNotice(notice)}
+                  onViewMore={() => handleNavigate('notice')}
+                  onViewEvents={() => handleNavigate('events')}
+                />
+
+                {/* 6. Campus Location & Interactive Google Maps */}
+                <CampusMap />
+              </>
+            ) : (
+              <InnerPage
+                pageId={currentPage}
                 onNavigate={handleNavigate}
+                onOpenAdmission={handleOpenAdmission}
+                onOpenAdmin={handleOpenAdmin}
               />
-
-              {/* 2. Key Institutional Metrics Strip (Estd. 2004, UGC, 10:1 Ratio, Batches) */}
-              <QuickStats />
-
-              {/* 3. Office of the Principal Message Section */}
-              <PrincipalMessage
-                onOpenFullMessage={() => handleNavigate('principal-message')}
-                onNavigate={handleNavigate}
-              />
-
-              {/* 4. About College Section & Dual Campus Infrastructure Showcase */}
-              <AboutCollege
-                onNavigate={handleNavigate}
-                onOpenAdmission={() => handleOpenAdmission('ARTS')}
-              />
-
-              {/* 5. Latest Updates & Events Carousel */}
-              <LatestUpdatesCarousel
-                onSelectNotice={(notice) => setSelectedNotice(notice)}
-                onViewMore={() => handleNavigate('notice')}
-                onViewEvents={() => handleNavigate('events')}
-              />
-
-              {/* 6. Campus Location & Interactive Google Maps */}
-              <CampusMap />
-            </>
-          ) : (
-            <InnerPage
-              pageId={currentPage}
-              onNavigate={handleNavigate}
-              onOpenAdmission={handleOpenAdmission}
-              onOpenAdmin={handleOpenAdmin}
-            />
-          )}
+            )}
+          </PageTransition>
         </main>
 
         {/* 4-Column Footer */}
