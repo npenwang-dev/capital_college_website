@@ -356,21 +356,15 @@ export default function DepartmentPage({
 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
-              {/* Stream Badge */}
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <span className="bg-[#4a6b28] text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-xs flex items-center gap-1.5">
-                  <BookOpen size={12} className="text-[#b5d697]" />
-                  <span>{dept.stream === 'ARTS' ? 'Arts Stream' : 'Science Stream'}</span>
-                </span>
-                <span className="bg-white/10 text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-full border border-white/15">
-                  FYUGP 4-Year Honours
-                </span>
-                <span className="bg-white/10 text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-full border border-white/15">
-                  Code: {dept.code}
-                </span>
-                <span className="text-xs text-slate-300 font-mono">
-                  Estd. {dept.established}
-                </span>
+              {/* Department Meta */}
+              <div className="flex items-center gap-2 mb-2 text-xs font-medium text-slate-300 flex-wrap">
+                <span>{dept.stream === 'ARTS' ? 'Arts Stream' : 'Science Stream'}</span>
+                <span>•</span>
+                <span>FYUGP 4-Year Honours</span>
+                <span>•</span>
+                <span>Code: {dept.code}</span>
+                <span>•</span>
+                <span>Estd. {dept.established}</span>
               </div>
 
               {/* Department Title */}
@@ -485,9 +479,6 @@ export default function DepartmentPage({
                   <h3 className="text-xl sm:text-2xl font-black text-[#002147] flex items-center gap-2">
                     <Users size={22} className="text-[#4a6b28]" />
                     <span>Department Faculty Members</span>
-                    <span className="text-xs font-bold bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full font-mono">
-                      {facultyMembers.length + 1} Teaching Staff
-                    </span>
                   </h3>
                   <p className="text-xs text-gray-600 mt-0.5">
                     Distinguished assistant professors and subject-matter educators in {dept.name}.

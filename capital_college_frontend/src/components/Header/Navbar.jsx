@@ -177,10 +177,9 @@ export default function Navbar({
       ].includes(currentPage) || (Boolean(currentPage) && currentPage.startsWith('department-')),
       children: [
         {
-          label: 'Academic Streams',
+          label: 'Academic Departments',
           isStreamNav: true,
-          desc: 'Arts (7) & Science (4) Individual Department Pages',
-          highlight: true
+          desc: 'Arts & Science degree departments'
         },
         { label: 'Programmes & Courses (FYUGP)', action: () => onNavigate('programs'), desc: 'B.A. & B.Sc. 4-Year degrees' },
         { label: 'Academic Calendar', action: () => onNavigate('academic-calendar'), desc: 'Semester dates & holidays' },
@@ -349,78 +348,50 @@ export default function Navbar({
                             <button
                               type="button"
                               onClick={() => setStreamMenuOpen(!streamMenuOpen)}
-                              className="w-full text-left px-4 py-2.5 hover:bg-white/10 transition-colors flex items-center justify-between cursor-pointer bg-[#4a6b28]/25"
+                              className="w-full text-left px-4 py-2.5 hover:bg-white/10 transition-colors flex items-center justify-between cursor-pointer group/stream"
                             >
                               <div className="flex-1 pr-2">
-                                <div className="flex items-center gap-1.5">
-                                  <span className="text-[13px] font-bold text-[#b5d697]">
-                                    {subItem.label}
-                                  </span>
-                                  <span className="text-[9px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.2 rounded uppercase">
-                                    11 DEPTS
-                                  </span>
-                                </div>
+                                <span className="text-[13px] font-semibold text-slate-200 group-hover/stream:text-[#b5d697] transition-colors">
+                                  {subItem.label}
+                                </span>
                                 {subItem.desc && (
-                                  <p className="text-[11px] text-slate-300 line-clamp-1 mt-0.5">
+                                  <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
                                     {subItem.desc}
                                   </p>
                                 )}
                               </div>
                               <ChevronRight
                                 size={14}
-                                className={`text-[#b5d697] transition-transform ${
-                                  streamMenuOpen ? 'translate-x-1 text-white' : 'group-hover/stream:translate-x-1'
+                                className={`text-slate-400 transition-transform ${
+                                  streamMenuOpen ? 'translate-x-1 text-white' : 'group-hover/stream:translate-x-1 group-hover/stream:text-white'
                                 }`}
                               />
                             </button>
 
-                            {/* Flyout Submenu to the right: Streams -> Arts, Science -> Department Names */}
+                            {/* Flyout Submenu to the right: Clean Collegiate Departments Directory */}
                             {streamMenuOpen && (
                               <div
-                                className="absolute left-full top-0 -ml-1 w-[570px] border-2 border-[#4a6b28] shadow-[0_25px_60px_rgba(0,0,0,0.95)] rounded-2xl p-4 z-50 animate-fadeIn before:absolute before:-left-3 before:top-0 before:w-3 before:bottom-0 before:content-[''] select-none"
+                                className="absolute left-full top-0 -ml-1 w-[460px] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.85)] rounded-xl p-4 z-50 animate-fadeIn before:absolute before:-left-3 before:top-0 before:w-3 before:bottom-0 before:content-[''] select-none"
                                 style={{ backgroundColor: '#001428', opacity: 1 }}
                                 onMouseEnter={() => setStreamMenuOpen(true)}
                                 onMouseLeave={() => setStreamMenuOpen(false)}
                               >
-                                <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-white/10">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 rounded-lg bg-[#4a6b28]/30 border border-[#8fc35e]/40 flex items-center justify-center shrink-0">
-                                      <GraduationCap size={18} className="text-[#8fc35e]" />
-                                    </div>
-                                    <div>
-                                      <div className="flex items-center gap-2">
-                                        <h4 className="text-[13.5px] font-black text-white tracking-wide">
-                                          Academic Streams &amp; Departments
-                                        </h4>
-                                        <span className="text-[9px] font-black uppercase tracking-wider bg-[#4a6b28] text-white px-1.5 py-0.2 rounded">
-                                          11 Depts
-                                        </span>
-                                      </div>
-                                      <p className="text-[11px] text-slate-300 font-medium">
-                                        Select any department for its dedicated page with HOD spotlight &amp; syllabus
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="text-[10px] font-bold text-[#b5d697] font-mono bg-white/10 px-2.5 py-1 rounded-md border border-white/10 shrink-0 ml-2">
-                                    FYUGP
-                                  </div>
+                                <div className="pb-2.5 mb-3 border-b border-white/10">
+                                  <h4 className="text-[13px] font-bold text-white tracking-wide">
+                                    Academic Departments
+                                  </h4>
+                                  <p className="text-[11px] text-slate-400 font-normal mt-0.5">
+                                    Undergraduate Degree Programmes • Nagaland University (FYUGP)
+                                  </p>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-3.5">
+                                <div className="grid grid-cols-2 gap-4">
                                   {/* ARTS STREAM */}
-                                  <div className="space-y-1.5">
-                                    <div className="flex items-center justify-between pb-1 border-b border-white/10 mb-1">
-                                      <div className="flex items-center gap-1.5">
-                                        <span className="w-2 h-2 rounded-full bg-[#8fc35e] shadow-[0_0_8px_#8fc35e]"></span>
-                                        <span className="text-xs font-black text-white uppercase tracking-wider">
-                                          Arts Stream (B.A.)
-                                        </span>
-                                      </div>
-                                      <span className="text-[10px] text-slate-300 font-mono font-semibold bg-white/10 px-1.5 py-0.2 rounded">
-                                        7 Depts
-                                      </span>
+                                  <div>
+                                    <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider pb-1.5 border-b border-white/10 mb-2">
+                                      Arts Stream (B.A.)
                                     </div>
-                                    <div className="space-y-1">
+                                    <div className="space-y-0.5">
                                       {ARTS_DEPARTMENTS.map((dept) => (
                                         <button
                                           key={dept.slug}
@@ -430,41 +401,21 @@ export default function Navbar({
                                             setStreamMenuOpen(false);
                                             onNavigate(`department-${dept.slug}`);
                                           }}
-                                          className="w-full text-left px-2.5 py-1.5 rounded-lg border border-white/10 hover:border-[#8fc35e] transition-all flex items-center justify-between group/d cursor-pointer shadow-xs"
-                                          style={{ backgroundColor: '#001e3d' }}
+                                          className="w-full text-left px-2 py-1.5 rounded-md text-[12px] font-medium text-slate-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                                         >
-                                          <div className="min-w-0 pr-2">
-                                            <div className="text-[12px] font-bold text-white group-hover/d:text-[#b5d697] truncate transition-colors">
-                                              {dept.name.replace('Department of ', '')}
-                                            </div>
-                                            <div className="text-[10px] text-slate-300 font-mono mt-0.2">
-                                              FYUGP • Code: {dept.code}
-                                            </div>
-                                          </div>
-                                          <ArrowRight
-                                            size={12}
-                                            className="text-slate-400 group-hover/d:text-[#8fc35e] group-hover/d:translate-x-0.5 transition-all shrink-0"
-                                          />
+                                          {dept.name.replace('Department of ', '')}
                                         </button>
                                       ))}
                                     </div>
                                   </div>
 
                                   {/* SCIENCE STREAM */}
-                                  <div className="space-y-1.5 flex flex-col justify-between">
+                                  <div className="flex flex-col justify-between">
                                     <div>
-                                      <div className="flex items-center justify-between pb-1 border-b border-white/10 mb-1">
-                                        <div className="flex items-center gap-1.5">
-                                          <span className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
-                                          <span className="text-xs font-black text-white uppercase tracking-wider">
-                                            Science Stream (B.Sc.)
-                                          </span>
-                                        </div>
-                                        <span className="text-[10px] text-slate-300 font-mono font-semibold bg-white/10 px-1.5 py-0.2 rounded">
-                                          4 Depts
-                                        </span>
+                                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider pb-1.5 border-b border-white/10 mb-2">
+                                        Science Stream (B.Sc.)
                                       </div>
-                                      <div className="space-y-1">
+                                      <div className="space-y-0.5">
                                         {SCIENCE_DEPARTMENTS.map((dept) => (
                                           <button
                                             key={dept.slug}
@@ -474,51 +425,27 @@ export default function Navbar({
                                               setStreamMenuOpen(false);
                                               onNavigate(`department-${dept.slug}`);
                                             }}
-                                            className="w-full text-left px-2.5 py-1.5 rounded-lg border border-white/10 hover:border-blue-400 transition-all flex items-center justify-between group/d cursor-pointer shadow-xs"
-                                            style={{ backgroundColor: '#001e3d' }}
+                                            className="w-full text-left px-2 py-1.5 rounded-md text-[12px] font-medium text-slate-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                                           >
-                                            <div className="min-w-0 pr-2">
-                                              <div className="text-[12px] font-bold text-white group-hover/d:text-blue-300 truncate transition-colors">
-                                                {dept.name.replace('Department of ', '')}
-                                              </div>
-                                              <div className="text-[10px] text-slate-300 font-mono mt-0.2">
-                                                FYUGP • Code: {dept.code}
-                                              </div>
-                                            </div>
-                                            <ArrowRight
-                                              size={12}
-                                              className="text-slate-400 group-hover/d:text-blue-300 group-hover/d:translate-x-0.5 transition-all shrink-0"
-                                            />
+                                            {dept.name.replace('Department of ', '')}
                                           </button>
                                         ))}
                                       </div>
                                     </div>
 
-                                    {/* Science Section Campus Card */}
-                                    <div
-                                      className="p-2.5 rounded-xl border border-blue-500/30 text-white mt-1"
-                                      style={{ backgroundColor: '#001830' }}
+                                    {/* Science Section Campus Link */}
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setOpenDropdown(null);
+                                        setStreamMenuOpen(false);
+                                        onNavigate('science-section');
+                                      }}
+                                      className="pt-2.5 mt-3 border-t border-white/10 text-[11px] font-medium text-slate-400 hover:text-white flex items-center justify-between cursor-pointer transition-colors w-full"
                                     >
-                                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-blue-300">
-                                        <Building2 size={13} className="text-blue-400 shrink-0" />
-                                        <span>Permanent Campus • Thegaba</span>
-                                      </div>
-                                      <p className="text-[10px] text-slate-300 mt-1 leading-relaxed">
-                                        Botany, Zoology, Chemistry &amp; Physics research laboratories.
-                                      </p>
-                                      <button
-                                        type="button"
-                                        onClick={() => {
-                                          setOpenDropdown(null);
-                                          setStreamMenuOpen(false);
-                                          onNavigate('science-section');
-                                        }}
-                                        className="mt-1.5 text-[10.5px] font-bold text-blue-300 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
-                                      >
-                                        <span>Explore Science Block</span>
-                                        <ArrowRight size={11} />
-                                      </button>
-                                    </div>
+                                      <span>Science Campus, Thegaba</span>
+                                      <ChevronRight size={12} className="text-slate-400" />
+                                    </button>
                                   </div>
                                 </div>
                               </div>
@@ -794,29 +721,24 @@ export default function Navbar({
                                 <button
                                   type="button"
                                   onClick={() => setMobileStreamOpen(!mobileStreamOpen)}
-                                  className="w-full text-left py-2 text-sm text-[#b5d697] font-bold flex items-center justify-between cursor-pointer"
+                                  className="w-full text-left py-2 text-sm text-slate-200 font-medium flex items-center justify-between cursor-pointer"
                                 >
-                                  <div className="flex items-center gap-1.5">
-                                    <span>{subItem.label}</span>
-                                    <span className="text-[9px] bg-amber-400 text-amber-950 px-1.5 py-0.2 rounded font-black">
-                                      11 DEPTS
-                                    </span>
-                                  </div>
+                                  <span>{subItem.label}</span>
                                   <ChevronDown
                                     size={14}
                                     className={`transition-transform duration-200 ${
-                                      mobileStreamOpen ? 'rotate-180 text-[#8fc35e]' : 'text-slate-400'
+                                      mobileStreamOpen ? 'rotate-180 text-white' : 'text-slate-400'
                                     }`}
                                   />
                                 </button>
 
                                 {mobileStreamOpen && (
-                                  <div className="pl-3 pr-2 py-2 space-y-2 bg-[#001026] rounded-xl border border-white/10 text-xs">
+                                  <div className="pl-3 pr-2 py-2 space-y-2 bg-white/5 rounded-lg border border-white/10 text-xs">
                                     <div>
-                                      <div className="text-[10px] font-extrabold text-[#8fc35e] uppercase tracking-wider mb-1 pt-1 flex items-center gap-1">
-                                        <span>Arts Stream (B.A. Honours)</span>
+                                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 pt-1">
+                                        Arts Stream (B.A.)
                                       </div>
-                                      <div className="space-y-0.5 pl-2">
+                                      <div className="space-y-0.5 pl-1">
                                         {ARTS_DEPARTMENTS.map((dept) => (
                                           <button
                                             key={dept.slug}
@@ -826,17 +748,17 @@ export default function Navbar({
                                             }}
                                             className="block w-full text-left py-1 text-xs text-slate-300 hover:text-white"
                                           >
-                                            • {dept.name}
+                                            {dept.name.replace('Department of ', '')}
                                           </button>
                                         ))}
                                       </div>
                                     </div>
 
                                     <div className="pt-2 border-t border-white/10">
-                                      <div className="text-[10px] font-extrabold text-blue-300 uppercase tracking-wider mb-1 pt-1 flex items-center gap-1">
-                                        <span>Science Stream (B.Sc. Honours)</span>
+                                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 pt-1">
+                                        Science Stream (B.Sc.)
                                       </div>
-                                      <div className="space-y-0.5 pl-2">
+                                      <div className="space-y-0.5 pl-1">
                                         {SCIENCE_DEPARTMENTS.map((dept) => (
                                           <button
                                             key={dept.slug}
@@ -846,7 +768,7 @@ export default function Navbar({
                                             }}
                                             className="block w-full text-left py-1 text-xs text-slate-300 hover:text-white"
                                           >
-                                            • {dept.name}
+                                            {dept.name.replace('Department of ', '')}
                                           </button>
                                         ))}
                                       </div>
