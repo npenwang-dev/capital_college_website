@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, Mail, BookOpen, GraduationCap, Sparkles, CheckCircle2, MapPin } from 'lucide-react';
+import { Award, Mail, MapPin, CheckCircle2 } from 'lucide-react';
 
 /**
  * PersonCard
@@ -7,7 +7,7 @@ import { Award, Mail, BookOpen, GraduationCap, Sparkles, CheckCircle2, MapPin } 
  * Supports:
  * - 'spotlight' / 'horizontal': Horizontal showcase card matching the HOD spotlight reference with golden ribbon,
  *   photo checkmark badge, green qualification, uppercase designation, amber-accented bio quote, email and campus pills.
- * - 'standard': Portrait card with nested curved portrait hero, typography, credentials, and campus pills.
+ * - 'standard': Portrait card with nested curved portrait hero, typography, credentials, campus pills and action controls.
  * - 'compact': Minimal directory row.
  */
 export default function PersonCard({
@@ -27,7 +27,9 @@ export default function PersonCard({
   badgeText,
   variant = 'standard', // 'standard' | 'spotlight' | 'horizontal' | 'compact'
   className = '',
-  onClick
+  onClick,
+  actions,
+  children
 }) {
   const finalImageUrl = imageUrl || image_url;
   const finalRole = designation || role;
@@ -159,6 +161,14 @@ export default function PersonCard({
               )}
             </div>
           )}
+
+          {/* Action Controls (e.g. for Admin Portal) */}
+          {actions && (
+            <div className="pt-3 mt-3 flex items-center justify-center sm:justify-start gap-2 border-t border-slate-100">
+              {actions}
+            </div>
+          )}
+          {children}
         </div>
       </div>
     );
@@ -211,8 +221,7 @@ export default function PersonCard({
             {department || 'Capital College Kohima'}
           </span>
         </div>
-
-        </div>
+      </div>
 
       {/* 2. CARD CONTENT */}
       <div className="pt-3.5 sm:pt-4 px-1 pb-1 flex-1 flex flex-col justify-between">
@@ -260,6 +269,14 @@ export default function PersonCard({
             )}
           </div>
         )}
+
+        {/* Action Controls (e.g. for Admin Portal) */}
+        {actions && (
+          <div className="pt-2.5 mt-2.5 flex items-center justify-end gap-2 border-t border-slate-100">
+            {actions}
+          </div>
+        )}
+        {children}
       </div>
     </div>
   );

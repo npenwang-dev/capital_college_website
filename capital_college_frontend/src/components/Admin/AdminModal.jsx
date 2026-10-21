@@ -4200,7 +4200,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                 image_url: '',
                                 bio: '',
                                 email: '',
-                                campus: facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima'
+                                campus: (facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
                               });
                               setShowFacultyModal(true);
                             }}
@@ -4354,7 +4354,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                   image_url: '',
                                   bio: '',
                                   email: '',
-                                  campus: facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima'
+                                  campus: (facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
                                 });
                                 setShowFacultyModal(true);
                               }}
@@ -4379,95 +4379,54 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
 
                           <div className="max-w-2xl mx-auto">
                             {currentHOD ? (
-                              <div className="bg-gradient-to-br from-white via-white to-amber-50/50 rounded-2xl border-2 border-amber-400 shadow-md p-5 sm:p-6 relative">
-                                <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-amber-600 text-white text-[10px] font-black uppercase tracking-wider py-1 px-4 rounded-bl-xl shadow-xs flex items-center gap-1">
-                                  <Award size={12} />
-                                  <span>HEAD OF DEPARTMENT</span>
-                                </div>
-
-                                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
-                                  {/* HOD Photo */}
-                                  <div className="shrink-0 relative">
-                                    {currentHOD.image_url ? (
-                                      <img
-                                        src={currentHOD.image_url}
-                                        alt={currentHOD.name}
-                                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-amber-400 shadow-sm"
-                                      />
-                                    ) : (
-                                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-[#002147] to-[#001736] text-[#8fc35e] font-black text-2xl flex items-center justify-center border-2 border-amber-400 shadow-sm">
-                                        {currentHOD.name ? currentHOD.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('') : 'CC'}
-                                      </div>
-                                    )}
-                                    <div className="absolute -bottom-1 -right-1 bg-amber-500 text-white rounded-full p-1 shadow-xs border border-white">
-                                      <Check size={12} />
-                                    </div>
+                              <PersonCard
+                                variant="spotlight"
+                                isHod={true}
+                                name={currentHOD.name}
+                                role={currentHOD.designation || 'Head of Department'}
+                                qualification={currentHOD.qualification}
+                                image_url={currentHOD.image_url}
+                                department={activeDeptObj.name}
+                                stream={currentHOD.stream || facultyActiveStream}
+                                bio={currentHOD.bio || 'Pioneering academic excellence, research, and transformative pedagogy at Capital College Kohima.'}
+                                email={currentHOD.email || `${activeDeptObj.name.replace('Department of ', '').toLowerCase().replace(/[^a-z]/g, '')}.hod@capitalcollege.edu.in`}
+                                campus={currentHOD.campus || (activeDeptObj.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')}
+                                actions={
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      onClick={() => {
+                                        setEditingFaculty(currentHOD);
+                                        setFacultyFormData({
+                                          name: currentHOD.name || '',
+                                          stream: currentHOD.stream || (activeDeptObj.stream === 'SCIENCE' ? 'SCIENCE' : 'ARTS'),
+                                          department: currentHOD.department || activeDeptObj.name.replace('Department of ', ''),
+                                          qualification: currentHOD.qualification || '',
+                                          designation: currentHOD.designation || 'Head of Department',
+                                          is_hod: true,
+                                          image_url: currentHOD.image_url || '',
+                                          bio: currentHOD.bio || '',
+                                          email: currentHOD.email || '',
+                                          campus: currentHOD.campus || (activeDeptObj.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
+                                        });
+                                        setShowFacultyModal(true);
+                                      }}
+                                      className="text-xs font-bold bg-[#002147] hover:bg-[#001736] text-white px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs cursor-pointer transition-colors"
+                                    >
+                                      <Edit3 size={12} />
+                                      <span>Edit HOD Profile</span>
+                                    </button>
+                                    <button
+                                      onClick={() => handleSetHOD(currentHOD.id, false)}
+                                      className="text-xs font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-300 px-3 py-1.5 rounded-xl transition-colors cursor-pointer"
+                                      title="Demote to regular faculty member"
+                                    >
+                                      Remove HOD Role
+                                    </button>
                                   </div>
-
-                                  {/* HOD Credentials & Actions */}
-                                  <div className="flex-1 space-y-1.5 min-w-0">
-                                    <h4 className="text-lg sm:text-xl font-black text-[#002147] truncate">
-                                      {currentHOD.name}
-                                    </h4>
-                                    <p className="text-xs font-bold text-[#4a6b28]">
-                                      {currentHOD.qualification || 'M.A. / M.Sc., UGC-NET'}
-                                    </p>
-                                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                                      {currentHOD.designation}
-                                    </p>
-                                    {currentHOD.bio && (
-                                      <p className="text-xs text-gray-600 italic border-l-2 border-amber-400 pl-2.5 my-1.5 line-clamp-2">
-                                        "{currentHOD.bio}"
-                                      </p>
-                                    )}
-                                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-[11px] text-gray-600">
-                                      {currentHOD.email && (
-                                        <span className="inline-flex items-center gap-1 font-mono bg-white px-2 py-0.5 rounded border border-gray-200">
-                                          <Mail size={11} className="text-gray-400" />
-                                          {currentHOD.email}
-                                        </span>
-                                      )}
-                                      <span className="inline-flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-gray-200">
-                                        <MapPin size={11} className="text-[#4a6b28]" />
-                                        {currentHOD.campus || (currentHOD.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')}
-                                      </span>
-                                    </div>
-                                    <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                                      <button
-                                        onClick={() => {
-                                          setEditingFaculty(currentHOD);
-                                          setFacultyFormData({
-                                            name: currentHOD.name || '',
-                                            stream: currentHOD.stream || 'ARTS',
-                                            department: currentHOD.department || 'English',
-                                            qualification: currentHOD.qualification || '',
-                                            designation: currentHOD.designation || 'Head of Department',
-                                            is_hod: true,
-                                            image_url: currentHOD.image_url || '',
-                                            bio: currentHOD.bio || '',
-                                            email: currentHOD.email || '',
-                                            campus: currentHOD.campus || (currentHOD.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
-                                          });
-                                          setShowFacultyModal(true);
-                                        }}
-                                        className="bg-[#002147] hover:bg-[#001736] text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-2xs cursor-pointer"
-                                      >
-                                        <Edit3 size={13} />
-                                        <span>Edit HOD Profile &amp; Photo</span>
-                                      </button>
-                                      <button
-                                        onClick={() => handleSetHOD(currentHOD.id, false)}
-                                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer"
-                                        title="Demote to regular faculty member"
-                                      >
-                                        Remove HOD Role
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                                }
+                              />
                             ) : (
-                              <div className="bg-amber-50/60 rounded-2xl border-2 border-dashed border-amber-300 p-6 text-center space-y-3">
+                              <div className="bg-amber-50/60 rounded-3xl border-2 border-dashed border-amber-300 p-6 text-center space-y-3">
                                 <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto shadow-2xs">
                                   <Award size={20} className="text-amber-700" />
                                 </div>
@@ -4492,7 +4451,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                       image_url: '',
                                       bio: '',
                                       email: '',
-                                      campus: facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima'
+                                      campus: (facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
                                     });
                                     setShowFacultyModal(true);
                                   }}
@@ -4532,7 +4491,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                   qualification: '',
                                   designation: 'Assistant Professor',
                                   is_hod: false,
-                                  image_url: ''
+                                  image_url: '',
+                                  bio: '',
+                                  email: '',
+                                  campus: (facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
                                 });
                                 setShowFacultyModal(true);
                               }}
@@ -4548,69 +4510,53 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                               No other faculty members in this department yet. Click '+ Add Teacher' above to add one.
                             </div>
                           ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                               {otherTeachers.map((teacher) => (
-                                <div
+                                <PersonCard
                                   key={teacher.id}
-                                  className="bg-gray-50/70 hover:bg-white rounded-2xl border border-gray-200 hover:border-[#4a6b28]/50 p-4 transition-all shadow-2xs hover:shadow-sm flex flex-col justify-between"
-                                >
-                                  <div>
-                                    <div className="flex items-center gap-3 mb-2.5">
-                                      {teacher.image_url ? (
-                                        <img
-                                          src={teacher.image_url}
-                                          alt={teacher.name}
-                                          className="w-12 h-12 rounded-xl object-cover border-2 border-emerald-600/30 shadow-2xs ring-1 ring-emerald-500/20 shrink-0"
-                                        />
-                                      ) : (
-                                        <div className="w-12 h-12 rounded-xl bg-[#002147]/10 text-[#002147] font-bold text-xs flex items-center justify-center border border-gray-200 shrink-0">
-                                          {teacher.name ? teacher.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('') : 'CC'}
-                                        </div>
-                                      )}
-                                      <div className="min-w-0 flex-1">
-                                        <h5 className="font-bold text-gray-900 text-sm truncate">
-                                          {teacher.name}
-                                        </h5>
-                                        <p className="text-xs font-semibold text-[#4a6b28] truncate">
-                                          {teacher.designation || 'Assistant Professor'}
-                                        </p>
-                                        <p className="text-[11px] text-gray-500 font-mono truncate">
-                                          {teacher.qualification || '—'}
-                                        </p>
-                                      </div>
+                                  name={teacher.name}
+                                  role={teacher.designation || 'Assistant Professor'}
+                                  qualification={teacher.qualification}
+                                  image_url={teacher.image_url}
+                                  department={activeDeptObj.name}
+                                  stream={teacher.stream || facultyActiveStream}
+                                  bio={teacher.bio}
+                                  email={teacher.email}
+                                  campus={teacher.campus || (activeDeptObj.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')}
+                                  actions={
+                                    <div className="flex items-center gap-1.5 w-full justify-end">
+                                      <button
+                                        onClick={() => {
+                                          setEditingFaculty(teacher);
+                                          setFacultyFormData({
+                                            name: teacher.name || '',
+                                            stream: teacher.stream || (activeDeptObj.stream === 'SCIENCE' ? 'SCIENCE' : 'ARTS'),
+                                            department: teacher.department || activeDeptObj.name.replace('Department of ', ''),
+                                            qualification: teacher.qualification || '',
+                                            designation: teacher.designation || 'Assistant Professor',
+                                            is_hod: false,
+                                            image_url: teacher.image_url || '',
+                                            bio: teacher.bio || '',
+                                            email: teacher.email || '',
+                                            campus: teacher.campus || (activeDeptObj.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
+                                          });
+                                          setShowFacultyModal(true);
+                                        }}
+                                        className="text-xs font-bold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1 rounded-xl transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                                      >
+                                        <Edit3 size={12} />
+                                        <span>Edit</span>
+                                      </button>
+                                      <button
+                                        onClick={() => handleDeleteFaculty(teacher.id)}
+                                        className="text-xs font-bold text-red-700 hover:text-red-900 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1 rounded-xl transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                                      >
+                                        <Trash2 size={12} />
+                                        <span>Delete</span>
+                                      </button>
                                     </div>
-                                  </div>
-
-                                  <div className="pt-3 border-t border-gray-200/70 flex items-center justify-end gap-1.5 text-xs">
-                                    <button
-                                      onClick={() => {
-                                        setEditingFaculty(teacher);
-                                        setFacultyFormData({
-                                          name: teacher.name || '',
-                                          stream: teacher.stream || 'ARTS',
-                                          department: teacher.department || 'English',
-                                          qualification: teacher.qualification || '',
-                                          designation: teacher.designation || 'Assistant Professor',
-                                          is_hod: false,
-                                          image_url: teacher.image_url || '',
-                                          bio: teacher.bio || '',
-                                          email: teacher.email || '',
-                                          campus: teacher.campus || (teacher.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
-                                        });
-                                        setShowFacultyModal(true);
-                                      }}
-                                      className="text-[11px] font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-md border border-blue-200 cursor-pointer"
-                                    >
-                                      Edit
-                                    </button>
-                                    <button
-                                      onClick={() => handleDeleteFaculty(teacher.id)}
-                                      className="text-[11px] font-semibold text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded-md border border-red-200 cursor-pointer"
-                                    >
-                                      Delete
-                                    </button>
-                                  </div>
-                                </div>
+                                  }
+                                />
                               ))}
                             </div>
                           )}
@@ -7059,8 +7005,8 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                 <div className={facultyFormData.is_hod ? 'w-full max-w-xl mx-auto' : 'max-w-[280px] mx-auto'}>
                   <PersonCard
                     variant={facultyFormData.is_hod ? 'spotlight' : 'standard'}
-                    name={facultyFormData.name || 'Dr. Faculty Member Name'}
-                    role={facultyFormData.designation || 'Assistant Professor'}
+                    name={facultyFormData.name || (facultyFormData.is_hod ? 'Dr. Faculty Member Name' : 'Faculty Member Name')}
+                    role={facultyFormData.designation || (facultyFormData.is_hod ? 'Head of Department & Assistant Professor' : 'Assistant Professor')}
                     qualification={facultyFormData.qualification || 'M.A., M.Phil, PhD, PGCTE'}
                     image_url={facultyFormData.image_url}
                     is_hod={Boolean(facultyFormData.is_hod)}
@@ -7068,7 +7014,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                     stream={facultyFormData.stream}
                     bio={facultyFormData.bio || (facultyFormData.is_hod ? 'Pioneering academic excellence, research, and transformative pedagogy at Capital College Kohima.' : '')}
                     email={facultyFormData.email || `${(facultyFormData.department || 'faculty').toLowerCase().replace(/[^a-z]/g, '')}.hod@capitalcollege.edu.in`}
-                    campus={facultyFormData.campus || 'P.R. Hill Campus, Kohima'}
+                    campus={facultyFormData.campus || (facultyFormData.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')}
                   />
                 </div>
               </div>
@@ -7092,7 +7038,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
 
               {/* Full Name */}
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Full Name &amp; Title *</label>
+                <label className="block font-bold text-gray-700 mb-1">Full Name & Title *</label>
                 <input
                   type="text"
                   required
