@@ -358,8 +358,9 @@ export default function DepartmentPage({
             <div>
               {/* Stream Badge */}
               <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <span className="bg-[#4a6b28] text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
-                  {dept.stream === 'ARTS' ? '🎨 Arts Stream' : '🔬 Science Stream'}
+                <span className="bg-[#4a6b28] text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-xs flex items-center gap-1.5">
+                  <BookOpen size={12} className="text-[#b5d697]" />
+                  <span>{dept.stream === 'ARTS' ? 'Arts Stream' : 'Science Stream'}</span>
                 </span>
                 <span className="bg-white/10 text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-full border border-white/15">
                   FYUGP 4-Year Honours

@@ -4218,9 +4218,9 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                           Stream:
                         </span>
                         {[
-                          { id: 'ARTS', label: '🎨 Arts Stream (B.A. Honours)', depts: 7, count: faculty.filter(f => f.stream === 'ARTS').length },
-                          { id: 'SCIENCE', label: '🔬 Science Stream (B.Sc. Honours)', depts: 4, count: faculty.filter(f => f.stream === 'SCIENCE').length },
-                          { id: 'ALL', label: '📋 All Faculty Master Directory', depts: 11, count: faculty.length }
+                          { id: 'ARTS', label: 'Arts Stream (B.A. Honours)', depts: 7, count: faculty.filter(f => f.stream === 'ARTS').length },
+                          { id: 'SCIENCE', label: 'Science Stream (B.Sc. Honours)', depts: 4, count: faculty.filter(f => f.stream === 'SCIENCE').length },
+                          { id: 'ALL', label: 'All Faculty Master Directory', depts: 11, count: faculty.length }
                         ].map((streamTab) => {
                           const isActive = facultyActiveStream === streamTab.id;
                           return (
@@ -4318,7 +4318,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                           <div>
                             <div className="flex items-center gap-2 mb-1">
                               <span className="bg-[#4a6b28] text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">
-                                {activeDeptObj.stream === 'ARTS' ? '🎨 Arts Stream' : '🔬 Science Stream'}
+                                {activeDeptObj.stream === 'ARTS' ? 'Arts Stream' : 'Science Stream'}
                               </span>
                               <span className="text-xs text-slate-300 font-mono">
                                 Code: {activeDeptObj.code} • FYUGP 4-Year Honours

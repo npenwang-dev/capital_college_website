@@ -814,7 +814,7 @@ export default function Navbar({
                                   <div className="pl-3 pr-2 py-2 space-y-2 bg-[#001026] rounded-xl border border-white/10 text-xs">
                                     <div>
                                       <div className="text-[10px] font-extrabold text-[#8fc35e] uppercase tracking-wider mb-1 pt-1 flex items-center gap-1">
-                                        <span>🎨 Arts Stream (B.A. Honours)</span>
+                                        <span>Arts Stream (B.A. Honours)</span>
                                       </div>
                                       <div className="space-y-0.5 pl-2">
                                         {ARTS_DEPARTMENTS.map((dept) => (
@@ -834,7 +834,7 @@ export default function Navbar({
 
                                     <div className="pt-2 border-t border-white/10">
                                       <div className="text-[10px] font-extrabold text-blue-300 uppercase tracking-wider mb-1 pt-1 flex items-center gap-1">
-                                        <span>🔬 Science Stream (B.Sc. Honours)</span>
+                                        <span>Science Stream (B.Sc. Honours)</span>
                                       </div>
                                       <div className="space-y-0.5 pl-2">
                                         {SCIENCE_DEPARTMENTS.map((dept) => (

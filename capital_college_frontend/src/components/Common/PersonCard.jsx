@@ -212,34 +212,7 @@ export default function PersonCard({
           </span>
         </div>
 
-        {/* Bottom Scrim */}
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
-
-        {/* Top-Right Badge */}
-        {isHead ? (
-          <div className="absolute top-2.5 right-2.5 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 text-white text-[10px] sm:text-[10.5px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-md flex items-center gap-1.5 border border-white/40 backdrop-blur-md">
-            <Award size={12} className="text-amber-100" />
-            <span>HEAD OF DEPT</span>
-          </div>
-        ) : badgeText ? (
-          <div className="absolute top-2.5 right-2.5 bg-[#002147]/90 text-[#b5d697] text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md border border-white/20 backdrop-blur-md">
-            <span>{badgeText}</span>
-          </div>
-        ) : null}
-
-        {/* Bottom-Left: Stream */}
-        {stream && (
-          <div className="absolute bottom-2.5 left-2.5 flex items-center gap-1.5">
-            <span className={`text-[9.5px] sm:text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border backdrop-blur-md ${
-              stream === 'SCIENCE'
-                ? 'bg-blue-900/80 text-blue-200 border-blue-400/30'
-                : 'bg-emerald-900/80 text-emerald-200 border-emerald-400/30'
-            }`}>
-              {stream} STREAM
-            </span>
-          </div>
-        )}
-      </div>
+        </div>
 
       {/* 2. CARD CONTENT */}
       <div className="pt-3.5 sm:pt-4 px-1 pb-1 flex-1 flex flex-col justify-between">
