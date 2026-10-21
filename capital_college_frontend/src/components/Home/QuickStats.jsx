@@ -24,9 +24,9 @@ export default function QuickStats() {
     },
     {
       icon: <BookOpen className="w-8 h-8 text-[#8fc35e]" />,
-      value: '12',
-      label: 'Honours Departments',
-      desc: 'Multidisciplinary B.A. & B.Sc. Pathways'
+      value: 'B.A. & B.Sc.',
+      label: 'Degree Programmes',
+      desc: 'Arts & Science Honours Streams'
     }
   ];
 

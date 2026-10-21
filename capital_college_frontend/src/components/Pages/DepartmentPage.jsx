@@ -31,235 +31,191 @@ import {
 } from '../../data/departmentData';
 
 // Fallback baseline faculty rosters
+// Baseline faculty rosters verified against official college website (https://capitalcollege.edu.in/dep)
 const BASELINE_FACULTY = {
   english: {
     hod: {
       name: 'Dr. Rukulu Kezo Puro',
       qualification: 'M.A., M.Phil., Ph.D., PGCTE',
-      designation: 'Head of Department & Principal',
-      bio: 'Pioneering Naga literary documentation, post-colonial literature, and transformative pedagogy at Capital College Kohima.',
-      email: 'english.hod@capitalcollege.edu.in'
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mrs. Tatongkala Lemtur Lohe',
-        qualification: 'M.A., M.Phil. in English',
-        designation: 'Assistant Professor & Dean of Students',
-        specialization: 'British Romanticism & Student Mentorship',
-        email: 'dean.students@capitalcollege.edu.in'
+        name: 'Tatongkala Lemtur Lohe',
+        qualification: 'M.A., M.Phil.',
+        designation: 'Faculty Member'
       },
       {
-        name: 'Mrs. Opangmenla Jamir',
+        name: 'Opangmenla Jamir',
         qualification: 'M.A., B.Ed.',
-        designation: 'Assistant Professor & IQAC Coordinator',
-        specialization: 'Linguistics & Quality Assurance',
-        email: 'iqac@capitalcollege.edu.in'
+        designation: 'Faculty Member'
       },
       {
-        name: 'Ms. Vezolu Puro',
-        qualification: 'M.A. (NET), Ph.D. Scholar',
-        designation: 'Visiting Faculty & Research Scholar (IIITDM Kurnool)',
-        specialization: 'Literary Theory & Research',
-        email: 'english.faculty@capitalcollege.edu.in'
+        name: 'Vezolu Puro',
+        qualification: 'M.A. (NET), Ph.D. Research Scholar, IIITDM Kurnool',
+        designation: 'Visiting Faculty'
       }
     ]
   },
   history: {
     hod: {
-      name: 'Mr. Temsuwapang Lkr',
-      qualification: 'M.A. in History',
-      designation: 'Head of Department & NSS Nodal Officer',
-      bio: 'Specialist in modern Indian history, oral historiography of Northeast tribes, and civic youth development.',
-      email: 'history.hod@capitalcollege.edu.in'
+      name: 'Temsuwapang Lkr',
+      qualification: 'M.A.',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mrs. Kumuni Keppen',
-        qualification: 'M.A. in History',
-        designation: 'Assistant Professor',
-        specialization: 'Ancient World Civilizations & Social Formations',
-        email: 'kumuni.history@capitalcollege.edu.in'
+        name: 'Kumuni Keppen',
+        qualification: 'M.A.',
+        designation: 'Faculty Member'
       },
       {
-        name: 'Mr. Niekhoto Chürhah',
-        qualification: 'M.A. in History',
-        designation: 'Assistant Professor',
-        specialization: 'Northeast India & Tribal Institutions',
-        email: 'niekhoto.history@capitalcollege.edu.in'
+        name: 'Niekhoto Chürhah',
+        qualification: 'M.A.',
+        designation: 'Faculty Member'
       }
     ]
   },
   'political-science': {
     hod: {
-      name: 'Mrs. Chubarenla Lkr',
-      qualification: 'M.A. in Political Science, UGC-NET',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Academic leader in Indian constitutional governance, public policy, and comparative political institutions.',
-      email: 'polscience.hod@capitalcollege.edu.in'
+      name: 'Chubarenla Lkr',
+      qualification: 'M.A. (NET)',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mr. Vungthungo',
-        qualification: 'M.A. in Political Science, UGC-NET',
-        designation: 'Assistant Professor',
-        specialization: 'Western Political Thought & International Relations',
-        email: 'vungthungo.pol@capitalcollege.edu.in'
+        name: 'Vungthungo',
+        qualification: 'M.A., NET',
+        designation: 'Faculty Member'
       },
       {
-        name: 'Mr. Meyiepeo Puyie',
-        qualification: 'M.A. in Political Science, UGC-NET',
-        designation: 'Assistant Professor',
-        specialization: 'Public Administration & Electoral Politics',
-        email: 'meyiepeo.pol@capitalcollege.edu.in'
+        name: 'Meyiepeo Puyie',
+        qualification: 'M.A., NET',
+        designation: 'Faculty Member'
       }
     ]
   },
   sociology: {
     hod: {
-      name: 'Mrs. Kevivonu Zhotso Chishi',
-      qualification: 'M.A. in Sociology',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Investigating tribal social change, kinship structures, and community resilience in Nagaland.',
-      email: 'sociology.hod@capitalcollege.edu.in'
+      name: 'Kevivonu Zhotso Chishi',
+      qualification: 'M.A.',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mrs. Abeino Zashü',
-        qualification: 'M.A. in Sociology, UGC-NET',
-        designation: 'Assistant Professor & Academic Dean',
-        specialization: 'Sociology of India & Tribal Stratification',
-        email: 'dean.academic@capitalcollege.edu.in'
+        name: 'Abeino Zashii',
+        qualification: 'M.A.',
+        designation: 'Faculty Member'
       },
       {
-        name: 'Mr. Vizoboto Zhotso',
-        qualification: 'M.A. in Sociology',
-        designation: 'Assistant Professor',
-        specialization: 'Social Research Methodology & Youth Studies',
-        email: 'vizoboto.soc@capitalcollege.edu.in'
+        name: 'Vizoboto Zhotso',
+        qualification: 'M.A.',
+        designation: 'Faculty Member'
       }
     ]
   },
   education: {
     hod: {
-      name: 'Mrs. Shedulu Kezo',
-      qualification: 'M.A., B.Ed., M.Ed., UGC-NET',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Championing pedagogical innovation, educational psychology, and child guidance methodologies.',
-      email: 'education.hod@capitalcollege.edu.in'
+      name: 'Shedulu Kezo',
+      qualification: 'M.A., B.Ed., M.Ed., NET',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Ms. Sekulu Nienu',
-        qualification: 'M.A. (JRF), B.Ed., M.Ed.',
-        designation: 'Visiting Faculty & Research Scholar (Nagaland University)',
-        specialization: 'Educational Foundations & Pedagogical Research',
-        email: 'education.faculty@capitalcollege.edu.in'
+        name: 'Sekulu Nienu',
+        qualification: 'M.A. (JRF), B.Ed., M.Ed., Research Scholar, Nagaland University',
+        designation: 'Visiting Faculty'
       }
     ]
   },
   economics: {
     hod: {
-      name: 'Mrs. Akanjungla Kichu',
-      qualification: 'M.A. in Economics',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Focusing on macroeconomic stabilization, hill agriculture economics, and state fiscal policy.',
-      email: 'economics.hod@capitalcollege.edu.in'
+      name: 'Akanjungla Kichu',
+      qualification: 'M.A.',
+      designation: 'Head of Department'
     },
     faculty: []
   },
   tenyidie: {
     hod: {
-      name: 'Mr. Theja Lohe',
-      qualification: 'M.A. in Tenyidie',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Preserving and advancing indigenous Tenyidie literature, folklore, orthography, and cultural translation.',
-      email: 'tenyidie.hod@capitalcollege.edu.in'
+      name: 'Theja Lohe',
+      qualification: 'M.A.',
+      designation: 'Head of Department'
     },
     faculty: []
   },
   botany: {
     hod: {
       name: 'Dr. Kadunlung Gamei',
-      qualification: 'M.Sc., Ph.D. in Botany',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Leading research in Himalayan plant systematics, ethnobotany, and conservation of medicinal bio-resources in Nagaland.',
-      email: 'botany.hod@capitalcollege.edu.in'
+      qualification: 'M.Sc., Ph.D.',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mr. Pelo-o',
-        qualification: 'M.Sc. in Botany',
-        designation: 'Visiting Faculty Member',
-        specialization: 'Plant Anatomy & Botanical Studies',
-        email: 'botany.faculty@capitalcollege.edu.in'
+        name: 'Pelo-o',
+        qualification: 'M.Sc., Faculty Member Dept. of Botany, Theta Tutorials',
+        designation: 'Visiting Faculty'
       }
     ]
   },
   zoology: {
     hod: {
-      name: 'Mrs. Nourhevinuo Kessiezie',
-      qualification: 'M.Sc. in Zoology, UGC-NET',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Dedicated to comparative animal anatomy, molecular genetics, and montane wildlife conservation.',
-      email: 'zoology.hod@capitalcollege.edu.in'
+      name: 'Nourhevinuo Kessiezie',
+      qualification: 'M.Sc., NET',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mr. Vevohu Kezo',
-        qualification: 'M.Sc. in Zoology',
-        designation: 'Vice Principal & Assistant Professor',
-        specialization: 'Cell Biology, Entomology & Campus Academic Oversight',
-        email: 'viceprincipal@capitalcollege.edu.in'
+        name: 'Vevohu Kezo',
+        qualification: 'M.Sc.',
+        designation: 'Faculty Member'
       }
     ]
   },
   chemistry: {
     hod: {
-      name: 'Mr. Pyonphamo Ezung',
-      qualification: 'M.Sc. in Chemistry',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Advancing chemical education, organic reaction mechanisms, and green laboratory practices.',
-      email: 'chemistry.hod@capitalcollege.edu.in'
+      name: 'Pyonphamo Ezung',
+      qualification: 'M.Sc.',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mr. Kenneth Punyü',
-        qualification: 'M.Sc. in Chemistry',
-        designation: 'Visiting Faculty (Associate Professor, Science College Jotsoma)',
-        specialization: 'Organic & Analytical Chemistry',
-        email: 'chemistry.faculty@capitalcollege.edu.in'
+        name: 'Kenneth Punyu',
+        qualification: 'M.Sc., Associate Prof. Dept. of Chemistry, Science College Jotsoma',
+        designation: 'Visiting Faculty'
+      }
+    ]
+  },
+  physics: {
+    hod: {
+      name: 'Science Academic Faculty',
+      qualification: 'M.Sc.',
+      designation: 'Head of Department'
+    },
+    faculty: [
+      {
+        name: 'Dr. Abhijit Bora',
+        qualification: 'Associate Prof. (Rtd), Dept. of Physics, Science College Jotsoma',
+        designation: 'Visiting Faculty'
       }
     ]
   },
   mathematics: {
     hod: {
       name: 'Science Academic Faculty',
-      qualification: 'M.Sc. in Mathematics',
-      designation: 'Head of Department & Assistant Professor',
-      bio: 'Teaching calculus, linear algebra, and computational mathematics across science programs.',
-      email: 'mathematics.hod@capitalcollege.edu.in'
+      qualification: 'M.Sc.',
+      designation: 'Head of Department'
     },
     faculty: [
       {
-        name: 'Mr. M.N. Murali',
-        qualification: 'M.Sc. in Mathematics',
-        designation: 'Visiting Faculty (Associate Professor Rtd, Science College Jotsoma)',
-        specialization: 'Pure Mathematics & Calculus',
-        email: 'mathematics.faculty@capitalcollege.edu.in'
+        name: 'M.N. Murali',
+        qualification: 'Associate Prof. (Rtd), Dept. of Mathematics, Science College Jotsoma',
+        designation: 'Visiting Faculty'
       },
       {
         name: 'Dr. Khrietuo Doulo',
-        qualification: 'Ph.D. in Mathematics',
-        designation: 'Visiting Faculty (Assistant Professor Rtd, Science College Jotsoma)',
-        specialization: 'Applied Mathematics & Statistics',
-        email: 'mathematics.faculty@capitalcollege.edu.in'
-      },
-      {
-        name: 'Dr. Abhijit Bora',
-        qualification: 'Ph.D. in Physics',
-        designation: 'Visiting Faculty (Associate Professor Rtd, Science College Jotsoma)',
-        specialization: 'Physical Sciences',
-        email: 'physics.faculty@capitalcollege.edu.in'
+        qualification: 'Asst. Prof. (Rtd), Dept. of Mathematics, Science College Jotsoma',
+        designation: 'Visiting Faculty'
       }
     ]
   }
@@ -406,11 +362,9 @@ export default function DepartmentPage({
               <div className="flex items-center gap-2 mb-2 text-xs font-medium text-slate-300 flex-wrap">
                 <span>{dept.stream === 'ARTS' ? 'Arts Stream' : 'Science Stream'}</span>
                 <span>•</span>
-                <span>FYUGP 4-Year Honours</span>
+                <span>{dept.degree}</span>
                 <span>•</span>
-                <span>Code: {dept.code}</span>
-                <span>•</span>
-                <span>Estd. {dept.established}</span>
+                <span>Nagaland University</span>
               </div>
 
               {/* Department Title */}
@@ -418,7 +372,7 @@ export default function DepartmentPage({
                 {dept.name}
               </h1>
               <p className="text-slate-200 text-sm sm:text-base max-w-3xl mt-2 leading-relaxed">
-                {dept.tagline}
+                Capital College of Higher Education, Kohima — {dept.stream === 'ARTS' ? 'Arts Stream' : 'Science Stream'}
               </p>
             </div>
 
@@ -499,7 +453,7 @@ export default function DepartmentPage({
                     imageUrl={hodMember.image_url}
                     department={dept.name}
                     stream={dept.stream}
-                    bio={hodMember.bio || 'Dedicated to inspiring academic rigor and empowering students toward lifelong achievement.'}
+                    bio={hodMember.bio}
                     email={hodMember.email}
                     campus={hodMember.campus || 'P.R. Hill Campus, Kohima'}
                   />
@@ -551,109 +505,42 @@ export default function DepartmentPage({
 
         {/* TAB 2: PROGRAMMES & FYUGP CURRICULUM */}
         {activeTab === 'curriculum' && (
-          <div className="space-y-10 animate-fadeIn">
-            {/* SECTION 3: PROGRAMMES & FYUGP CURRICULUM */}
-            <div className="space-y-8">
-              <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
-                    <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
-                      Academic Framework (NEP 2020)
-                    </span>
-                    <h3 className="text-2xl font-black text-[#002147]">
-                      {dept.degree}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                      Structured under the Nagaland University Four-Year Undergraduate Programme (FYUGP) credit framework.
-                    </p>
-                  </div>
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-xs p-6 sm:p-8 space-y-6">
+              <div className="border-b border-gray-100 pb-4">
+                <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
+                  {dept.stream === 'ARTS' ? 'Arts Stream' : 'Science Stream'}
+                </span>
+                <h3 className="text-2xl font-bold text-[#002147]">
+                  {dept.stream === 'ARTS' ? 'Bachelor of Arts (BA)' : 'Bachelor of Science (B.Sc.)'} — {dept.name.replace('Department of ', '')}
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                  Capital College of Higher Education, Kohima — Nagaland University
+                </p>
+              </div>
 
-                  <div className="bg-slate-100 px-4 py-2 rounded-xl text-center shrink-0 border border-slate-200">
-                    <span className="text-[10px] font-bold text-gray-500 uppercase block">Annual Intake</span>
-                    <span className="text-lg font-black text-[#002147]">{dept.intake} Students</span>
-                  </div>
-                </div>
-
-                {/* Course Outline Table */}
-                <div className="overflow-x-auto rounded-2xl border border-gray-200">
-                  <table className="w-full text-left text-xs sm:text-sm">
-                    <thead className="bg-[#002147] text-white font-bold uppercase text-[11px] tracking-wider">
-                      <tr>
-                        <th className="py-3 px-4">Course Code</th>
-                        <th className="py-3 px-4">Course Title &amp; Module</th>
-                        <th className="py-3 px-4">Semester</th>
-                        <th className="py-3 px-4 text-right">Credits</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                      {dept.curriculum.map((course, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                          <td className="py-3 px-4 font-mono font-bold text-[#4a6b28]">
-                            {course.code}
-                          </td>
-                          <td className="py-3 px-4 font-semibold text-gray-900">
-                            {course.title}
-                          </td>
-                          <td className="py-3 px-4 text-gray-600">
-                            {course.sem}
-                          </td>
-                          <td className="py-3 px-4 text-right font-mono font-bold text-slate-800">
-                            {course.credits} Credits
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-gray-600 leading-relaxed flex items-start gap-2">
-                  <Sparkles size={16} className="text-amber-500 shrink-0 mt-0.5" />
-                  <span>
-                    Students can opt for a <strong>Single Major</strong>, <strong>Major with Minor</strong>, or exit with a Certificate (1 Year), Diploma (2 Years), Bachelor's Degree (3 Years), or <strong>Bachelor's Degree with Honours / Research (4 Years)</strong> in alignment with NEP regulations.
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1.5">
+                  <span className="font-bold text-[#002147] block uppercase text-[11px] tracking-wide">
+                    Affiliation &amp; Recognition
                   </span>
+                  <p className="text-gray-600 leading-relaxed">
+                    Permanently affiliated to Nagaland University and recognized by the University Grants Commission (UGC) under Art. 2(f) &amp; 12(B) of the UGC Act of 1956.
+                  </p>
+                </div>
+
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1.5">
+                  <span className="font-bold text-[#002147] block uppercase text-[11px] tracking-wide">
+                    Campus Location
+                  </span>
+                  <p className="text-gray-600 leading-relaxed">
+                    {dept.stream === 'ARTS'
+                      ? 'Kohima Campus (Arts Stream): P.R. Hill, Kohima, Nagaland 797001'
+                      : 'Science Section: Thegaba, Phezhu, Jotsoma, Nagaland'}
+                  </p>
                 </div>
               </div>
             </div>
-
-            {/* SECTION 4: LABORATORIES & FACILITIES (IF AVAILABLE) */}
-            {dept.facilities && dept.facilities.length > 0 && (
-              <div className="space-y-8">
-                <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
-                  <div>
-                    <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
-                      Department Infrastructure
-                    </span>
-                    <h3 className="text-2xl font-black text-[#002147]">
-                      Laboratories, Learning Resources &amp; Facilities
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                      Tailored infrastructure supporting practical scientific experiments, field research, and seminars.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {dept.facilities.map((fac, idx) => (
-                      <div
-                        key={idx}
-                        className="p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-[#002147] text-[#8fc35e] flex items-center justify-center shrink-0">
-                          <CheckCircle2 size={16} />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-gray-900 text-sm">
-                            Facility {idx + 1}
-                          </h4>
-                          <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                            {fac}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )}
 

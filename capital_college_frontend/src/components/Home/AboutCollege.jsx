@@ -15,8 +15,8 @@ export default function AboutCollege({ onNavigate }) {
   const highlights = [
     {
       icon: <GraduationCap size={22} />,
-      title: '12 Honours Depts',
-      desc: 'NEP 2020 FYUGP in B.A. & B.Sc. honours streams'
+      title: 'B.A. & B.Sc.',
+      desc: 'Arts & Science honours degree programmes'
     },
     {
       icon: <Users size={22} />,
