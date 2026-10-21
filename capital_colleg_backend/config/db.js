@@ -560,6 +560,28 @@ async function setupSQLiteTables(db) {
     await runSQLite(db, `INSERT OR IGNORE INTO settings (key, value) VALUES ('top_banner_enabled', 'true')`);
     await runSQLite(db, `INSERT OR IGNORE INTO settings (key, value) VALUES ('top_banner_speed', '5500')`);
     await runSQLite(db, `INSERT OR REPLACE INTO settings (key, value) VALUES ('top_banner_show_notice_board', 'false')`);
+
+    // Ensure default principal desk settings
+    const principalDefaults = [
+      ['principal_badge', 'Office of the Principal'],
+      ['principal_header_title', 'Principal’s Welcome Message'],
+      ['principal_header_subtitle', 'Official Institutional Address • Capital College of Higher Education, Kohima'],
+      ['principal_name', 'Dr. Zokho Venuh'],
+      ['principal_designation', 'Principal, Capital College of Higher Education'],
+      ['principal_qualification', 'M.A., M.Phil., Ph.D. in History (Nagaland University)'],
+      ['principal_image_url', 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg'],
+      ['principal_quote_badge', 'Verbatim Official Message'],
+      ['principal_message', 'The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.'],
+      ['principal_signoff_name', '— Dr. Zokho Venuh'],
+      ['principal_signoff_role', 'Principal, CCHE Kohima'],
+      ['principal_highlight1_title', 'Founded August 20, 2004'],
+      ['principal_highlight1_desc', 'Over two decades of dedicated higher learning in the state capital.'],
+      ['principal_highlight2_title', 'Opportunity for Every Student'],
+      ['principal_highlight2_desc', 'Inclusive education, personalized mentorship, and quality instruction.']
+    ];
+    for (const [k, v] of principalDefaults) {
+      await runSQLite(db, `INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)`, [k, v]);
+    }
   } catch (e) {}
 
   // Seed Board of Management members into governing_body if not present
@@ -664,6 +686,30 @@ async function setupMySQLTables(pool) {
       ('contact_email', 'principal@capitalcollege.edu.in'),
       ('contact_phone', '+91 9436002789')
     `);
+  }
+
+  // Ensure default principal desk settings exist in MySQL
+  const principalDefaultsMySQL = [
+    ['principal_badge', 'Office of the Principal'],
+    ['principal_header_title', 'Principal’s Welcome Message'],
+    ['principal_header_subtitle', 'Official Institutional Address • Capital College of Higher Education, Kohima'],
+    ['principal_name', 'Dr. Zokho Venuh'],
+    ['principal_designation', 'Principal, Capital College of Higher Education'],
+    ['principal_qualification', 'M.A., M.Phil., Ph.D. in History (Nagaland University)'],
+    ['principal_image_url', 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg'],
+    ['principal_quote_badge', 'Verbatim Official Message'],
+    ['principal_message', 'The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.'],
+    ['principal_signoff_name', '— Dr. Zokho Venuh'],
+    ['principal_signoff_role', 'Principal, CCHE Kohima'],
+    ['principal_highlight1_title', 'Founded August 20, 2004'],
+    ['principal_highlight1_desc', 'Over two decades of dedicated higher learning in the state capital.'],
+    ['principal_highlight2_title', 'Opportunity for Every Student'],
+    ['principal_highlight2_desc', 'Inclusive education, personalized mentorship, and quality instruction.']
+  ];
+  for (const [k, v] of principalDefaultsMySQL) {
+    try {
+      await pool.query('INSERT IGNORE INTO `settings` (`key`, `value`) VALUES (?, ?)', [k, v]);
+    } catch (e) {}
   }
 
   // 2. Governing Body Table

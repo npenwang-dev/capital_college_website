@@ -1,7 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Award, GraduationCap } from 'lucide-react';
 
 export default function PrincipalMessageModal({ isOpen, onClose }) {
+  const defaultData = {
+    name: 'Dr. Zokho Venuh',
+    designation: 'Principal, Capital College of Higher Education',
+    qualification: 'M.A., Ph.D. • Nagaland University',
+    imageUrl: 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg'
+  };
+
+  const [principal, setPrincipal] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cche_principal_settings');
+      if (saved) {
+        const s = JSON.parse(saved);
+        return {
+          name: s.name || defaultData.name,
+          designation: s.designation || defaultData.designation,
+          qualification: s.qualification || defaultData.qualification,
+          imageUrl: s.imageUrl || defaultData.imageUrl
+        };
+      }
+      return defaultData;
+    } catch {
+      return defaultData;
+    }
+  });
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.settings) {
+          const s = data.settings;
+          setPrincipal((prev) => ({
+            ...prev,
+            name: s.principal_name || prev.name,
+            designation: s.principal_designation || prev.designation,
+            qualification: s.principal_qualification || prev.qualification,
+            imageUrl: s.principal_image_url || prev.imageUrl
+          }));
+        }
+      })
+      .catch(() => {});
+
+    const handleUpdate = (e) => {
+      if (e && e.detail) {
+        setPrincipal((prev) => ({
+          ...prev,
+          name: e.detail.name || prev.name,
+          designation: e.detail.designation || prev.designation,
+          qualification: e.detail.qualification || prev.qualification,
+          imageUrl: e.detail.imageUrl || prev.imageUrl
+        }));
+      }
+    };
+    window.addEventListener('principal-settings-updated', handleUpdate);
+    return () => window.removeEventListener('principal-settings-updated', handleUpdate);
+  }, []);
+
   if (!isOpen) return null;
 
   return (
@@ -20,14 +77,19 @@ export default function PrincipalMessageModal({ isOpen, onClose }) {
         <div className="p-6 md:p-8 space-y-4 max-h-[75vh] overflow-y-auto text-gray-700 text-xs md:text-sm leading-relaxed text-justify">
           <div className="flex items-center gap-4 bg-emerald-50/70 p-4 rounded-lg border border-emerald-200">
             <img
-              src="https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg"
-              alt="Dr. Zokho Venuh"
+              src={principal.imageUrl || 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg'}
+              alt={principal.name}
               className="w-16 h-16 rounded-full object-cover border-2 border-[#4a6b28] shadow"
+              onError={(e) => {
+                e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg';
+              }}
             />
             <div>
-              <h4 className="font-bold text-base text-[#002858]">Dr. Zokho Venuh</h4>
-              <p className="text-xs text-[#4a6b28] font-semibold">Principal, Capital College of Higher Education</p>
-              <p className="text-[11px] text-gray-500">M.A., Ph.D. • Nagaland University</p>
+              <h4 className="font-bold text-base text-[#002858]">{principal.name}</h4>
+              <p className="text-xs text-[#4a6b28] font-semibold">{principal.designation}</p>
+              {principal.qualification && (
+                <p className="text-[11px] text-gray-500">{principal.qualification}</p>
+              )}
             </div>
           </div>
 

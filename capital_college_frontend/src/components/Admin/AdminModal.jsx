@@ -57,7 +57,8 @@ import {
   Sparkles,
   CheckCircle2,
   List,
-  LayoutGrid
+  LayoutGrid,
+  Scroll
 } from 'lucide-react';
 import { apiFetch } from '../../utils/api';
 import { isNoticeNew } from '../../utils/noticeUtils';
@@ -131,12 +132,12 @@ const INITIAL_GALLERY = [
 
 // RBAC Permissions Mapping
 const ROLE_PERMISSIONS = {
-  SUPER_ADMIN: ['dashboard', 'ticker', 'documents', 'admissions', 'news', 'hero', 'gallery', 'faculty', 'governing', 'courses', 'inquiries', 'users', 'settings', 'database'],
-  ADMIN: ['dashboard', 'ticker', 'documents', 'admissions', 'news', 'hero', 'gallery', 'faculty', 'governing', 'courses', 'inquiries', 'users', 'settings', 'database'],
+  SUPER_ADMIN: ['dashboard', 'ticker', 'documents', 'admissions', 'news', 'hero', 'gallery', 'faculty', 'governing', 'principal', 'courses', 'inquiries', 'users', 'settings', 'database'],
+  ADMIN: ['dashboard', 'ticker', 'documents', 'admissions', 'news', 'hero', 'gallery', 'faculty', 'governing', 'principal', 'courses', 'inquiries', 'users', 'settings', 'database'],
   ADMISSIONS_ADMIN: ['dashboard', 'documents', 'admissions', 'inquiries', 'settings'],
-  NEWS_ADMIN: ['dashboard', 'ticker', 'news', 'hero', 'gallery'],
+  NEWS_ADMIN: ['dashboard', 'ticker', 'news', 'hero', 'gallery', 'principal'],
   MEDIA_ADMIN: ['dashboard', 'ticker', 'gallery', 'hero'],
-  ACADEMICS_ADMIN: ['dashboard', 'documents', 'courses', 'faculty', 'governing']
+  ACADEMICS_ADMIN: ['dashboard', 'documents', 'courses', 'faculty', 'governing', 'principal']
 };
 
 export default function AdminModal({ isOpen, onClose, onStatusChange }) {
@@ -344,6 +345,53 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
   const [testingEmail, setTestingEmail] = useState(false);
   const [testEmailResult, setTestEmailResult] = useState(null);
 
+  // Principal Desk & Official Welcome Message State
+  const DEFAULT_PRINCIPAL_DESK = useMemo(() => ({
+    badge: 'Office of the Principal',
+    headerTitle: 'Principal’s Welcome Message',
+    headerSubtitle: 'Official Institutional Address • Capital College of Higher Education, Kohima',
+    name: 'Dr. Zokho Venuh',
+    designation: 'Principal, Capital College of Higher Education',
+    qualification: 'M.A., M.Phil., Ph.D. in History (Nagaland University)',
+    imageUrl: 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg',
+    quoteBadge: 'Verbatim Official Message',
+    message: 'The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.',
+    signoffName: '— Dr. Zokho Venuh',
+    signoffRole: 'Principal, CCHE Kohima',
+    highlight1Title: 'Founded August 20, 2004',
+    highlight1Desc: 'Over two decades of dedicated higher learning in the state capital.',
+    highlight2Title: 'Opportunity for Every Student',
+    highlight2Desc: 'Inclusive education, personalized mentorship, and quality instruction.'
+  }), []);
+
+  const [principalForm, setPrincipalForm] = useState(() => {
+    const defaults = {
+      badge: 'Office of the Principal',
+      headerTitle: 'Principal’s Welcome Message',
+      headerSubtitle: 'Official Institutional Address • Capital College of Higher Education, Kohima',
+      name: 'Dr. Zokho Venuh',
+      designation: 'Principal, Capital College of Higher Education',
+      qualification: 'M.A., M.Phil., Ph.D. in History (Nagaland University)',
+      imageUrl: 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg',
+      quoteBadge: 'Verbatim Official Message',
+      message: 'The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.',
+      signoffName: '— Dr. Zokho Venuh',
+      signoffRole: 'Principal, CCHE Kohima',
+      highlight1Title: 'Founded August 20, 2004',
+      highlight1Desc: 'Over two decades of dedicated higher learning in the state capital.',
+      highlight2Title: 'Opportunity for Every Student',
+      highlight2Desc: 'Inclusive education, personalized mentorship, and quality instruction.'
+    };
+    try {
+      const saved = localStorage.getItem('cche_principal_settings');
+      return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+    } catch {
+      return defaults;
+    }
+  });
+  const [savingPrincipal, setSavingPrincipal] = useState(false);
+  const [principalSaved, setPrincipalSaved] = useState(false);
+
   // Filters & Search
   const [filterStream, setFilterStream] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
@@ -513,7 +561,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
     if (!adminUser) return;
     setLoading(true);
     try {
-      const [appRes, notRes, inqRes, statRes, facRes, govRes, couRes, userRes, admStatusRes, annRes, socRes, docRes] = await Promise.all([
+      const [appRes, notRes, inqRes, statRes, facRes, govRes, couRes, userRes, admStatusRes, annRes, socRes, docRes, setRes] = await Promise.all([
         apiFetch(`/api/admissions?stream=${filterStream}&status=${filterStatus}&search=${search}`).then((r) => r.json()).catch(() => ({ success: false })),
         apiFetch('/api/notices').then((r) => r.json()).catch(() => ({ success: false })),
         apiFetch('/api/contact').then((r) => r.json()).catch(() => ({ success: false })),
@@ -525,7 +573,8 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
         apiFetch('/api/admissions/status').then((r) => r.json()).catch(() => ({ success: false })),
         apiFetch('/api/announcements').then((r) => r.json()).catch(() => ({ success: false })),
         apiFetch('/api/social-links').then((r) => r.json()).catch(() => ({ success: false })),
-        apiFetch('/api/documents').then((r) => r.json()).catch(() => ({ success: false }))
+        apiFetch('/api/documents').then((r) => r.json()).catch(() => ({ success: false })),
+        apiFetch('/api/settings').then((r) => r.json()).catch(() => ({ success: false }))
       ]);
 
       if (appRes?.success) setApplications(appRes.applications || []);
@@ -551,6 +600,26 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
       }
       if (socRes?.success) setSocialLinks(socRes.links || []);
       if (docRes?.success) setDocuments(docRes.documents || []);
+      if (setRes?.success && setRes.settings) {
+        const s = setRes.settings;
+        setPrincipalForm((prev) => ({
+          badge: s.principal_badge || prev.badge,
+          headerTitle: s.principal_header_title || prev.headerTitle,
+          headerSubtitle: s.principal_header_subtitle || prev.headerSubtitle,
+          name: s.principal_name || prev.name,
+          designation: s.principal_designation || prev.designation,
+          qualification: s.principal_qualification !== undefined ? s.principal_qualification : prev.qualification,
+          imageUrl: s.principal_image_url || prev.imageUrl,
+          quoteBadge: s.principal_quote_badge || prev.quoteBadge,
+          message: s.principal_message || prev.message,
+          signoffName: s.principal_signoff_name || prev.signoffName,
+          signoffRole: s.principal_signoff_role || prev.signoffRole,
+          highlight1Title: s.principal_highlight1_title || prev.highlight1Title,
+          highlight1Desc: s.principal_highlight1_desc || prev.highlight1Desc,
+          highlight2Title: s.principal_highlight2_title || prev.highlight2Title,
+          highlight2Desc: s.principal_highlight2_desc || prev.highlight2Desc,
+        }));
+      }
     } catch (err) {
       console.error('Failed to load admin data:', err);
     } finally {
@@ -1732,6 +1801,95 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
     }
   };
 
+  // Save Principal Desk & Official Message
+  const handleSavePrincipalDesk = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    setSavingPrincipal(true);
+    try {
+      localStorage.setItem('cche_principal_settings', JSON.stringify(principalForm));
+      await apiFetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          principal_badge: principalForm.badge || 'Office of the Principal',
+          principal_header_title: principalForm.headerTitle || 'Principal’s Welcome Message',
+          principal_header_subtitle: principalForm.headerSubtitle || 'Official Institutional Address • Capital College of Higher Education, Kohima',
+          principal_name: principalForm.name || 'Dr. Zokho Venuh',
+          principal_designation: principalForm.designation || 'Principal, Capital College of Higher Education',
+          principal_qualification: principalForm.qualification || '',
+          principal_image_url: principalForm.imageUrl || '',
+          principal_quote_badge: principalForm.quoteBadge || 'Verbatim Official Message',
+          principal_message: principalForm.message || '',
+          principal_signoff_name: principalForm.signoffName || '— Dr. Zokho Venuh',
+          principal_signoff_role: principalForm.signoffRole || 'Principal, CCHE Kohima',
+          principal_highlight1_title: principalForm.highlight1Title || '',
+          principal_highlight1_desc: principalForm.highlight1Desc || '',
+          principal_highlight2_title: principalForm.highlight2Title || '',
+          principal_highlight2_desc: principalForm.highlight2Desc || '',
+        })
+      });
+      setPrincipalSaved(true);
+      window.dispatchEvent(new CustomEvent('principal-settings-updated', { detail: principalForm }));
+      setTimeout(() => setPrincipalSaved(false), 3000);
+    } catch (err) {
+      console.warn('Failed to sync principal settings to backend:', err);
+      // Persist local copy and update listeners
+      setPrincipalSaved(true);
+      window.dispatchEvent(new CustomEvent('principal-settings-updated', { detail: principalForm }));
+      setTimeout(() => setPrincipalSaved(false), 3000);
+    } finally {
+      setSavingPrincipal(false);
+    }
+  };
+
+  const handleResetPrincipalDesk = () => {
+    if (window.confirm('Reset all Principal Welcome Desk fields to official institutional defaults?')) {
+      const defaults = {
+        badge: 'Office of the Principal',
+        headerTitle: 'Principal’s Welcome Message',
+        headerSubtitle: 'Official Institutional Address • Capital College of Higher Education, Kohima',
+        name: 'Dr. Zokho Venuh',
+        designation: 'Principal, Capital College of Higher Education',
+        qualification: 'M.A., M.Phil., Ph.D. in History (Nagaland University)',
+        imageUrl: 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg',
+        quoteBadge: 'Verbatim Official Message',
+        message: 'The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.',
+        signoffName: '— Dr. Zokho Venuh',
+        signoffRole: 'Principal, CCHE Kohima',
+        highlight1Title: 'Founded August 20, 2004',
+        highlight1Desc: 'Over two decades of dedicated higher learning in the state capital.',
+        highlight2Title: 'Opportunity for Every Student',
+        highlight2Desc: 'Inclusive education, personalized mentorship, and quality instruction.'
+      };
+      setPrincipalForm(defaults);
+      localStorage.setItem('cche_principal_settings', JSON.stringify(defaults));
+      apiFetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          principal_badge: defaults.badge,
+          principal_header_title: defaults.headerTitle,
+          principal_header_subtitle: defaults.headerSubtitle,
+          principal_name: defaults.name,
+          principal_designation: defaults.designation,
+          principal_qualification: defaults.qualification,
+          principal_image_url: defaults.imageUrl,
+          principal_quote_badge: defaults.quoteBadge,
+          principal_message: defaults.message,
+          principal_signoff_name: defaults.signoffName,
+          principal_signoff_role: defaults.signoffRole,
+          principal_highlight1_title: defaults.highlight1Title,
+          principal_highlight1_desc: defaults.highlight1Desc,
+          principal_highlight2_title: defaults.highlight2Title,
+          principal_highlight2_desc: defaults.highlight2Desc,
+        })
+      }).catch(() => {});
+      window.dispatchEvent(new CustomEvent('principal-settings-updated', { detail: defaults }));
+      setPrincipalSaved(true);
+      setTimeout(() => setPrincipalSaved(false), 3000);
+    }
+  };
+
   const statData = stats?.stats || {};
 
   // Filtered lists
@@ -1814,6 +1972,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
     { id: 'gallery', label: 'Media & Gallery Hub', icon: Image, count: galleryItems.length },
     { id: 'faculty', label: 'Faculty & Staff Directory', icon: Users, count: faculty.length },
     { id: 'governing', label: 'Leadership & Governance', icon: Landmark, count: governingBody.length },
+    { id: 'principal', label: "Principal's Welcome Desk", icon: Award, count: null },
     { id: 'courses', label: 'Academic Programmes', icon: BookOpen, count: courses.length },
     { id: 'inquiries', label: 'Contact Inquiries', icon: Mail, count: inquiries.filter((i) => i.status === 'UNREAD').length || null },
     { id: 'users', label: 'Staff Users & RBAC', icon: ShieldCheck, count: adminUsers.length || statData.totalAdmins },
@@ -4761,6 +4920,16 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                           <UserPlus size={14} />
                           <span>Add Leadership Member</span>
                         </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setActiveTab('principal')}
+                          className="bg-[#002147] hover:bg-[#001736] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                          title="Open Principal's Welcome Desk and official address editor"
+                        >
+                          <Award size={14} className="text-[#b5d697]" />
+                          <span>Principal's Desk & Address →</span>
+                        </button>
                       </div>
                     </div>
 
@@ -4922,6 +5091,442 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                         </tbody>
                       </table>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ========================================================
+                  MODULE: PRINCIPAL'S WELCOME DESK & ADDRESS (REQUEST 10)
+              ======================================================== */}
+              {activeTab === 'principal' && (
+                <div className="space-y-6 animate-fadeIn pb-12">
+                  {/* Top Bar with Title and Actions */}
+                  <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                      <div className="flex items-center gap-2.5">
+                        <span className="p-2.5 rounded-xl bg-[#4a6b28]/10 text-[#4a6b28] shadow-inner">
+                          <Award size={22} />
+                        </span>
+                        <div>
+                          <h4 className="font-bold text-[#002147] text-base sm:text-lg flex items-center gap-2">
+                            <span>Office of the Principal • Official Welcome Desk</span>
+                          </h4>
+                          <p className="text-xs text-gray-500">
+                            Upload portrait photo, update qualifications, edit official verbatim address, and customize key institutional highlights.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                      {principalSaved && (
+                        <div className="bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 animate-fadeIn shadow-xs">
+                          <CheckCircle2 size={14} className="text-emerald-600" />
+                          <span>Saved & Published Live!</span>
+                        </div>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={handleResetPrincipalDesk}
+                        className="px-3.5 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                        title="Reset to official initial defaults"
+                      >
+                        <RefreshCw size={13} />
+                        <span>Reset Defaults</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleSavePrincipalDesk}
+                        disabled={savingPrincipal}
+                        className="bg-[#4a6b28] hover:bg-[#3d5920] disabled:opacity-50 text-white px-5 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
+                      >
+                        {savingPrincipal ? (
+                          <>
+                            <RefreshCw size={14} className="animate-spin" />
+                            <span>Saving Changes...</span>
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 size={14} />
+                            <span>Save Principal Desk</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Main Workstation Layout: 7 Cols Editor / 5 Cols Live WYSIWYG */}
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    
+                    {/* LEFT COLUMN: The Structured Editor */}
+                    <div className="lg:col-span-7 space-y-6">
+                      
+                      {/* CARD 1: Principal Portrait & Identity */}
+                      <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#4a6b28]"></span>
+                            <h5 className="font-bold text-sm text-[#002147]">1. Principal Dignified Portrait & Identity</h5>
+                          </div>
+                          <span className="text-[11px] font-medium text-gray-400">Photo & Credentials</span>
+                        </div>
+
+                        {/* Image Upload Component */}
+                        <DeviceImageUpload
+                          label="Principal Official Portrait Photo"
+                          value={principalForm.imageUrl}
+                          onChange={(url) => setPrincipalForm({ ...principalForm, imageUrl: url })}
+                          aspectHint="Recommended: Square or 4:5 portrait ratio (e.g. 1024x1024 or 800x1000) for sharp editorial display"
+                        />
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-1">
+                          <div>
+                            <label className="block font-bold text-gray-700 mb-1">
+                              Principal Full Name <span className="text-rose-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              value={principalForm.name || ''}
+                              onChange={(e) => setPrincipalForm({ ...principalForm, name: e.target.value })}
+                              placeholder="e.g. Dr. Zokho Venuh"
+                              className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28] focus:ring-1 focus:ring-[#4a6b28]"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block font-bold text-gray-700 mb-1">
+                              Official Institutional Designation
+                            </label>
+                            <input
+                              type="text"
+                              value={principalForm.designation || ''}
+                              onChange={(e) => setPrincipalForm({ ...principalForm, designation: e.target.value })}
+                              placeholder="e.g. Principal, Capital College of Higher Education"
+                              className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28] focus:ring-1 focus:ring-[#4a6b28]"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block font-bold text-gray-700 mb-1">
+                              Academic Qualifications & University Affiliation
+                            </label>
+                            <input
+                              type="text"
+                              value={principalForm.qualification || ''}
+                              onChange={(e) => setPrincipalForm({ ...principalForm, qualification: e.target.value })}
+                              placeholder="e.g. M.A., M.Phil., Ph.D. in History (Nagaland University)"
+                              className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28] focus:ring-1 focus:ring-[#4a6b28]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* CARD 2: Editorial Banner Header */}
+                      <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#002147]"></span>
+                            <h5 className="font-bold text-sm text-[#002147]">2. Section Banner & Coordinates</h5>
+                          </div>
+                          <span className="text-[11px] font-medium text-gray-400">Header styling</span>
+                        </div>
+
+                        <div className="space-y-3 text-xs">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">
+                                Top Pill Badge
+                              </label>
+                              <input
+                                type="text"
+                                value={principalForm.badge || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, badge: e.target.value })}
+                                placeholder="e.g. Office of the Principal"
+                                className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">
+                                Main Title
+                              </label>
+                              <input
+                                type="text"
+                                value={principalForm.headerTitle || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, headerTitle: e.target.value })}
+                                placeholder="e.g. Principal’s Welcome Message"
+                                className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block font-bold text-gray-700 mb-1">
+                              Subtitle / Institutional Coordinate
+                            </label>
+                            <input
+                              type="text"
+                              value={principalForm.headerSubtitle || ''}
+                              onChange={(e) => setPrincipalForm({ ...principalForm, headerSubtitle: e.target.value })}
+                              placeholder="e.g. Official Institutional Address • Capital College of Higher Education, Kohima"
+                              className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* CARD 3: Verbatim Official Message & Sign-Off */}
+                      <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+                            <h5 className="font-bold text-sm text-[#002147]">3. Verbatim Official Address & Sign-Off</h5>
+                          </div>
+                          <span className="text-[11px] font-medium text-gray-400">Institutional address body</span>
+                        </div>
+
+                        <div className="space-y-3 text-xs">
+                          <div>
+                            <label className="block font-bold text-gray-700 mb-1">
+                              Message Block Badge
+                            </label>
+                            <input
+                              type="text"
+                              value={principalForm.quoteBadge || ''}
+                              onChange={(e) => setPrincipalForm({ ...principalForm, quoteBadge: e.target.value })}
+                              placeholder="e.g. Verbatim Official Message"
+                              className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28]"
+                            />
+                          </div>
+
+                          <div>
+                            <div className="flex justify-between items-center mb-1">
+                              <label className="block font-bold text-gray-700">
+                                Official Welcome Message / Speech Body <span className="text-rose-500">*</span>
+                              </label>
+                              <span className="text-[11px] text-gray-400">
+                                {(principalForm.message || '').length} characters
+                              </span>
+                            </div>
+                            <textarea
+                              rows={5}
+                              value={principalForm.message || ''}
+                              onChange={(e) => setPrincipalForm({ ...principalForm, message: e.target.value })}
+                              placeholder="Type or paste the official welcome speech or address..."
+                              className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:border-[#4a6b28] focus:ring-1 focus:ring-[#4a6b28] leading-relaxed font-sans text-xs"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">
+                                Sign-off Name / Attribution
+                              </label>
+                              <input
+                                type="text"
+                                value={principalForm.signoffName || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, signoffName: e.target.value })}
+                                placeholder="e.g. — Dr. Zokho Venuh"
+                                className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">
+                                Sign-off Role / Designation
+                              </label>
+                              <input
+                                type="text"
+                                value={principalForm.signoffRole || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, signoffRole: e.target.value })}
+                                placeholder="e.g. Principal, CCHE Kohima"
+                                className="w-full border border-gray-300 rounded-xl p-2.5 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* CARD 4: Institutional Highlight Callouts (Bottom 2 Cards) */}
+                      <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                            <h5 className="font-bold text-sm text-[#002147]">4. Highlight Callout Cards (Bottom 2 Boxes)</h5>
+                          </div>
+                          <span className="text-[11px] font-medium text-gray-400">Key achievements & mission</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                          {/* Highlight Card 1 */}
+                          <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-2.5">
+                            <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider text-[#4a6b28] bg-white px-2 py-0.5 rounded border border-gray-200">
+                              Highlight Card 1
+                            </span>
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">Card 1 Title</label>
+                              <input
+                                type="text"
+                                value={principalForm.highlight1Title || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, highlight1Title: e.target.value })}
+                                placeholder="e.g. Founded August 20, 2004"
+                                className="w-full bg-white border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">Card 1 Description</label>
+                              <textarea
+                                rows={2}
+                                value={principalForm.highlight1Desc || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, highlight1Desc: e.target.value })}
+                                placeholder="e.g. Over two decades of dedicated higher learning in the state capital."
+                                className="w-full bg-white border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Highlight Card 2 */}
+                          <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-2.5">
+                            <span className="inline-block text-[10px] font-extrabold uppercase tracking-wider text-[#002147] bg-white px-2 py-0.5 rounded border border-gray-200">
+                              Highlight Card 2
+                            </span>
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">Card 2 Title</label>
+                              <input
+                                type="text"
+                                value={principalForm.highlight2Title || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, highlight2Title: e.target.value })}
+                                placeholder="e.g. Opportunity for Every Student"
+                                className="w-full bg-white border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block font-bold text-gray-700 mb-1">Card 2 Description</label>
+                              <textarea
+                                rows={2}
+                                value={principalForm.highlight2Desc || ''}
+                                onChange={(e) => setPrincipalForm({ ...principalForm, highlight2Desc: e.target.value })}
+                                placeholder="e.g. Inclusive education, personalized mentorship, and quality instruction."
+                                className="w-full bg-white border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-[#4a6b28]"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* RIGHT COLUMN: Live Instant WYSIWYG Preview */}
+                    <div className="lg:col-span-5 sticky top-2 space-y-3">
+                      <div className="bg-slate-900 text-white px-4 py-2.5 rounded-xl flex items-center justify-between shadow-md">
+                        <div className="flex items-center gap-2 text-xs font-bold">
+                          <Eye size={14} className="text-[#b5d697]" />
+                          <span>Live WYSIWYG Website Preview</span>
+                        </div>
+                        <span className="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded uppercase font-semibold">
+                          Real-time
+                        </span>
+                      </div>
+
+                      {/* Preview Container replicating media_1792565995755.png */}
+                      <div className="bg-white p-4 rounded-2xl border-2 border-slate-300 shadow-xl space-y-4 overflow-hidden">
+                        
+                        {/* Header Banner */}
+                        <div className="rounded-xl bg-gradient-to-br from-[#002147] to-[#17382b] p-4 text-white shadow-sm border border-white/10">
+                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#4a6b28] text-white text-[10px] font-bold uppercase tracking-wider mb-2">
+                            <BookOpen size={11} />
+                            <span>{principalForm.badge || 'Office of the Principal'}</span>
+                          </div>
+                          <h4 className="text-base sm:text-lg font-extrabold text-white leading-tight">
+                            {principalForm.headerTitle || 'Principal’s Welcome Message'}
+                          </h4>
+                          <p className="text-[11px] text-gray-200 mt-0.5 leading-snug">
+                            {principalForm.headerSubtitle || 'Official Institutional Address • Capital College of Higher Education, Kohima'}
+                          </p>
+                        </div>
+
+                        {/* Portrait & Credentials Card */}
+                        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-xs p-2.5">
+                          <div className="rounded-lg overflow-hidden aspect-square bg-gray-100 max-h-56 mx-auto">
+                            <img
+                              src={principalForm.imageUrl || 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg'}
+                              alt={principalForm.name || 'Principal'}
+                              className="w-full h-full object-cover object-top"
+                              onError={(e) => {
+                                e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg';
+                              }}
+                            />
+                          </div>
+                          <div className="p-3 text-center">
+                            <h5 className="font-extrabold text-base text-[#002147]">
+                              {principalForm.name || 'Dr. Zokho Venuh'}
+                            </h5>
+                            <p className="text-[10px] font-bold text-[#4a6b28] uppercase tracking-wider mt-0.5">
+                              {principalForm.designation || 'Principal, Capital College of Higher Education'}
+                            </p>
+                            {principalForm.qualification && (
+                              <p className="text-[10px] text-gray-500 mt-1">
+                                {principalForm.qualification}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Speech Card */}
+                        <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-xs space-y-2.5">
+                          <div className="text-[10px] font-bold text-[#4a6b28] uppercase tracking-wider flex items-center gap-1.5">
+                            <Scroll size={12} />
+                            <span>{principalForm.quoteBadge || 'Verbatim Official Message'}</span>
+                          </div>
+
+                          <p className="text-gray-800 text-xs leading-relaxed text-justify font-serif italic border-l-4 border-l-[#4a6b28] pl-3 py-1 whitespace-pre-line">
+                            “{principalForm.message ? principalForm.message.replace(/^[“"]|[”"]$/g, '') : 'Official message...'}”
+                          </p>
+
+                          <div className="pt-1 text-right">
+                            <span className="font-bold text-gray-900 block text-xs">
+                              {principalForm.signoffName || '— Dr. Zokho Venuh'}
+                            </span>
+                            <span className="text-[10px] text-gray-500">
+                              {principalForm.signoffRole || 'Principal, CCHE Kohima'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Bottom 2 Highlight Cards */}
+                        <div className="grid grid-cols-2 gap-2 text-[10px]">
+                          <div className="p-2.5 rounded-lg bg-gray-50 border border-gray-200">
+                            <strong className="text-[#002147] block mb-0.5 font-bold">
+                              {principalForm.highlight1Title || 'Founded August 20, 2004'}
+                            </strong>
+                            <p className="text-gray-600 text-[9px] leading-tight">
+                              {principalForm.highlight1Desc || 'Over two decades of dedicated higher learning.'}
+                            </p>
+                          </div>
+                          <div className="p-2.5 rounded-lg bg-gray-50 border border-gray-200">
+                            <strong className="text-[#002147] block mb-0.5 font-bold">
+                              {principalForm.highlight2Title || 'Opportunity for Every Student'}
+                            </strong>
+                            <p className="text-gray-600 text-[9px] leading-tight">
+                              {principalForm.highlight2Desc || 'Inclusive education, mentorship & instruction.'}
+                            </p>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      {/* Quick Action in Preview */}
+                      <button
+                        type="button"
+                        onClick={handleSavePrincipalDesk}
+                        disabled={savingPrincipal}
+                        className="w-full bg-[#4a6b28] hover:bg-[#3d5920] text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow transition-all cursor-pointer"
+                      >
+                        <CheckCircle2 size={14} />
+                        <span>Publish Principal Desk Live</span>
+                      </button>
+                    </div>
+
                   </div>
                 </div>
               )}
@@ -5490,6 +6095,30 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                           ✓ Settings Saved!
                         </div>
                       )}
+                    </div>
+
+                    {/* Principal Desk Quick Access Banner */}
+                    <div className="mb-4 p-3.5 rounded-xl bg-gradient-to-r from-[#002147]/5 via-[#4a6b28]/10 to-transparent border border-[#4a6b28]/30 flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className="p-2 rounded-lg bg-[#4a6b28] text-white shrink-0">
+                          <Award size={16} />
+                        </span>
+                        <div>
+                          <p className="font-bold text-[#002147] text-xs">
+                            Principal's Welcome Desk & Official Address
+                          </p>
+                          <p className="text-[11px] text-gray-500">
+                            Upload portrait photo, update credentials, edit official verbatim speech, and manage highlight cards.
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('principal')}
+                        className="bg-[#002147] hover:bg-[#4a6b28] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer shrink-0"
+                      >
+                        Edit Principal's Desk →
+                      </button>
                     </div>
 
                     <form onSubmit={handleSaveSettings} className="space-y-4 text-xs">

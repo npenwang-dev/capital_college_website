@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   GraduationCap,
   ArrowRight,
@@ -16,6 +16,81 @@ import LandingReveal from '../Common/LandingReveal';
 
 export default function PrincipalMessage({ onOpenFullMessage, onNavigate }) {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const defaultData = {
+    name: 'Dr. Zokho Venuh',
+    designation: 'Principal, Capital College of Higher Education',
+    qualification: 'M.A., Ph.D. • Nagaland University',
+    imageUrl: 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg',
+    message: 'The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.',
+    signoffName: 'Dr. Zokho Venuh',
+    signoffRole: 'Principal, CCHE Kohima'
+  };
+
+  const [principal, setPrincipal] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cche_principal_settings');
+      if (saved) {
+        const s = JSON.parse(saved);
+        return {
+          name: s.name || defaultData.name,
+          designation: s.designation || defaultData.designation,
+          qualification: s.qualification || defaultData.qualification,
+          imageUrl: s.imageUrl || defaultData.imageUrl,
+          message: s.message || defaultData.message,
+          signoffName: (s.signoffName || defaultData.signoffName).replace(/^[—\-\s]+/, ''),
+          signoffRole: s.signoffRole || defaultData.signoffRole
+        };
+      }
+      return defaultData;
+    } catch {
+      return defaultData;
+    }
+  });
+
+  const loadSettings = () => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.settings) {
+          const s = data.settings;
+          setPrincipal((prev) => ({
+            ...prev,
+            name: s.principal_name || prev.name,
+            designation: s.principal_designation || prev.designation,
+            qualification: s.principal_qualification || prev.qualification,
+            imageUrl: s.principal_image_url || prev.imageUrl,
+            message: s.principal_message || prev.message,
+            signoffName: (s.principal_signoff_name || prev.signoffName).replace(/^[—\-\s]+/, ''),
+            signoffRole: s.principal_signoff_role || prev.signoffRole
+          }));
+        }
+      })
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    loadSettings();
+    const handleUpdate = (e) => {
+      if (e && e.detail) {
+        const s = e.detail;
+        setPrincipal((prev) => ({
+          ...prev,
+          name: s.name || prev.name,
+          designation: s.designation || prev.designation,
+          qualification: s.qualification || prev.qualification,
+          imageUrl: s.imageUrl || prev.imageUrl,
+          message: s.message || prev.message,
+          signoffName: (s.signoffName || prev.signoffName).replace(/^[—\-\s]+/, ''),
+          signoffRole: s.signoffRole || prev.signoffRole
+        }));
+      } else {
+        loadSettings();
+      }
+    };
+    window.addEventListener('principal-settings-updated', handleUpdate);
+    return () => window.removeEventListener('principal-settings-updated', handleUpdate);
+  }, []);
 
   const keyCommitments = [
     {
@@ -73,13 +148,13 @@ export default function PrincipalMessage({ onOpenFullMessage, onNavigate }) {
                 {/* Portrait Image */}
                 <div className="overflow-hidden bg-slate-900 aspect-square">
                   <img
-                    src="https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg"
-                    alt="Principal Dr. Zokho Venuh - Capital College of Higher Education"
+                    src={principal.imageUrl || 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg'}
+                    alt={`Principal ${principal.name} - Capital College of Higher Education`}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 block"
                     onError={(e) => {
-                      e.target.src = 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=640&q=80';
+                      e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg';
                     }}
                   />
                 </div>
@@ -87,14 +162,16 @@ export default function PrincipalMessage({ onOpenFullMessage, onNavigate }) {
                 {/* Official Nameplate & Credentials */}
                 <div className="p-4 bg-gradient-to-r from-[#002147] via-[#001d40] to-[#001736] text-white text-center border-t border-[#4a6b28]/50">
                   <h4 className="font-extrabold text-base sm:text-lg text-[#b5d697] tracking-wide">
-                    Dr. Zokho Venuh
+                    {principal.name}
                   </h4>
                   <p className="text-xs text-gray-200 font-medium mt-0.5">
-                    Principal, Capital College of Higher Education
+                    {principal.designation}
                   </p>
-                  <p className="text-[11px] text-gray-400 mt-0.5">
-                    M.A., Ph.D. • Nagaland University
-                  </p>
+                  {principal.qualification && (
+                    <p className="text-[11px] text-gray-400 mt-0.5">
+                      {principal.qualification}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -137,12 +214,12 @@ export default function PrincipalMessage({ onOpenFullMessage, onNavigate }) {
             {/* Official Message (Exact Verbatim from Official Source) */}
             <div className="relative bg-white/85 backdrop-blur-sm border-l-4 border-[#4a6b28] p-5 sm:p-6 rounded-r-2xl shadow-sm border-t border-b border-r border-slate-200/80">
               <Quote size={28} className="text-[#4a6b28]/25 mb-2 pointer-events-none" />
-              <p className="text-gray-800 text-sm sm:text-base leading-relaxed text-justify">
-                The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20<sup>th</sup> August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.
+              <p className="text-gray-800 text-sm sm:text-base leading-relaxed text-justify whitespace-pre-line">
+                {principal.message ? principal.message.replace(/^[“"]|[”"]$/g, '') : ''}
               </p>
               <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-xs font-bold text-[#002147] tracking-wider uppercase">Dr. Zokho Venuh</span>
-                <span className="text-xs text-gray-500 font-medium">Principal, CCHE Kohima</span>
+                <span className="text-xs font-bold text-[#002147] tracking-wider uppercase">{principal.signoffName}</span>
+                <span className="text-xs text-gray-500 font-medium">{principal.signoffRole}</span>
               </div>
             </div>
 
@@ -159,10 +236,10 @@ export default function PrincipalMessage({ onOpenFullMessage, onNavigate }) {
               {/* Digital Signature / Seal */}
               <div className="text-right">
                 <span className="font-serif italic text-lg sm:text-xl font-bold text-[#002147] block tracking-wide">
-                  Dr. Zokho Venuh
+                  {principal.signoffName}
                 </span>
                 <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
-                  Principal, CCHE Kohima
+                  {principal.signoffRole}
                 </span>
               </div>
             </div>
@@ -201,20 +278,22 @@ export default function PrincipalMessage({ onOpenFullMessage, onNavigate }) {
             <div className="p-6 overflow-y-auto space-y-4 text-sm text-gray-700 leading-relaxed text-justify">
               <div className="flex items-center gap-4 bg-emerald-50/80 p-4 rounded-xl border border-emerald-200/80">
                 <img
-                  src="https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg"
-                  alt="Dr. Zokho Venuh"
+                  src={principal.imageUrl || 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403-1024x1024.jpg'}
+                  alt={principal.name}
                   className="w-14 h-14 rounded-full object-cover border-2 border-[#4a6b28] shadow-sm shrink-0"
                 />
                 <div>
-                  <h4 className="font-bold text-base text-[#002147]">Dr. Zokho Venuh</h4>
-                  <p className="text-xs text-[#4a6b28] font-semibold">Principal, Capital College of Higher Education</p>
-                  <p className="text-[11px] text-gray-500">M.A., Ph.D. • Permanent Affiliation: Nagaland University</p>
+                  <h4 className="font-bold text-base text-[#002147]">{principal.name}</h4>
+                  <p className="text-xs text-[#4a6b28] font-semibold">{principal.designation}</p>
+                  {principal.qualification && (
+                    <p className="text-[11px] text-gray-500">{principal.qualification}</p>
+                  )}
                 </div>
               </div>
 
               <div className="bg-gray-50 border-l-4 border-[#4a6b28] p-4 rounded-r-md text-gray-800">
-                <p className="text-sm md:text-base leading-relaxed text-justify">
-                  The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20<sup>th</sup> August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.
+                <p className="text-sm md:text-base leading-relaxed text-justify whitespace-pre-line">
+                  {principal.message ? principal.message.replace(/^[“"]|[”"]$/g, '') : ''}
                 </p>
               </div>
             </div>

@@ -3867,19 +3867,90 @@ function ScholarshipsSection() {
 
 // 11. PRINCIPAL MESSAGE COMPONENT
 function PrincipalMessageSection({ onNavigate, onOpenAdmission }) {
+  const defaultData = {
+    badge: 'Office of the Principal',
+    headerTitle: 'Principal’s Welcome Message',
+    headerSubtitle: 'Official Institutional Address • Capital College of Higher Education, Kohima',
+    name: 'Dr. Zokho Venuh',
+    designation: 'Principal, Capital College of Higher Education',
+    qualification: 'M.A., M.Phil., Ph.D. in History (Nagaland University)',
+    imageUrl: 'https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg',
+    quoteBadge: 'Verbatim Official Message',
+    message: 'The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.',
+    signoffName: '— Dr. Zokho Venuh',
+    signoffRole: 'Principal, CCHE Kohima',
+    highlight1Title: 'Founded August 20, 2004',
+    highlight1Desc: 'Over two decades of dedicated higher learning in the state capital.',
+    highlight2Title: 'Opportunity for Every Student',
+    highlight2Desc: 'Inclusive education, personalized mentorship, and quality instruction.'
+  };
+
+  const [principal, setPrincipal] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cche_principal_settings');
+      return saved ? { ...defaultData, ...JSON.parse(saved) } : defaultData;
+    } catch {
+      return defaultData;
+    }
+  });
+
+  const loadSettings = () => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.success && data.settings) {
+          const s = data.settings;
+          setPrincipal((prev) => ({
+            ...prev,
+            badge: s.principal_badge || prev.badge,
+            headerTitle: s.principal_header_title || prev.headerTitle,
+            headerSubtitle: s.principal_header_subtitle || prev.headerSubtitle,
+            name: s.principal_name || prev.name,
+            designation: s.principal_designation || prev.designation,
+            qualification: s.principal_qualification !== undefined ? s.principal_qualification : prev.qualification,
+            imageUrl: s.principal_image_url || prev.imageUrl,
+            quoteBadge: s.principal_quote_badge || prev.quoteBadge,
+            message: s.principal_message || prev.message,
+            signoffName: s.principal_signoff_name || prev.signoffName,
+            signoffRole: s.principal_signoff_role || prev.signoffRole,
+            highlight1Title: s.principal_highlight1_title || prev.highlight1Title,
+            highlight1Desc: s.principal_highlight1_desc || prev.highlight1Desc,
+            highlight2Title: s.principal_highlight2_title || prev.highlight2Title,
+            highlight2Desc: s.principal_highlight2_desc || prev.highlight2Desc,
+          }));
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not load principal settings from API:', err);
+      });
+  };
+
+  useEffect(() => {
+    loadSettings();
+    const handleUpdate = (e) => {
+      if (e && e.detail) {
+        setPrincipal((prev) => ({ ...prev, ...e.detail }));
+      } else {
+        loadSettings();
+      }
+    };
+    window.addEventListener('principal-settings-updated', handleUpdate);
+    return () => window.removeEventListener('principal-settings-updated', handleUpdate);
+  }, []);
+
   return (
     <div className="space-y-10 font-sans text-gray-800">
       {/* Editorial Header */}
       <div className="rounded-2xl bg-gradient-to-br from-[#002147] to-[#17382b] p-6 sm:p-8 text-white shadow-md border border-white/10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4a6b28] text-white text-xs font-bold uppercase tracking-wider mb-3">
           <BookOpen size={13} />
-          <span>Office of the Principal</span>
+          <span>{principal.badge}</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-          Principal’s Welcome Message
+          {principal.headerTitle}
         </h2>
         <p className="text-sm sm:text-base text-gray-200">
-          Official Institutional Address • Capital College of Higher Education, Kohima
+          {principal.headerSubtitle}
         </p>
       </div>
 
@@ -3889,17 +3960,22 @@ function PrincipalMessageSection({ onNavigate, onOpenAdmission }) {
         <div className="md:col-span-5 card-interactive bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs p-3">
           <div className="rounded-xl overflow-hidden aspect-square bg-gray-100">
             <img
-              src="https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg"
-              alt="Principal Dr. Zokho Venuh"
+              src={principal.imageUrl || "https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg"}
+              alt={`Principal ${principal.name}`}
               className="w-full h-full object-cover object-top"
+              onError={(e) => {
+                e.target.src = "https://capitalcollege.edu.in/wp-content/uploads/2024/06/IMG20240604134403.jpg";
+              }}
             />
           </div>
           <div className="p-4 text-center">
-            <h3 className="font-extrabold text-lg text-[#002147]">Dr. Zokho Venuh</h3>
+            <h3 className="font-extrabold text-lg text-[#002147]">{principal.name}</h3>
             <p className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider mt-0.5">
-              Principal, Capital College of Higher Education
+              {principal.designation}
             </p>
-            <p className="text-xs text-gray-500 mt-1">M.A., M.Phil., Ph.D. in History (Nagaland University)</p>
+            {principal.qualification && (
+              <p className="text-xs text-gray-500 mt-1">{principal.qualification}</p>
+            )}
           </div>
         </div>
 
@@ -3908,27 +3984,27 @@ function PrincipalMessageSection({ onNavigate, onOpenAdmission }) {
           <div className="card-interactive bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-xs space-y-4">
             <div className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider flex items-center gap-1.5">
               <Scroll size={14} />
-              <span>Verbatim Official Message</span>
+              <span>{principal.quoteBadge}</span>
             </div>
 
-            <p className="text-gray-800 text-base sm:text-lg leading-relaxed text-justify font-serif italic border-l-4 border-l-[#4a6b28] pl-4 py-1">
-              “The Capital College of Higher Education formally known As Nation Academy of Higher Education was established in 2004 on 20th August. The College initially began with 5 regular students and gradually increased year after year because of the constant effort rendered by the faculty to achieve the goal of the college, keeping in mind to help and give opportunities to all the Students.”
+            <p className="text-gray-800 text-base sm:text-lg leading-relaxed text-justify font-serif italic border-l-4 border-l-[#4a6b28] pl-4 py-1 whitespace-pre-line">
+              “{principal.message ? principal.message.replace(/^[“"]|[”"]$/g, '') : ''}”
             </p>
 
             <div className="pt-2 text-right">
-              <span className="font-bold text-gray-900 block">— Dr. Zokho Venuh</span>
-              <span className="text-xs text-gray-500">Principal, CCHE Kohima</span>
+              <span className="font-bold text-gray-900 block">{principal.signoffName}</span>
+              <span className="text-xs text-gray-500">{principal.signoffRole}</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-200">
-              <strong className="text-[#002147] block mb-1">Founded August 20, 2004</strong>
-              <p className="text-gray-600">Over two decades of dedicated higher learning in the state capital.</p>
+              <strong className="text-[#002147] block mb-1">{principal.highlight1Title}</strong>
+              <p className="text-gray-600">{principal.highlight1Desc}</p>
             </div>
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-200">
-              <strong className="text-[#002147] block mb-1">Opportunity for Every Student</strong>
-              <p className="text-gray-600">Inclusive education, personalized mentorship, and quality instruction.</p>
+              <strong className="text-[#002147] block mb-1">{principal.highlight2Title}</strong>
+              <p className="text-gray-600">{principal.highlight2Desc}</p>
             </div>
           </div>
         </div>
