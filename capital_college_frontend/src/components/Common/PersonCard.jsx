@@ -156,12 +156,14 @@ export default function PersonCard({
   return (
     <div
       onClick={onClick}
-      className={`group relative bg-white rounded-xl border border-slate-200/80 shadow-2xs hover:shadow-sm transition-all duration-200 flex flex-col justify-between overflow-hidden p-2.5 sm:p-3 ${
+      className={`group relative bg-white rounded-xl border border-slate-200/80 shadow-2xs hover:shadow-sm transition-all duration-200 flex flex-col justify-between overflow-hidden ${
+        isHead ? 'p-3.5 sm:p-4' : 'p-2.5 sm:p-3'
+      } ${
         onClick ? 'cursor-pointer' : ''
       } ${className}`}
     >
       {/* 1. TOP PORTRAIT HERO (Compact fixed height, clean, zero overlays) */}
-      <div className="relative w-full h-36 sm:h-40 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200/50">
+      <div className={`relative w-full ${isHead ? 'h-48 sm:h-52' : 'h-36 sm:h-40'} rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200/50`}>
         {finalImageUrl ? (
           <img
             src={finalImageUrl}
@@ -183,12 +185,12 @@ export default function PersonCard({
           style={{ display: finalImageUrl ? 'none' : 'flex' }}
           className="w-full h-full bg-slate-800 text-slate-200 flex flex-col items-center justify-center relative p-2 select-none"
         >
-          <div className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center">
-            <span className="font-outfit font-bold text-lg text-slate-100 tracking-tight">
+          <div className={`${isHead ? 'w-14 h-14' : 'w-11 h-11'} rounded-lg bg-white/10 flex items-center justify-center`}>
+            <span className={`font-outfit font-bold ${isHead ? 'text-xl' : 'text-lg'} text-slate-100 tracking-tight`}>
               {getInitials(name)}
             </span>
           </div>
-          <span className="text-[9px] uppercase font-medium tracking-wider text-slate-400 mt-1.5 line-clamp-1">
+          <span className={`${isHead ? 'text-[10px]' : 'text-[9px]'} uppercase font-medium tracking-wider text-slate-400 mt-1.5 line-clamp-1`}>
             {department || 'Capital College Kohima'}
           </span>
         </div>
@@ -197,22 +199,22 @@ export default function PersonCard({
       {/* 2. CARD CONTENT */}
       <div className="pt-2 px-0.5 pb-0.5 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="font-outfit font-bold text-[13.5px] sm:text-[14.5px] text-slate-900 tracking-tight leading-snug line-clamp-1">
+          <h3 className={`font-outfit font-bold ${isHead ? 'text-base sm:text-[17px]' : 'text-[13.5px] sm:text-[14.5px]'} text-slate-900 tracking-tight leading-snug line-clamp-1`}>
             {name}
           </h3>
 
-          <p className="text-[11px] sm:text-[11.5px] font-medium text-slate-600 mt-0.5 line-clamp-1">
+          <p className={`${isHead ? 'text-xs sm:text-[13px]' : 'text-[11px] sm:text-[11.5px]'} font-medium text-slate-600 mt-0.5 line-clamp-1`}>
             {finalRole}
           </p>
 
           {qualification && (
-            <p className="text-[10px] sm:text-[10.5px] text-slate-400 font-normal mt-0.5 leading-snug line-clamp-1">
+            <p className={`${isHead ? 'text-[11px] sm:text-xs' : 'text-[10px] sm:text-[10.5px]'} text-slate-400 font-normal mt-0.5 leading-snug line-clamp-1`}>
               {qualification}
             </p>
           )}
 
           {bio && (
-            <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1.5 leading-snug line-clamp-2 italic border-l-2 border-slate-200 pl-2">
+            <p className={`${isHead ? 'text-[11.5px] sm:text-xs line-clamp-3' : 'text-[10.5px] sm:text-[11px] line-clamp-2'} text-slate-500 mt-1.5 leading-snug italic border-l-2 border-slate-200 pl-2`}>
               "{bio}"
             </p>
           )}
@@ -228,11 +230,11 @@ export default function PersonCard({
               <a
                 href={`mailto:${email}`}
                 onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1 font-mono text-[9.5px] text-slate-400 hover:text-slate-700 shrink-0 truncate transition-colors"
+                className={`flex items-center gap-1 font-mono ${isHead ? 'text-[10px]' : 'text-[9.5px]'} text-slate-400 hover:text-slate-700 shrink-0 truncate transition-colors`}
                 title={email}
               >
-                <Mail size={10} className="text-slate-400 shrink-0" />
-                <span className="truncate max-w-[110px]">{email}</span>
+                <Mail size={isHead ? 11 : 10} className="text-slate-400 shrink-0" />
+                <span className={`truncate ${isHead ? 'max-w-[160px]' : 'max-w-[110px]'}`}>{email}</span>
               </a>
             )}
           </div>

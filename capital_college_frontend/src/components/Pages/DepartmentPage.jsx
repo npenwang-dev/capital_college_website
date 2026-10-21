@@ -414,7 +414,7 @@ export default function DepartmentPage({
               </div>
 
               {/* Centered HOD Card */}
-              <div className="max-w-[260px] sm:max-w-[280px] mx-auto">
+              <div className="max-w-[340px] sm:max-w-[380px] mx-auto">
                 <PersonCard
                   isHod={true}
                   name={hodMember.name}
