@@ -1049,24 +1049,6 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
                           Full Syllabus
                         </button>
                       </div>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (onOpenAdmission) {
-                            onOpenAdmission(item.stream, item.name);
-                          } else if (onNavigate) {
-                            onNavigate('criteria');
-                          }
-                        }}
-                        className={`text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition-all cursor-pointer ${
-                          isArts
-                            ? 'bg-[#4a6b28] hover:bg-[#3d5920]'
-                            : 'bg-[#002147] hover:bg-[#001736]'
-                        }`}
-                      >
-                        Apply
-                      </button>
                     </div>
                   </div>
                 );
@@ -1152,22 +1134,7 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
                         </div>
                       </div>
 
-                      <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 shrink-0 pt-2 sm:pt-0">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (onOpenAdmission) {
-                              onOpenAdmission(item.stream, item.name);
-                            } else if (onNavigate) {
-                              onNavigate('criteria');
-                            }
-                          }}
-                          className={`text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition-all cursor-pointer ${
-                            isArts ? 'bg-[#4a6b28] hover:bg-[#3d5920]' : 'bg-[#002147] hover:bg-[#001736]'
-                          }`}
-                        >
-                          Apply
-                        </button>
+                      <div className="flex items-center shrink-0 pt-2 sm:pt-0">
                         <button
                           type="button"
                           onClick={() => onNavigate && onNavigate(`department-${item.id}`)}
@@ -1491,15 +1458,6 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
             <Download size={15} />
             <span>Admission Form (PDF)</span>
           </a>
-          {onOpenAdmission && (
-            <button
-              onClick={() => onOpenAdmission('ARTS')}
-              className="inline-flex items-center gap-2 bg-[#002147] hover:bg-[#001736] text-white px-6 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md hover:shadow-lg cursor-pointer"
-            >
-              <GraduationCap size={17} className="text-[#8fc35e]" />
-              <span>Apply Online</span>
-            </button>
-          )}
         </div>
       </div>
 
@@ -1634,28 +1592,12 @@ function ProgramsAndCoursesSection({ onNavigate, onOpenAdmission }) {
                 <span>Admission Form (PDF)</span>
               </a>
 
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setSelectedDiscipline(null)}
-                  className="px-5 py-2.5 border border-slate-300 hover:bg-slate-100 rounded-xl text-xs sm:text-sm font-bold text-slate-700 cursor-pointer transition-colors"
-                >
-                  Close
-                </button>
-                <button
-                  onClick={() => {
-                    const subj = selectedDiscipline;
-                    setSelectedDiscipline(null);
-                    if (onOpenAdmission) {
-                      onOpenAdmission(subj.stream, subj.name);
-                    } else if (onNavigate) {
-                      onNavigate('criteria');
-                    }
-                  }}
-                  className="px-5 py-2.5 bg-[#4a6b28] hover:bg-[#3d5920] text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider shadow-sm hover:shadow-md transition-all cursor-pointer"
-                >
-                  Apply for {selectedDiscipline.name}
-                </button>
-              </div>
+              <button
+                onClick={() => setSelectedDiscipline(null)}
+                className="px-5 py-2.5 border border-slate-300 hover:bg-slate-100 rounded-xl text-xs sm:text-sm font-bold text-slate-700 cursor-pointer transition-colors"
+              >
+                Close
+              </button>
             </div>
 
           </div>
