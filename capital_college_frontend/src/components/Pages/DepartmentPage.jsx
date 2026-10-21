@@ -462,9 +462,8 @@ export default function DepartmentPage({
               </div>
 
               {/* Centered HOD Card */}
-              <div className="max-w-3xl sm:max-w-4xl mx-auto">
+              <div className="max-w-sm sm:max-w-md mx-auto">
                 <PersonCard
-                  variant="spotlight"
                   isHod={true}
                   name={hodMember.name}
                   role={hodMember.designation || 'Head of Department'}
