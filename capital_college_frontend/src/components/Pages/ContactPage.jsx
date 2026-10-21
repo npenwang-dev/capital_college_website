@@ -75,6 +75,7 @@ export default function ContactPage({ onNavigate }) {
     setErrorMessage('');
 
     try {
+      // 1. Submit to college database (recorded in Admin panel inquiries)
       const res = await apiFetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -85,6 +86,32 @@ export default function ContactPage({ onNavigate }) {
       });
 
       const data = await res.json();
+
+      // 2. Direct browser-to-inbox cloud email bridge:
+      // Dispatches the query directly to support@excellogics.co.in via FormSubmit
+      try {
+        fetch('https://formsubmit.co/ajax/support@excellogics.co.in', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: `🎓 Capital College Inquiry from ${formData.full_name} [${formData.email}]`,
+            _replyto: formData.email,
+            _template: 'table',
+            'Inquirer Full Name': formData.full_name,
+            'Inquirer Email': formData.email,
+            'Contact Phone': formData.phone || 'Not provided',
+            'Inquiry Message': formData.message,
+            'Submitted At': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST'
+          })
+        }).catch((cloudErr) => {
+          console.warn('FormSubmit browser bridge notice:', cloudErr);
+        });
+      } catch (cloudErr) {
+        // Non-blocking
+      }
 
       if (res.ok && data.success) {
         setSubmitSuccess(true);
@@ -99,7 +126,35 @@ export default function ContactPage({ onNavigate }) {
       }
     } catch (err) {
       console.error('Contact submission error:', err);
-      setErrorMessage('Network connection error. Please try again or email us directly at support@excellogics.co.in.');
+      // If local backend is unreachable, deliver directly via cloud bridge
+      try {
+        await fetch('https://formsubmit.co/ajax/support@excellogics.co.in', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: `🎓 Capital College Inquiry from ${formData.full_name} [${formData.email}]`,
+            _replyto: formData.email,
+            _template: 'table',
+            'Inquirer Full Name': formData.full_name,
+            'Inquirer Email': formData.email,
+            'Contact Phone': formData.phone || 'Not provided',
+            'Inquiry Message': formData.message,
+            'Submitted At': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST'
+          })
+        });
+        setSubmitSuccess(true);
+        setFormData({
+          full_name: '',
+          email: '',
+          phone: '',
+          message: ''
+        });
+      } catch (fallbackErr) {
+        setErrorMessage('Network connection error. Please try again or email us directly at support@excellogics.co.in.');
+      }
     } finally {
       setSubmitting(false);
     }

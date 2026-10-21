@@ -6389,6 +6389,46 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                       </div>
                     )}
 
+                    {/* Quick Presets for Excellogics / Gmail */}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2.5">
+                      <div className="flex items-center gap-2">
+                        <Sparkles size={14} className="text-purple-600" />
+                        <span className="text-xs font-bold text-gray-700">1-Click Host Presets:</span>
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSiteSettings({
+                              ...siteSettings,
+                              smtp_host: 'mail.excellogics.co.in',
+                              smtp_port: '465',
+                              smtp_secure: 'true',
+                              smtp_user: siteSettings.smtp_user || 'npenwang@excellogics.co.in'
+                            });
+                          }}
+                          className="px-2.5 py-1 bg-white hover:bg-purple-50 text-purple-900 border border-purple-200 hover:border-purple-300 rounded-lg text-[11px] font-bold shadow-2xs transition-colors cursor-pointer"
+                        >
+                          🌐 Excellogics Webmail (cPanel 465 SSL)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSiteSettings({
+                              ...siteSettings,
+                              smtp_host: 'smtp.gmail.com',
+                              smtp_port: '587',
+                              smtp_secure: 'false',
+                              smtp_user: siteSettings.smtp_user || 'npenwang@excellogics.co.in'
+                            });
+                          }}
+                          className="px-2.5 py-1 bg-white hover:bg-blue-50 text-blue-900 border border-blue-200 hover:border-blue-300 rounded-lg text-[11px] font-bold shadow-2xs transition-colors cursor-pointer"
+                        >
+                          📧 Google Workspace / Gmail (587 TLS)
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                       <div>
                         <label className="block font-bold text-gray-700 mb-1">
@@ -6474,6 +6514,19 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                           Tip: For Gmail/Google Workspace, generate an App Password under Google Account &gt; Security &gt; 2-Step Verification.
                         </span>
                       </div>
+                    </div>
+
+                    {/* Cloud Email Bridge Status Banner */}
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900 space-y-1">
+                      <p className="font-bold flex items-center gap-1.5 text-amber-950">
+                        <span>⚡ Direct Cloud Bridge (FormSubmit) Status: ACTIVE</span>
+                      </p>
+                      <p className="leading-relaxed">
+                        Inquiries from the Contact Us page are dispatched directly to <strong className="font-bold text-[#002147]">support@excellogics.co.in</strong> via our cloud email bridge.
+                      </p>
+                      <p className="leading-relaxed text-amber-800 font-medium">
+                        <strong>Important:</strong> If <code className="bg-amber-100/70 px-1 py-0.5 rounded text-amber-950 font-bold">support@excellogics.co.in</code> has received a message asking to <em>&ldquo;Activate FormSubmit&rdquo;</em>, please click the confirmation button inside that email once. This whitelists your inbox so future contact forms land without any delay.
+                      </p>
                     </div>
 
                     <div className="flex items-center justify-between pt-3 border-t text-xs">

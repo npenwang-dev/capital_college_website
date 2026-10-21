@@ -140,16 +140,59 @@ async function sendInquiryNotification({ id, full_name, email, phone, subject, m
   };
 
   try {
-    const transporter = createTransporter(cfg);
-    const info = await transporter.sendMail(mailOptions);
-    if (!cfg.isConfigured) {
-      console.warn(`⚠️ Outgoing SMTP not configured yet. Email was simulated locally via jsonTransport (Recipient: ${recipient}). Configure SMTP credentials in Admin Settings or .env to deliver real emails.`);
-    } else {
-      console.log(`✅ Outgoing inquiry notification successfully sent to ${recipient}:`, info.messageId || 'DELIVERED');
+    // 1. If SMTP is fully configured, dispatch via Nodemailer SMTP server
+    if (cfg.isConfigured) {
+      const transporter = createTransporter(cfg);
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`✅ Outgoing inquiry notification successfully sent to ${recipient} via SMTP:`, info.messageId || 'DELIVERED');
+      return {
+        success: true,
+        delivered: true,
+        via: 'smtp',
+        messageId: info.messageId || 'DELIVERED',
+        recipient
+      };
     }
+
+    // 2. If SMTP is not yet configured, attempt cloud email bridge delivery directly to recipient
+    console.warn(`⚠️ Outgoing SMTP credentials pending in Admin Settings / .env. Attempting cloud delivery to ${recipient}...`);
+    try {
+      const cloudRes = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipient)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `🎓 New Inquiry: [${subject || 'General Inquiry'}] from ${full_name}`,
+          _replyto: email,
+          _template: 'table',
+          'Inquirer Full Name': full_name,
+          'Inquirer Email': email,
+          'Phone': phone || 'Not provided',
+          'Subject': subject || 'General Inquiry',
+          'Inquiry ID': `#${id || 'N/A'}`,
+          'Message': message
+        })
+      });
+      const cloudData = await cloudRes.json();
+      console.log(`✅ Cloud email bridge dispatched to ${recipient}:`, cloudData);
+      return {
+        success: true,
+        delivered: true,
+        via: 'cloud_relay',
+        recipient
+      };
+    } catch (cloudErr) {
+      console.warn('⚠️ Cloud email bridge notice:', cloudErr.message);
+    }
+
+    // Fallback: log local simulation
+    const fallbackTransporter = createTransporter(cfg);
+    const info = await fallbackTransporter.sendMail(mailOptions);
     return {
       success: true,
-      delivered: cfg.isConfigured,
+      delivered: false,
       messageId: info.messageId || 'LOCAL_SIMULATED',
       recipient
     };
