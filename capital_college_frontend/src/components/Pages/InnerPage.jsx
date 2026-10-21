@@ -2163,7 +2163,7 @@ function GoverningBodySection() {
           <BadgeCheck size={16} className="text-[#4a6b28]" />
           <span>Council Executive Officers</span>
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto">
           {officers.map((officer, idx) => (
             <PersonCard
               key={officer.id || idx}
@@ -2320,7 +2320,7 @@ function CollegeAdministrationSection({ onNavigate }) {
           <UserCheck size={16} className="text-[#4a6b28]" />
           <span>Executive Administrative Leadership</span>
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {leaders.map((leader, idx) => (
             <PersonCard
               key={leader.id || idx}

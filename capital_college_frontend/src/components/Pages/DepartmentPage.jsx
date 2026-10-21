@@ -462,7 +462,7 @@ export default function DepartmentPage({
               </div>
 
               {/* Centered HOD Card */}
-              <div className="max-w-sm sm:max-w-md mx-auto">
+              <div className="max-w-[260px] sm:max-w-[280px] mx-auto">
                 <PersonCard
                   isHod={true}
                   name={hodMember.name}
@@ -496,7 +496,7 @@ export default function DepartmentPage({
               </div>
 
               {facultyMembers.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 sm:gap-7">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3.5 sm:gap-4">
                   {facultyMembers.map((fac, idx) => (
                     <PersonCard
                       key={idx}

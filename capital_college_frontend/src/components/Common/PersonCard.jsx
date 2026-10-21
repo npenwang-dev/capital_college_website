@@ -3,8 +3,8 @@ import { Mail, MapPin } from 'lucide-react';
 
 /**
  * PersonCard
- * Simple, clean, and minimal portrait/showcase card.
- * Designed with restrained typography, neutral borders, and no colorful tags.
+ * Simple, clean, compact and minimal portrait/showcase card.
+ * Scaled down for high information density, elegant typography, and zero clutter.
  */
 export default function PersonCard({
   name,
@@ -42,18 +42,18 @@ export default function PersonCard({
   };
 
   // =========================================================================
-  // VARIANT 1: SPOTLIGHT / HORIZONTAL SHOWCASE CARD (Clean & Minimal)
+  // VARIANT 1: SPOTLIGHT / HORIZONTAL SHOWCASE CARD (Compact & Minimal)
   // =========================================================================
   if (variant === 'spotlight' || variant === 'horizontal') {
     return (
       <div
         onClick={onClick}
-        className={`group relative bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 p-4 sm:p-5 overflow-hidden ${
+        className={`group relative bg-white rounded-xl border border-slate-200/80 shadow-2xs hover:shadow-sm transition-all duration-200 flex flex-col sm:flex-row items-center sm:items-start gap-3.5 p-3 sm:p-3.5 overflow-hidden ${
           onClick ? 'cursor-pointer' : ''
         } ${className}`}
       >
         {/* Left Column: Portrait Container */}
-        <div className="relative shrink-0 w-28 h-28 sm:w-32 sm:h-32 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/70 flex items-center justify-center self-center sm:self-auto">
+        <div className="relative shrink-0 w-22 h-22 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-slate-100 border border-slate-200/60 flex items-center justify-center self-center sm:self-auto">
           {finalImageUrl ? (
             <img
               src={finalImageUrl}
@@ -73,43 +73,43 @@ export default function PersonCard({
           {/* Monogram Portrait (Fallback) */}
           <div
             style={{ display: finalImageUrl ? 'none' : 'flex' }}
-            className="w-full h-full bg-slate-800 text-slate-200 flex flex-col items-center justify-center relative p-3 select-none"
+            className="w-full h-full bg-slate-800 text-slate-200 flex flex-col items-center justify-center relative p-2 select-none"
           >
-            <span className="font-outfit font-bold text-2xl text-slate-100">
+            <span className="font-outfit font-bold text-lg text-slate-100">
               {getInitials(name)}
             </span>
             {department && (
-              <span className="text-[9px] uppercase font-medium tracking-wider text-slate-400 mt-1 line-clamp-1">
+              <span className="text-[8.5px] uppercase font-medium tracking-wider text-slate-400 mt-0.5 line-clamp-1">
                 {department}
               </span>
             )}
           </div>
         </div>
 
-        {/* Right Column: Faculty Details, Quote & Footer */}
+        {/* Right Column: Faculty Details & Footer */}
         <div className="flex-1 min-w-0 flex flex-col justify-between pt-0.5 text-center sm:text-left">
           <div>
             {/* Full Name */}
-            <h3 className="font-outfit font-bold text-base sm:text-lg text-slate-900 tracking-tight leading-snug">
+            <h3 className="font-outfit font-bold text-sm sm:text-base text-slate-900 tracking-tight leading-snug line-clamp-1">
               {name}
             </h3>
 
             {/* Academic Designation / Role */}
-            <p className="text-xs font-medium text-slate-600 mt-0.5">
+            <p className="text-[11px] sm:text-xs font-medium text-slate-600 mt-0.5 line-clamp-1">
               {finalRole}
             </p>
 
             {/* Academic Qualifications */}
             {qualification && (
-              <p className="text-[11.5px] text-slate-500 mt-0.5 leading-snug">
+              <p className="text-[10px] sm:text-[10.5px] text-slate-400 mt-0.5 leading-snug line-clamp-1">
                 {qualification}
               </p>
             )}
 
             {/* Academic Vision / Quote Statement */}
             {bio && (
-              <div className="border-l-2 border-slate-200 pl-3 my-2 text-left">
-                <p className="text-xs text-slate-600 italic leading-relaxed line-clamp-2">
+              <div className="border-l-2 border-slate-200 pl-2 my-1.5 text-left">
+                <p className="text-[10.5px] sm:text-[11px] text-slate-500 italic leading-relaxed line-clamp-2">
                   "{bio}"
                 </p>
               </div>
@@ -118,21 +118,21 @@ export default function PersonCard({
 
           {/* Footer Contact */}
           {(email || finalCampus) && (
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-2 border-t border-slate-100 mt-2 text-xs">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1.5 border-t border-slate-100 mt-1.5 text-[10px]">
               {email && (
                 <a
                   href={`mailto:${email}`}
                   onClick={(e) => e.stopPropagation()}
-                  className="text-slate-600 hover:text-slate-900 inline-flex items-center gap-1.5 transition-colors text-[11px] font-mono shrink-0"
+                  className="text-slate-500 hover:text-slate-800 inline-flex items-center gap-1 transition-colors font-mono shrink-0"
                 >
-                  <Mail size={12} className="text-slate-400" />
+                  <Mail size={11} className="text-slate-400" />
                   <span>{email}</span>
                 </a>
               )}
 
               {finalCampus && (
-                <div className="text-slate-500 inline-flex items-center gap-1 text-[11px] shrink-0">
-                  <MapPin size={12} className="text-slate-400" />
+                <div className="text-slate-400 inline-flex items-center gap-1 shrink-0">
+                  <MapPin size={11} className="text-slate-400" />
                   <span>{finalCampus}</span>
                 </div>
               )}
@@ -140,7 +140,7 @@ export default function PersonCard({
           )}
 
           {actions && (
-            <div className="pt-2 mt-2 flex items-center justify-center sm:justify-start gap-2 border-t border-slate-100">
+            <div className="pt-1.5 mt-1.5 flex items-center justify-center sm:justify-start gap-1.5 border-t border-slate-100">
               {actions}
             </div>
           )}
@@ -151,17 +151,17 @@ export default function PersonCard({
   }
 
   // =========================================================================
-  // VARIANT 2: STANDARD PORTRAIT CARD (Simple, Clean, Minimal & Compact)
+  // VARIANT 2: STANDARD PORTRAIT CARD (Simple, Clean, Minimal & Smaller)
   // =========================================================================
   return (
     <div
       onClick={onClick}
-      className={`group relative bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between overflow-hidden p-3.5 sm:p-4 ${
+      className={`group relative bg-white rounded-xl border border-slate-200/80 shadow-2xs hover:shadow-sm transition-all duration-200 flex flex-col justify-between overflow-hidden p-2.5 sm:p-3 ${
         onClick ? 'cursor-pointer' : ''
       } ${className}`}
     >
-      {/* 1. TOP PORTRAIT HERO (Compact, Clean, No Overlays/Badges) */}
-      <div className="relative w-full aspect-[4/3.2] max-h-56 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200/60">
+      {/* 1. TOP PORTRAIT HERO (Compact fixed height, clean, zero overlays) */}
+      <div className="relative w-full h-36 sm:h-40 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200/50">
         {finalImageUrl ? (
           <img
             src={finalImageUrl}
@@ -181,38 +181,38 @@ export default function PersonCard({
         {/* Fallback Monogram Portrait */}
         <div
           style={{ display: finalImageUrl ? 'none' : 'flex' }}
-          className="w-full h-full bg-slate-800 text-slate-200 flex flex-col items-center justify-center relative p-3 select-none"
+          className="w-full h-full bg-slate-800 text-slate-200 flex flex-col items-center justify-center relative p-2 select-none"
         >
-          <div className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center">
-            <span className="font-outfit font-bold text-2xl text-slate-100 tracking-tight">
+          <div className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center">
+            <span className="font-outfit font-bold text-lg text-slate-100 tracking-tight">
               {getInitials(name)}
             </span>
           </div>
-          <span className="text-[10px] uppercase font-medium tracking-wider text-slate-400 mt-2 line-clamp-1">
+          <span className="text-[9px] uppercase font-medium tracking-wider text-slate-400 mt-1.5 line-clamp-1">
             {department || 'Capital College Kohima'}
           </span>
         </div>
       </div>
 
       {/* 2. CARD CONTENT */}
-      <div className="pt-3 px-0.5 pb-0.5 flex-1 flex flex-col justify-between">
+      <div className="pt-2 px-0.5 pb-0.5 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="font-outfit font-bold text-base sm:text-lg text-slate-900 tracking-tight leading-snug line-clamp-1">
+          <h3 className="font-outfit font-bold text-[13.5px] sm:text-[14.5px] text-slate-900 tracking-tight leading-snug line-clamp-1">
             {name}
           </h3>
 
-          <p className="text-xs font-medium text-slate-600 mt-0.5 line-clamp-1">
+          <p className="text-[11px] sm:text-[11.5px] font-medium text-slate-600 mt-0.5 line-clamp-1">
             {finalRole}
           </p>
 
           {qualification && (
-            <p className="text-[11px] sm:text-xs text-slate-500 font-normal mt-0.5 leading-relaxed line-clamp-1">
+            <p className="text-[10px] sm:text-[10.5px] text-slate-400 font-normal mt-0.5 leading-snug line-clamp-1">
               {qualification}
             </p>
           )}
 
           {bio && (
-            <p className="text-[11.5px] sm:text-xs text-slate-600 mt-2 leading-relaxed line-clamp-2 italic border-l-2 border-slate-200 pl-2.5">
+            <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1.5 leading-snug line-clamp-2 italic border-l-2 border-slate-200 pl-2">
               "{bio}"
             </p>
           )}
@@ -220,19 +220,19 @@ export default function PersonCard({
 
         {/* Footer: Department & Contact Info */}
         {(department || email || finalCampus) && (
-          <div className="pt-2.5 mt-2.5 border-t border-slate-100 flex items-center justify-between gap-2 text-[11px] text-slate-500">
-            <span className="truncate font-medium text-slate-600">
+          <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between gap-1.5 text-[10px] text-slate-400">
+            <span className="truncate font-medium text-slate-500">
               {department}
             </span>
             {email && (
               <a
                 href={`mailto:${email}`}
                 onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1 font-mono text-[10.5px] text-slate-400 hover:text-slate-700 shrink-0 truncate transition-colors"
+                className="flex items-center gap-1 font-mono text-[9.5px] text-slate-400 hover:text-slate-700 shrink-0 truncate transition-colors"
                 title={email}
               >
-                <Mail size={11} className="text-slate-400 shrink-0" />
-                <span className="truncate max-w-[130px]">{email}</span>
+                <Mail size={10} className="text-slate-400 shrink-0" />
+                <span className="truncate max-w-[110px]">{email}</span>
               </a>
             )}
           </div>
@@ -240,7 +240,7 @@ export default function PersonCard({
 
         {/* Action Controls */}
         {actions && (
-          <div className="pt-2 mt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+          <div className="pt-1.5 mt-1.5 flex items-center justify-end gap-1.5 border-t border-slate-100">
             {actions}
           </div>
         )}

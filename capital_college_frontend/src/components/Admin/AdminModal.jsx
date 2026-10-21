@@ -4531,10 +4531,9 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                             </p>
                           </div>
 
-                          <div className="max-w-2xl mx-auto">
+                          <div className="max-w-[260px] sm:max-w-[280px] mx-auto">
                             {currentHOD ? (
                               <PersonCard
-                                variant="spotlight"
                                 isHod={true}
                                 name={currentHOD.name}
                                 role={currentHOD.designation || 'Head of Department'}
@@ -4664,7 +4663,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                               No other faculty members in this department yet. Click '+ Add Teacher' above to add one.
                             </div>
                           ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5">
                               {otherTeachers.map((teacher) => (
                                 <PersonCard
                                   key={teacher.id}
