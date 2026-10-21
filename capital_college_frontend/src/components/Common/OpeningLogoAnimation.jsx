@@ -100,11 +100,11 @@ export default function OpeningLogoAnimation({ onComplete }) {
           <div className="animate-pro-logo-drift flex flex-col items-center">
             
             {/* Medallion Disc & Concentric Circular SVG Loader */}
-            <div className="relative flex items-center justify-center w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48">
+            <div className="relative flex items-center justify-center w-52 h-52 sm:w-60 sm:h-60 md:w-64 md:h-64">
               
               {/* Concentric Circular SVG Loader Ring */}
               <svg
-                className="absolute -inset-4 sm:-inset-5 md:-inset-5.5 w-[calc(100%+2rem)] h-[calc(100%+2rem)] sm:w-[calc(100%+2.5rem)] sm:h-[calc(100%+2.5rem)] md:w-[calc(100%+2.75rem)] md:h-[calc(100%+2.75rem)] pointer-events-none"
+                className="absolute -inset-5 sm:-inset-6 w-[calc(100%+2.5rem)] h-[calc(100%+2.5rem)] sm:w-[calc(100%+3rem)] sm:h-[calc(100%+3rem)] pointer-events-none"
                 viewBox="0 0 220 220"
               >
                 <defs>
@@ -196,18 +196,19 @@ export default function OpeningLogoAnimation({ onComplete }) {
                 )}
               </svg>
 
-              {/* Pristine Circular Medallion Disc */}
-              <div className="relative w-full h-full rounded-full bg-white p-3.5 sm:p-4 shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_25px_rgba(74,107,40,0.2)] border border-slate-200/90 flex items-center justify-center overflow-hidden ring-1 ring-white/30">
+              {/* Pristine Circular Medallion Disc — larger, crisper */}
+              <div className="relative w-full h-full rounded-full bg-white p-3 sm:p-3.5 shadow-[0_20px_60px_rgba(0,0,0,0.75),0_0_30px_rgba(74,107,40,0.25)] border border-slate-200/90 flex items-center justify-center overflow-hidden ring-2 ring-white/40">
                 {/* Refined Specular Light Sweep */}
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-pro-logo-shine pointer-events-none" />
 
-                {/* Official Capital College Crest */}
+                {/* Official Capital College Crest — local HD 400px version for clarity */}
                 <img
-                  src="https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png"
+                  src="/college-crest-hd.png"
                   alt="Capital College Crest"
                   className="w-full h-full object-contain select-none"
+                  style={{ imageRendering: 'auto' }}
                   onError={(e) => {
-                    e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2023/05/New-Project-2.png';
+                    e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png';
                   }}
                 />
               </div>

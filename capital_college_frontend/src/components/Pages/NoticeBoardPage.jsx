@@ -238,11 +238,11 @@ export default function NoticeBoardPage({ onNavigate }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pb-6 border-b border-slate-200">
               <div className="flex items-center gap-4">
                 <img
-                  src="https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png"
+                  src="/college-crest-hd.png"
                   alt="Capital College Crest"
                   className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-xs"
                   onError={(e) => {
-                    e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2023/05/New-Project-2.png';
+                    e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png';
                   }}
                 />
                 <div>

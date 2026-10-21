@@ -254,11 +254,11 @@ export default function Navbar({
           >
             <div className="relative shrink-0 flex items-center justify-center">
               <img
-                src="https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png"
+                src="/college-crest-hd.png"
                 alt="Capital College Crest"
                 className="h-12 sm:h-14 md:h-16 lg:h-[62px] w-auto object-contain block transition-all duration-400 ease-out group-hover:scale-108 group-hover:-rotate-1 group-hover:drop-shadow-[0_4px_16px_rgba(143,195,94,0.45)] drop-shadow-md shrink-0"
                 onError={(e) => {
-                  e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2023/05/New-Project-2.png';
+                  e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png';
                 }}
               />
               {/* Subtle specular gleam flash on hover */}
