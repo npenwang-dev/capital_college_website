@@ -20,7 +20,7 @@ export default function PageTransition({ pageKey, children }) {
   }, [pageKey]);
 
   return (
-    <div ref={ref} className="page-enter">
+    <div ref={ref} className="page-enter w-full">
       {children}
     </div>
   );

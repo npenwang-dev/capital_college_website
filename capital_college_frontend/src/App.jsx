@@ -369,7 +369,7 @@ export default function App() {
         />
 
         {/* Main Content */}
-        <main className="flex-1">
+        <main className="flex-1 w-full">
           <PageTransition pageKey={currentPage}>
             {currentPage === 'home' ? (
               <>

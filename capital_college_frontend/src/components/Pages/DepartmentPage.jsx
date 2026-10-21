@@ -363,14 +363,7 @@ export default function DepartmentPage({
     return { hodMember, facultyMembers };
   }, [dept, liveFaculty]);
 
-  // Compute initials monogram
-  const getInitials = (name) => {
-    if (!name) return 'CC';
-    const clean = name.replace(/^(Dr\.|Prof\.|Mr\.|Mrs\.|Ms\.)\s+/i, '').trim();
-    const parts = clean.split(' ').filter(Boolean);
-    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-    return (parts[0] ? parts[0].substring(0, 2) : 'CC').toUpperCase();
-  };
+
 
   // Sibling departments in the same stream
   const siblingDepartments = useMemo(() => {

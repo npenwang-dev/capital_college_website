@@ -32,14 +32,7 @@ export default function PersonCard({
   const isHead = Boolean(isHod || is_hod);
   const finalCampus = campus || 'P.R. Hill Campus, Kohima';
 
-  // Helper to extract clean 2-letter monogram initials
-  const getInitials = (fullName) => {
-    if (!fullName) return 'CC';
-    const clean = fullName.replace(/^(Dr\.|Prof\.|Mr\.|Mrs\.|Ms\.)\s+/i, '').trim();
-    const parts = clean.split(' ').filter(Boolean);
-    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-    return (parts[0] ? parts[0].substring(0, 2) : 'CC').toUpperCase();
-  };
+
 
   // =========================================================================
   // VARIANT 1: SPOTLIGHT / HORIZONTAL SHOWCASE CARD (Compact & Minimal)
@@ -70,19 +63,24 @@ export default function PersonCard({
             />
           ) : null}
 
-          {/* Monogram Portrait (Fallback) */}
+          {/* Silhouette Avatar (Fallback when no image uploaded) */}
           <div
             style={{ display: finalImageUrl ? 'none' : 'flex' }}
-            className="w-full h-full bg-slate-800 text-slate-200 flex flex-col items-center justify-center relative p-2 select-none"
+            className="w-full h-full bg-[#f1f3f5] flex items-end justify-center select-none overflow-hidden"
           >
-            <span className="font-outfit font-bold text-lg text-slate-100">
-              {getInitials(name)}
-            </span>
-            {department && (
-              <span className="text-[8.5px] uppercase font-medium tracking-wider text-slate-400 mt-0.5 line-clamp-1">
-                {department}
-              </span>
-            )}
+            <svg
+              viewBox="0 0 100 100"
+              fill="none"
+              className="w-full h-full max-h-[92%] text-[#b5bcc7]"
+              preserveAspectRatio="xMidYMax meet"
+              aria-hidden="true"
+            >
+              <circle cx="50" cy="33" r="18" fill="currentColor" />
+              <path
+                d="M16 94 C16 68 31 56 50 56 C69 56 84 68 84 94 C84 98 16 98 16 94 Z"
+                fill="currentColor"
+              />
+            </svg>
           </div>
         </div>
 
@@ -180,19 +178,24 @@ export default function PersonCard({
           />
         ) : null}
 
-        {/* Fallback Monogram Portrait */}
+        {/* Silhouette Avatar (Fallback when no image uploaded) */}
         <div
           style={{ display: finalImageUrl ? 'none' : 'flex' }}
-          className="w-full h-full bg-slate-800 text-slate-200 flex flex-col items-center justify-center relative p-2 select-none"
+          className="w-full h-full bg-[#f1f3f5] flex items-end justify-center select-none overflow-hidden"
         >
-          <div className={`${isHead ? 'w-14 h-14' : 'w-11 h-11'} rounded-lg bg-white/10 flex items-center justify-center`}>
-            <span className={`font-outfit font-bold ${isHead ? 'text-xl' : 'text-lg'} text-slate-100 tracking-tight`}>
-              {getInitials(name)}
-            </span>
-          </div>
-          <span className={`${isHead ? 'text-[10px]' : 'text-[9px]'} uppercase font-medium tracking-wider text-slate-400 mt-1.5 line-clamp-1`}>
-            {department || 'Capital College Kohima'}
-          </span>
+          <svg
+            viewBox="0 0 100 100"
+            fill="none"
+            className="w-full h-full max-h-[92%] text-[#b5bcc7]"
+            preserveAspectRatio="xMidYMax meet"
+            aria-hidden="true"
+          >
+            <circle cx="50" cy="33" r="18" fill="currentColor" />
+            <path
+              d="M16 94 C16 68 31 56 50 56 C69 56 84 68 84 94 C84 98 16 98 16 94 Z"
+              fill="currentColor"
+            />
+          </svg>
         </div>
       </div>
 
