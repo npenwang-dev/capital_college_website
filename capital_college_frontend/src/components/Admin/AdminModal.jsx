@@ -362,6 +362,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
   const [facultyActiveDept, setFacultyActiveDept] = useState('English');
   // Stream Filter for Courses
   const [courseStreamFilter, setCourseStreamFilter] = useState('ALL');
+  const [courseViewMode, setCourseViewMode] = useState('list'); // 'list' | 'grid'
   // Inquiries Filter
   const [inquiryStatusFilter, setInquiryStatusFilter] = useState('ALL');
 
@@ -4945,12 +4946,42 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                       <select
                         value={courseStreamFilter}
                         onChange={(e) => setCourseStreamFilter(e.target.value)}
-                        className="border rounded-lg px-2.5 py-1.5 text-xs bg-white text-gray-700"
+                        className="border border-gray-300 rounded-lg px-2.5 py-1.5 text-xs bg-white text-gray-700 font-medium focus:outline-none focus:border-[#4a6b28]"
                       >
                         <option value="ALL">All Streams</option>
                         <option value="ARTS">Arts Programmes</option>
                         <option value="SCIENCE">Science Programmes</option>
                       </select>
+
+                      {/* View Mode Switcher: List vs Grid */}
+                      <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                        <button
+                          type="button"
+                          onClick={() => setCourseViewMode('list')}
+                          className={`px-2.5 py-1 rounded-md text-xs transition-all cursor-pointer flex items-center gap-1.5 ${
+                            courseViewMode === 'list'
+                              ? 'bg-[#002147] text-white shadow-xs font-bold'
+                              : 'text-slate-500 hover:text-slate-800'
+                          }`}
+                          title="List View"
+                        >
+                          <List size={13} />
+                          <span>List</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCourseViewMode('grid')}
+                          className={`px-2.5 py-1 rounded-md text-xs transition-all cursor-pointer flex items-center gap-1.5 ${
+                            courseViewMode === 'grid'
+                              ? 'bg-[#002147] text-white shadow-xs font-bold'
+                              : 'text-slate-500 hover:text-slate-800'
+                          }`}
+                          title="Grid View"
+                        >
+                          <LayoutGrid size={13} />
+                          <span>Grid</span>
+                        </button>
+                      </div>
 
                       <button
                         onClick={() => {
@@ -4965,7 +4996,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                           });
                           setShowCourseModal(true);
                         }}
-                        className="bg-[#4a6b28] hover:bg-[#3d5920] text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs"
+                        className="bg-[#4a6b28] hover:bg-[#3d5920] text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
                       >
                         <PlusCircle size={14} />
                         <span>Add Academic Course</span>
@@ -4973,69 +5004,187 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                     </div>
                   </div>
 
-                  {/* Courses Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredCourses.map((c) => (
-                      <div
-                        key={c.id}
-                        className="bg-white rounded-2xl border border-gray-200 shadow-xs p-5 flex flex-col justify-between space-y-3 hover:border-[#4a6b28] transition-all"
-                      >
-                        <div>
-                          <div className="flex justify-between items-center mb-1.5">
-                            <span
-                              className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                                c.stream === 'ARTS'
-                                  ? 'bg-amber-100 text-amber-900'
-                                  : 'bg-blue-100 text-blue-900'
-                              }`}
-                            >
-                              {c.stream} STREAM
-                            </span>
-                            <span className="text-[10px] text-gray-400 font-mono">{c.duration || '4 Years'}</span>
-                          </div>
+                  {/* Courses List or Grid View */}
+                  {courseViewMode === 'list' ? (
+                    <div className="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200 text-left text-xs">
+                          <thead className="bg-[#002147] text-white">
+                            <tr>
+                              <th className="px-4 py-3 font-semibold uppercase tracking-wider text-[10.5px] w-28">Stream</th>
+                              <th className="px-4 py-3 font-semibold uppercase tracking-wider text-[10.5px] min-w-[200px]">Course / Programme Name</th>
+                              <th className="px-4 py-3 font-semibold uppercase tracking-wider text-[10.5px] w-48">Degree Type</th>
+                              <th className="px-4 py-3 font-semibold uppercase tracking-wider text-[10.5px] w-36">Duration</th>
+                              <th className="px-4 py-3 font-semibold uppercase tracking-wider text-[10.5px] min-w-[240px]">Eligibility & Overview</th>
+                              <th className="px-4 py-3 font-semibold uppercase tracking-wider text-[10.5px] text-right w-28">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-100 bg-white">
+                            {filteredCourses.length === 0 ? (
+                              <tr>
+                                <td colSpan={6} className="px-4 py-12 text-center text-gray-400">
+                                  <BookOpen size={24} className="mx-auto mb-2 text-gray-300" />
+                                  <p className="font-semibold text-gray-600">No academic courses match the current filter.</p>
+                                  <p className="text-[11px] text-gray-400 mt-1">Try switching streams or add a new academic course above.</p>
+                                </td>
+                              </tr>
+                            ) : (
+                              filteredCourses.map((c) => (
+                                <tr key={c.id} className="hover:bg-slate-50 transition-colors group">
+                                  {/* Stream */}
+                                  <td className="px-4 py-3.5 whitespace-nowrap">
+                                    <span
+                                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                        c.stream === 'ARTS'
+                                          ? 'bg-amber-100 text-amber-900 border border-amber-200'
+                                          : 'bg-blue-100 text-blue-900 border border-blue-200'
+                                      }`}
+                                    >
+                                      {c.stream} STREAM
+                                    </span>
+                                  </td>
 
-                          <h5 className="font-bold text-gray-900 text-base">{c.course_name}</h5>
-                          <p className="text-[11px] font-semibold text-gray-500 mt-0.5">{c.degree_type}</p>
-                          <p className="text-xs text-gray-600 line-clamp-3 mt-2 leading-relaxed">
-                            {c.description || 'Comprehensive curriculum aligned with NEP 2020 guidelines.'}
-                          </p>
+                                  {/* Course Name */}
+                                  <td className="px-4 py-3.5">
+                                    <div className="font-bold text-gray-900 text-sm group-hover:text-[#002147]">
+                                      {c.course_name}
+                                    </div>
+                                    <div className="text-[10px] text-gray-400 font-mono mt-0.5">
+                                      Honours &amp; General
+                                    </div>
+                                  </td>
 
-                          <div className="mt-3 p-2.5 bg-gray-50 rounded-xl text-[11px] text-gray-600 border border-gray-100">
-                            <span className="font-bold text-[#002858] block">Eligibility:</span>
-                            <span>{c.eligibility}</span>
-                          </div>
-                        </div>
+                                  {/* Degree Type */}
+                                  <td className="px-4 py-3.5">
+                                    <span className="font-semibold text-gray-700 bg-gray-100 px-2 py-0.5 rounded text-[11px]">
+                                      {c.degree_type || 'FYUGP (B.A. / B.Sc.)'}
+                                    </span>
+                                  </td>
 
-                        <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
-                          <button
-                            onClick={() => {
-                              setEditingCourse(c);
-                              setCourseFormData({
-                                course_name: c.course_name,
-                                stream: c.stream,
-                                degree_type: c.degree_type,
-                                description: c.description || '',
-                                eligibility: c.eligibility || '',
-                                duration: c.duration || '4 Years (8 Semesters)'
-                              });
-                              setShowCourseModal(true);
-                            }}
-                            className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
-                          >
-                            <Edit3 size={12} />
-                            <span>Edit</span>
-                          </button>
-                          <button
-                            onClick={() => handleDeleteCourse(c.id)}
-                            className="text-xs text-red-600 hover:text-red-800 font-semibold flex items-center gap-1"
-                          >
-                            <Trash2 size={12} />
-                            <span>Delete</span>
-                          </button>
-                        </div>
+                                  {/* Duration */}
+                                  <td className="px-4 py-3.5 whitespace-nowrap">
+                                    <span className="text-gray-600 font-mono text-xs font-semibold">
+                                      {c.duration || '4 Years (8 Semesters)'}
+                                    </span>
+                                  </td>
+
+                                  {/* Eligibility & Overview */}
+                                  <td className="px-4 py-3.5">
+                                    <div className="text-xs text-gray-600 line-clamp-1">
+                                      {c.description || 'Comprehensive curriculum aligned with NEP 2020 guidelines.'}
+                                    </div>
+                                    {c.eligibility && (
+                                      <div className="text-[10.5px] text-emerald-800 font-medium mt-1 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 inline-block line-clamp-1">
+                                        <span className="font-bold text-emerald-950">Eligibility: </span>
+                                        {c.eligibility}
+                                      </div>
+                                    )}
+                                  </td>
+
+                                  {/* Actions */}
+                                  <td className="px-4 py-3.5 text-right whitespace-nowrap">
+                                    <div className="flex items-center justify-end gap-1.5">
+                                      <button
+                                        onClick={() => {
+                                          setEditingCourse(c);
+                                          setCourseFormData({
+                                            course_name: c.course_name,
+                                            stream: c.stream,
+                                            degree_type: c.degree_type,
+                                            description: c.description || '',
+                                            eligibility: c.eligibility || '',
+                                            duration: c.duration || '4 Years (8 Semesters)'
+                                          });
+                                          setShowCourseModal(true);
+                                        }}
+                                        className="text-xs font-bold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2.5 py-1 rounded-lg transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                                        title="Edit Course"
+                                      >
+                                        <Edit3 size={12} />
+                                        <span>Edit</span>
+                                      </button>
+                                      <button
+                                        onClick={() => handleDeleteCourse(c.id)}
+                                        className="text-xs font-bold text-red-700 hover:text-red-900 bg-red-50 hover:bg-red-100 border border-red-200 px-2.5 py-1 rounded-lg transition-colors cursor-pointer flex items-center gap-1 shadow-2xs"
+                                        title="Delete Course"
+                                      >
+                                        <Trash2 size={12} />
+                                        <span>Delete</span>
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ) : (
+                    /* Courses Grid */
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {filteredCourses.map((c) => (
+                        <div
+                          key={c.id}
+                          className="bg-white rounded-2xl border border-gray-200 shadow-xs p-5 flex flex-col justify-between space-y-3 hover:border-[#4a6b28] transition-all"
+                        >
+                          <div>
+                            <div className="flex justify-between items-center mb-1.5">
+                              <span
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                  c.stream === 'ARTS'
+                                    ? 'bg-amber-100 text-amber-900'
+                                    : 'bg-blue-100 text-blue-900'
+                                }`}
+                              >
+                                {c.stream} STREAM
+                              </span>
+                              <span className="text-[10px] text-gray-400 font-mono">{c.duration || '4 Years'}</span>
+                            </div>
+
+                            <h5 className="font-bold text-gray-900 text-base">{c.course_name}</h5>
+                            <p className="text-[11px] font-semibold text-gray-500 mt-0.5">{c.degree_type}</p>
+                            <p className="text-xs text-gray-600 line-clamp-3 mt-2 leading-relaxed">
+                              {c.description || 'Comprehensive curriculum aligned with NEP 2020 guidelines.'}
+                            </p>
+
+                            <div className="mt-3 p-2.5 bg-gray-50 rounded-xl text-[11px] text-gray-600 border border-gray-100">
+                              <span className="font-bold text-[#002858] block">Eligibility:</span>
+                              <span>{c.eligibility}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
+                            <button
+                              onClick={() => {
+                                setEditingCourse(c);
+                                setCourseFormData({
+                                  course_name: c.course_name,
+                                  stream: c.stream,
+                                  degree_type: c.degree_type,
+                                  description: c.description || '',
+                                  eligibility: c.eligibility || '',
+                                  duration: c.duration || '4 Years (8 Semesters)'
+                                });
+                                setShowCourseModal(true);
+                              }}
+                              className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
+                            >
+                              <Edit3 size={12} />
+                              <span>Edit</span>
+                            </button>
+                            <button
+                              onClick={() => handleDeleteCourse(c.id)}
+                              className="text-xs text-red-600 hover:text-red-800 font-semibold flex items-center gap-1"
+                            >
+                              <Trash2 size={12} />
+                              <span>Delete</span>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
