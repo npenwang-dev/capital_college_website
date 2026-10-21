@@ -55,6 +55,7 @@ import DepartmentPage from './DepartmentPage';
 import ContactPage from './ContactPage';
 import { getDepartmentBySlug } from '../../data/departmentData';
 import LandingReveal from '../Common/LandingReveal';
+import PersonCard from '../Common/PersonCard';
 
 function CommitteesAndInChargesSection() {
   const [search, setSearch] = useState('');
@@ -2039,38 +2040,18 @@ function SponsorshipAndManagementSection({ onNavigate }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {boardMembers.map((member, idx) => (
-            <div
+            <PersonCard
               key={member.id || idx}
-              className="card-interactive card-accent-top bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between group hover:border-[#4a6b28]/40 hover:shadow-md transition-all duration-300"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-3 mb-4">
-                  {member.image_url ? (
-                    <img
-                      src={member.image_url}
-                      alt={member.name}
-                      className="w-14 h-14 rounded-2xl object-cover ring-2 ring-[#4a6b28]/30 shadow-md shrink-0 transition-transform duration-300 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[#4a6b28] border border-emerald-100 flex items-center justify-center font-extrabold text-base shrink-0 shadow-xs">
-                      {getFacultyInitials(member.name)}
-                    </div>
-                  )}
-                  <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-[#4a6b28] border border-emerald-200">
-                    {member.badge}
-                  </span>
-                </div>
-                <h4 className="text-lg font-extrabold text-[#002147] mb-1">{member.name}</h4>
-                <p className="text-xs font-bold text-[#4a6b28] mb-2">{member.designation}</p>
-                <p className="text-xs text-gray-600 leading-relaxed mb-3 text-justify">{member.background}</p>
-              </div>
-              <div className="pt-3 border-t border-gray-100 text-[11px] font-medium text-gray-500 flex items-center gap-1.5">
-                <CheckCircle2 size={13} className="text-[#4a6b28]" />
-                <span>{member.role}</span>
-              </div>
-            </div>
+              name={member.name}
+              role={member.designation}
+              qualification={member.role}
+              bio={member.background}
+              badgeText={member.badge}
+              image_url={member.image_url}
+              department="Board of Management"
+            />
           ))}
         </div>
       </div>
@@ -2197,29 +2178,16 @@ function GoverningBodySection() {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {officers.map((officer, idx) => (
-            <div
+            <PersonCard
               key={officer.id || idx}
-              className="card-interactive card-accent-top bg-white rounded-2xl border-2 border-emerald-100 p-6 shadow-sm flex items-start gap-4 group hover:shadow-md transition-all duration-300"
-            >
-              {officer.image_url ? (
-                <img
-                  src={officer.image_url}
-                  alt={officer.name}
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover ring-2 ring-[#4a6b28]/30 shadow-md shrink-0 transition-transform duration-300 group-hover:scale-105"
-                />
-              ) : (
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 text-[#4a6b28] border-2 border-emerald-200 flex items-center justify-center font-extrabold text-xl shrink-0 shadow-xs">
-                  <Landmark size={28} />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#002147] text-white uppercase tracking-wider inline-block">
-                  {officer.role}
-                </span>
-                <h4 className="text-lg font-extrabold text-[#002147] mt-1.5">{officer.name}</h4>
-                <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">{officer.affiliation}</p>
-              </div>
-            </div>
+              name={officer.name}
+              role={officer.role}
+              bio={officer.affiliation}
+              image_url={officer.image_url}
+              badgeText="GOVERNING OFFICER"
+              department="College Governing Body"
+              variant="spotlight"
+            />
           ))}
         </div>
       </div>
@@ -2367,42 +2335,18 @@ function CollegeAdministrationSection({ onNavigate }) {
           <UserCheck size={16} className="text-[#4a6b28]" />
           <span>Executive Administrative Leadership</span>
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
           {leaders.map((leader, idx) => (
-            <div
+            <PersonCard
               key={leader.id || idx}
-              className="card-interactive card-accent-top bg-white rounded-2xl border border-gray-200 p-6 shadow-xs flex flex-col justify-between group hover:border-[#4a6b28]/40 hover:shadow-md transition-all duration-300"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-3 mb-4">
-                  <div className="flex items-center gap-3">
-                    {leader.image_url ? (
-                      <img
-                        src={leader.image_url}
-                        alt={leader.name}
-                        className="w-14 h-14 rounded-2xl object-cover ring-2 ring-[#4a6b28]/30 shadow-md shrink-0 transition-transform duration-300 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[#4a6b28] border border-emerald-100 flex items-center justify-center font-extrabold text-base shrink-0 shadow-xs">
-                        {getFacultyInitials(leader.name)}
-                      </div>
-                    )}
-                    <div>
-                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#4a6b28] border border-emerald-200 inline-block">
-                        {leader.role}
-                      </span>
-                    </div>
-                  </div>
-                  <span className="text-[11px] font-semibold text-gray-400">Office of the Deans</span>
-                </div>
-                <h4 className="text-xl font-extrabold text-[#002147]">{leader.name}</h4>
-                <p className="text-xs font-semibold text-emerald-800 mt-0.5">{leader.qualification}</p>
-                <div className="mt-3 p-3 rounded-xl bg-gray-50 border border-gray-100 text-xs text-gray-700 font-medium">
-                  <strong>Portfolio Scope:</strong> {leader.portfolio}
-                </div>
-                <p className="text-xs text-gray-600 mt-3 leading-relaxed text-justify">{leader.desc}</p>
-              </div>
-            </div>
+              name={leader.name}
+              role={leader.role}
+              qualification={leader.qualification}
+              bio={leader.desc}
+              badgeText={leader.portfolio}
+              image_url={leader.image_url}
+              department="College Administration"
+            />
           ))}
         </div>
       </div>
@@ -2908,7 +2852,7 @@ function FacultySection({ onNavigate }) {
       {/* POP-OUT SPOTLIGHT MODAL FOR DEPARTMENT HOD & TEACHERS */}
       {popOutDept && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 animate-fadeIn">
-          <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[90vh]">
             {/* Header with Department Name & Stream Badge */}
             <div className="bg-gradient-to-r from-[#001736] via-[#002858] to-[#001736] text-white p-5 sm:p-6 flex items-start justify-between border-b-4 border-[#4a6b28] shrink-0">
               <div className="flex items-center gap-3">
@@ -2936,81 +2880,52 @@ function FacultySection({ onNavigate }) {
             </div>
 
             {/* Modal Body */}
-            <div className="p-5 sm:p-6 overflow-y-auto space-y-6">
+            <div className="p-5 sm:p-7 overflow-y-auto space-y-7 bg-slate-50/50">
               {/* Highlighted HOD Showcase Card */}
               <div>
-                <div className="text-xs font-extrabold uppercase tracking-wider text-[#4a6b28] mb-2 flex items-center gap-1.5">
-                  <Award size={14} className="text-amber-500" />
+                <div className="text-xs font-extrabold uppercase tracking-wider text-[#4a6b28] mb-3 flex items-center gap-1.5">
+                  <Award size={15} className="text-amber-500" />
                   <span>Head of Department (HOD)</span>
                 </div>
 
-                <div className="bg-gradient-to-br from-amber-50/40 via-white to-emerald-50/30 border-2 border-amber-300/80 rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                  <div className="relative shrink-0">
-                    {popOutDept.hodImage ? (
-                      <img
-                        src={popOutDept.hodImage}
-                        alt={popOutDept.hod}
-                        className="w-20 h-20 rounded-2xl object-cover ring-3 ring-amber-400 shadow-md"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#002147] to-[#4a6b28] text-white font-black text-xl flex items-center justify-center shadow-md">
-                        {getFacultyInitials(popOutDept.hod)}
-                      </div>
-                    )}
-                    <span className="absolute -bottom-1.5 -right-1.5 bg-amber-400 text-amber-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow border border-white">
-                      ★ HOD
-                    </span>
-                  </div>
-
-                  <div className="text-center sm:text-left flex-1 min-w-0">
-                    <span className="inline-block text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200 mb-1">
-                      {popOutDept.hodDesignation || 'Head of Department'}
-                    </span>
-                    <h4 className="text-xl font-black text-[#002147]">{popOutDept.hod}</h4>
-                    <p className="text-xs font-semibold text-emerald-800 mt-1">{popOutDept.hodQual}</p>
-                    <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                      Oversees academic curriculum delivery, departmental assessments, student seminars, and faculty coordination for {popOutDept.dept}.
-                    </p>
-                  </div>
+                <div className="max-w-md">
+                  <PersonCard
+                    variant="spotlight"
+                    isHod={true}
+                    name={popOutDept.hod}
+                    designation={popOutDept.hodDesignation || 'Head of Department'}
+                    qualification={popOutDept.hodQual}
+                    imageUrl={popOutDept.hodImage}
+                    department={popOutDept.dept}
+                    stream={popOutDept.stream}
+                    bio={`Oversees academic curriculum delivery, departmental assessments, student seminars, and faculty coordination for ${popOutDept.dept}.`}
+                  />
                 </div>
               </div>
 
               {/* Department Faculty Members / Teachers */}
               <div>
-                <div className="text-xs font-extrabold uppercase tracking-wider text-[#002147] mb-2 flex items-center justify-between">
-                  <span>Department Teachers &amp; Professors ({popOutDept.faculty?.length || 0})</span>
+                <div className="text-xs font-extrabold uppercase tracking-wider text-[#002147] mb-3 flex items-center justify-between">
+                  <span>Department Teachers &amp; Faculty Members ({popOutDept.faculty?.length || 0})</span>
                   <span className="text-[11px] text-gray-400 font-normal">Dedicated Academic Mentors</span>
                 </div>
 
                 {popOutDept.faculty && popOutDept.faculty.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {popOutDept.faculty.map((f, fi) => (
-                      <div
+                      <PersonCard
                         key={fi}
-                        className="p-3.5 bg-gray-50/80 hover:bg-gray-50 border border-gray-200 hover:border-[#4a6b28]/50 rounded-xl flex items-center gap-3 transition-all"
-                      >
-                        {f.image_url ? (
-                          <img
-                            src={f.image_url}
-                            alt={f.name}
-                            className="w-12 h-12 rounded-xl object-cover ring-1 ring-emerald-500/30 shadow-2xs shrink-0"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#002147]/10 to-[#4a6b28]/15 text-[#002147] border border-gray-200 flex items-center justify-center font-bold text-xs shrink-0">
-                            {getFacultyInitials(f.name)}
-                          </div>
-                        )}
-
-                        <div className="min-w-0 flex-1">
-                          <h5 className="font-bold text-[#002147] text-xs sm:text-sm truncate">{f.name}</h5>
-                          <p className="text-[11px] font-semibold text-[#4a6b28] truncate">{f.designation || 'Assistant Professor'}</p>
-                          <p className="text-[10.5px] text-gray-500 truncate font-mono">{f.qual}</p>
-                        </div>
-                      </div>
+                        name={f.name}
+                        role={f.designation || 'Faculty Member'}
+                        qualification={f.qual}
+                        image_url={f.image_url}
+                        department={popOutDept.dept}
+                        stream={popOutDept.stream}
+                      />
                     ))}
                   </div>
                 ) : (
-                  <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 text-center text-xs text-gray-500">
+                  <div className="p-6 bg-white rounded-2xl border border-gray-200 text-center text-xs text-gray-500 shadow-2xs">
                     Department faculty records are overseen directly by the Head of Department.
                   </div>
                 )}

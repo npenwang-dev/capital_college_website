@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '../../utils/api';
 import LandingReveal from '../Common/LandingReveal';
+import PersonCard from '../Common/PersonCard';
 import {
   DEPARTMENTS,
   ARTS_DEPARTMENTS,
@@ -457,68 +458,19 @@ export default function DepartmentPage({
               </div>
 
               {/* Centered HOD Card */}
-              <div className="max-w-2xl mx-auto">
-                <div className="bg-gradient-to-br from-white via-white to-amber-50/40 rounded-3xl border-2 border-amber-400/60 shadow-xl overflow-hidden p-6 sm:p-8 relative">
-                  {/* Golden Crest Ribbon */}
-                  <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-amber-600 text-white text-[11px] font-extrabold uppercase tracking-wider py-1.5 px-5 rounded-bl-2xl shadow-sm flex items-center gap-1.5">
-                    <Award size={13} />
-                    <span>HEAD OF DEPARTMENT</span>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
-                    {/* HOD Photo or Monogram */}
-                    <div className="shrink-0 relative">
-                      {hodMember.image_url ? (
-                        <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-3 border-amber-400 shadow-md">
-                          <img
-                            src={hodMember.image_url}
-                            alt={hodMember.name}
-                            className="w-full h-full object-cover object-top"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-gradient-to-br from-[#002147] to-[#001736] text-[#8fc35e] font-black text-3xl sm:text-4xl flex items-center justify-center border-3 border-amber-400 shadow-md">
-                          {getInitials(hodMember.name)}
-                        </div>
-                      )}
-                      <div className="absolute -bottom-2 -right-2 bg-amber-500 text-white rounded-full p-1.5 shadow-md border-2 border-white">
-                        <CheckCircle2 size={16} />
-                      </div>
-                    </div>
-
-                    {/* HOD Credentials & Bio */}
-                    <div className="flex-1 space-y-2.5">
-                      <div>
-                        <h3 className="text-xl sm:text-2xl font-black text-[#002147]">
-                          {hodMember.name}
-                        </h3>
-                        <p className="text-xs sm:text-sm font-bold text-[#4a6b28] mt-0.5">
-                          {hodMember.qualification}
-                        </p>
-                        <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-0.5">
-                          {hodMember.designation}
-                        </p>
-                      </div>
-
-                      <p className="text-xs sm:text-sm text-gray-700 leading-relaxed italic border-l-2 border-amber-400/70 pl-3">
-                        "{hodMember.bio || 'Dedicated to inspiring academic rigor and empowering students toward lifelong achievement.'}"
-                      </p>
-
-                      <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-gray-600 justify-center sm:justify-start">
-                        {hodMember.email && (
-                          <div className="flex items-center gap-1 text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg font-mono text-[11px]">
-                            <Mail size={12} className="text-[#4a6b28]" />
-                            <span>{hodMember.email}</span>
-                          </div>
-                        )}
-                        <div className="flex items-center gap-1 text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg text-[11px]">
-                          <MapPin size={12} className="text-[#4a6b28]" />
-                          <span>P.R. Hill Campus, Kohima</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="max-w-md sm:max-w-lg mx-auto">
+                <PersonCard
+                  variant="spotlight"
+                  isHod={true}
+                  name={hodMember.name}
+                  role={hodMember.designation || 'Head of Department'}
+                  qualification={hodMember.qualification}
+                  imageUrl={hodMember.image_url}
+                  department={dept.name}
+                  stream={dept.stream}
+                  bio={hodMember.bio || 'Dedicated to inspiring academic rigor and empowering students toward lifelong achievement.'}
+                  email={hodMember.email}
+                />
               </div>
             </div>
 
@@ -540,58 +492,19 @@ export default function DepartmentPage({
               </div>
 
               {facultyMembers.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 sm:gap-7">
                   {facultyMembers.map((fac, idx) => (
-                    <div
+                    <PersonCard
                       key={idx}
-                      className="bg-white rounded-2xl border border-gray-200 shadow-xs hover:shadow-lg hover:border-[#4a6b28]/50 transition-all duration-300 p-5 flex flex-col justify-between"
-                    >
-                      <div className="flex items-start gap-4">
-                        {/* Profile Image or Monogram */}
-                        <div className="shrink-0">
-                          {fac.image_url ? (
-                            <img
-                              src={fac.image_url}
-                              alt={fac.name}
-                              className="w-16 h-16 rounded-xl object-cover object-top border-2 border-[#4a6b28]/30 shadow-xs"
-                            />
-                          ) : (
-                            <div className="w-16 h-16 rounded-xl bg-[#002147] text-[#8fc35e] font-black text-lg flex items-center justify-center border-2 border-[#4a6b28]/30 shadow-xs">
-                              {getInitials(fac.name)}
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Name and Designation */}
-                        <div className="min-w-0 flex-1">
-                          <h4 className="font-bold text-gray-900 text-base leading-snug line-clamp-1">
-                            {fac.name}
-                          </h4>
-                          <p className="text-xs font-semibold text-[#4a6b28] mt-0.5">
-                            {fac.qualification}
-                          </p>
-                          <p className="text-xs text-gray-500 font-medium mt-0.5">
-                            {fac.designation}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="pt-3 mt-3 border-t border-gray-100 space-y-1.5">
-                        <div className="text-[11.5px] text-gray-600 flex items-start gap-1.5">
-                          <BookOpen size={12} className="text-gray-400 shrink-0 mt-0.5" />
-                          <span className="line-clamp-2">
-                            {fac.specialization || 'Undergraduate Teaching & Research'}
-                          </span>
-                        </div>
-
-                        {fac.email && (
-                          <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1.5 truncate">
-                            <Mail size={11} className="text-[#4a6b28] shrink-0" />
-                            <span className="truncate">{fac.email}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                      name={fac.name}
+                      role={fac.designation}
+                      qualification={fac.qualification}
+                      imageUrl={fac.image_url}
+                      department={dept.name}
+                      stream={dept.stream}
+                      bio={fac.specialization}
+                      email={fac.email}
+                    />
                   ))}
                 </div>
               ) : (

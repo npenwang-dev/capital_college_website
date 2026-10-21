@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, GraduationCap, Mail, Award, BookOpen, User } from 'lucide-react';
+import PersonCard from '../Common/PersonCard';
 
 const defaultFacultyList = [
   {
@@ -213,35 +214,18 @@ export default function FacultyModal({ isOpen, onClose }) {
                 </span>
               </h4>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {dept.members.map((m, mIdx) => (
-                  <div key={mIdx} className="p-3 bg-gray-50/70 hover:bg-gray-50 rounded-xl border border-gray-200 flex items-center gap-3 transition-colors">
-                    {/* Member Profile Avatar */}
-                    <div className="relative shrink-0">
-                      {m.image_url ? (
-                        <img
-                          src={m.image_url}
-                          alt={m.name}
-                          className="w-11 h-11 rounded-full object-cover border-2 border-emerald-600/40 shadow-2xs"
-                        />
-                      ) : (
-                        <div className="w-11 h-11 rounded-full bg-[#002858]/10 text-[#002858] font-bold text-xs flex items-center justify-center border border-gray-200">
-                          {getInitials(m.name)}
-                        </div>
-                      )}
-                      {m.is_hod && (
-                        <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center text-[9px] font-black border border-white" title="Head of Department">
-                          ★
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <p className="font-bold text-gray-900 text-xs md:text-sm truncate">{m.name}</p>
-                      <p className="text-[11px] text-[#4a6b28] font-semibold mt-0.5 truncate">{m.role}</p>
-                      <p className="text-[10px] text-gray-500 truncate font-mono">{m.qualification}</p>
-                    </div>
-                  </div>
+                  <PersonCard
+                    key={mIdx}
+                    name={m.name}
+                    role={m.role}
+                    qualification={m.qualification}
+                    image_url={m.image_url}
+                    is_hod={m.is_hod || (m.role && m.role.toLowerCase().includes('head of department'))}
+                    department={dept.department}
+                    stream={dept.stream}
+                  />
                 ))}
               </div>
             </div>

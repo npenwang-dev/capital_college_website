@@ -65,6 +65,7 @@ import DeviceImageUpload from './DeviceImageUpload';
 import DeviceDocumentUpload from './DeviceDocumentUpload';
 import RecaptchaWidget from './RecaptchaWidget';
 import { DEPARTMENTS, ARTS_DEPARTMENTS, SCIENCE_DEPARTMENTS } from '../../data/departmentData';
+import PersonCard from '../Common/PersonCard';
 
 import { INITIAL_SLIDES } from '../../data/initialHeroSlides';
 
@@ -7017,49 +7018,21 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                 aspectHint="Upload photo from phone or computer, or enter web URL. 1:1 square photo recommended."
               />
 
-              {/* Live Preview Card */}
-              <div className="p-3 rounded-xl bg-gradient-to-r from-gray-50 to-emerald-50/30 border border-gray-200 flex items-center gap-3">
-                <div className="relative shrink-0">
-                  {facultyFormData.image_url ? (
-                    <img
-                      src={facultyFormData.image_url}
-                      alt="Preview"
-                      className="w-13 h-13 rounded-full object-cover border-2 border-emerald-600 shadow-xs ring-2 ring-emerald-500/20"
-                    />
-                  ) : (
-                    <div className="w-13 h-13 rounded-full bg-gradient-to-br from-[#002858] to-emerald-800 text-white font-extrabold flex items-center justify-center text-sm shadow-xs border-2 border-white/20">
-                      {facultyFormData.name ? facultyFormData.name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('') : 'CC'}
-                    </div>
-                  )}
-                  {facultyFormData.is_hod && (
-                    <span
-                      className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center text-[10px] font-bold shadow-xs border border-white"
-                      title="Head of Department"
-                    >
-                      ★
-                    </span>
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-800">
-                      {facultyFormData.is_hod ? '★ Head of Department' : 'Faculty Member'}
-                    </span>
-                    <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-white border border-gray-200 text-gray-600">
-                      {facultyFormData.stream}
-                    </span>
-                  </div>
-                  <div className="font-bold text-gray-900 text-sm truncate">
-                    {facultyFormData.name || 'Faculty Member Name'}
-                  </div>
-                  <div className="text-[11px] text-gray-600 truncate">
-                    {facultyFormData.designation || 'Assistant Professor'} • {facultyFormData.department || 'Department'}
-                  </div>
-                  {facultyFormData.qualification && (
-                    <div className="text-[10px] text-gray-400 font-mono truncate">
-                      {facultyFormData.qualification}
-                    </div>
-                  )}
+              {/* Live Card Preview */}
+              <div className="space-y-1.5 pt-1">
+                <span className="text-[10.5px] font-bold text-gray-500 uppercase tracking-wider block">
+                  Live Card Preview (WYSIWYG)
+                </span>
+                <div className="max-w-[280px] mx-auto">
+                  <PersonCard
+                    name={facultyFormData.name || 'Faculty Member Name'}
+                    role={facultyFormData.designation || 'Assistant Professor'}
+                    qualification={facultyFormData.qualification || 'M.A., Ph.D.'}
+                    image_url={facultyFormData.image_url}
+                    is_hod={Boolean(facultyFormData.is_hod)}
+                    department={facultyFormData.department || 'Department of English'}
+                    stream={facultyFormData.stream}
+                  />
                 </div>
               </div>
 
