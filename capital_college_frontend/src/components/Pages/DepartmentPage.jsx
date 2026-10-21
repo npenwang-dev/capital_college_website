@@ -217,7 +217,6 @@ export default function DepartmentPage({
   onNavigate,
   onOpenAdmission
 }) {
-  const [activeTab, setActiveTab] = useState('faculty'); // 'faculty' | 'about' | 'curriculum' | 'facilities'
   const [liveFaculty, setLiveFaculty] = useState([]);
 
   // Resolve department details from slug
@@ -398,53 +397,12 @@ export default function DepartmentPage({
         </div>
       </div>
 
-      {/* 2. SUB-NAVIGATION TABS BAR */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar py-2">
-          <div className="flex items-center gap-1 sm:gap-2">
-            {[
-              { id: 'faculty', label: 'HOD & Faculty Directory', icon: Users },
-              { id: 'about', label: 'About & Vision', icon: Compass },
-              { id: 'curriculum', label: 'Programmes & FYUGP Curriculum', icon: BookOpen },
-              { id: 'facilities', label: 'Laboratories & Facilities', icon: FlaskConical }
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold tracking-tight whitespace-nowrap transition-all cursor-pointer ${
-                    isActive
-                      ? 'bg-[#002147] text-white shadow-xs'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                  }`}
-                >
-                  <Icon size={14} className={isActive ? 'text-[#8fc35e]' : 'text-gray-400'} />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          <button
-            onClick={() => window.print()}
-            className="hidden md:flex items-center gap-1 text-xs text-gray-500 hover:text-gray-800 font-semibold px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
-          >
-            <Printer size={13} />
-            <span>Print Department Profile</span>
-          </button>
-        </div>
-      </div>
-
       {/* 3. MAIN CONTENT CONTAINER */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* ========================================================
-            TAB 1: HOD SPOTLIGHT (TOP MIDDLE) + FACULTY ROSTER
-        ======================================================== */}
-        {activeTab === 'faculty' && (
-          <div className="space-y-12 animate-fadeIn">
-            {/* SECTION 1: PROMINENT TOP-MIDDLE HOD SPOTLIGHT */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-14">
+
+        {/* SECTION 1: HOD SPOTLIGHT + FACULTY ROSTER */}
+        <div className="space-y-12">
+            {/* PROMINENT TOP-MIDDLE HOD SPOTLIGHT */}
             <div>
               <div className="text-center max-w-2xl mx-auto mb-6">
                 <h2 className="text-2xl sm:text-3xl font-black text-[#002147]">
@@ -472,7 +430,7 @@ export default function DepartmentPage({
               </div>
             </div>
 
-            {/* SECTION 2: FOLLOWED BY DEPARTMENT FACULTY DIRECTORY */}
+            {/* DEPARTMENT FACULTY DIRECTORY */}
             <div className="pt-4 border-t border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
                 <div>
@@ -511,14 +469,10 @@ export default function DepartmentPage({
                 </div>
               )}
             </div>
-          </div>
-        )}
+        </div>
 
-        {/* ========================================================
-            TAB 2: ABOUT & OBJECTIVES
-        ======================================================== */}
-        {activeTab === 'about' && (
-          <div className="space-y-8 animate-fadeIn">
+        {/* SECTION 2: ABOUT & OBJECTIVES */}
+        <div className="space-y-8">
             <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
               <div>
                 <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
@@ -579,14 +533,10 @@ export default function DepartmentPage({
                 ))}
               </div>
             </div>
-          </div>
-        )}
+        </div>
 
-        {/* ========================================================
-            TAB 3: PROGRAMMES & FYUGP CURRICULUM
-        ======================================================== */}
-        {activeTab === 'curriculum' && (
-          <div className="space-y-8 animate-fadeIn">
+        {/* SECTION 3: PROGRAMMES & FYUGP CURRICULUM */}
+        <div className="space-y-8">
             <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
@@ -642,18 +592,14 @@ export default function DepartmentPage({
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-gray-600 leading-relaxed flex items-start gap-2">
                 <Sparkles size={16} className="text-amber-500 shrink-0 mt-0.5" />
                 <span>
-                  Students can opt for a <strong>Single Major</strong>, <strong>Major with Minor</strong>, or exit with a Certificate (1 Year), Diploma (2 Years), Bachelor’s Degree (3 Years), or <strong>Bachelor’s Degree with Honours / Research (4 Years)</strong> in alignment with NEP regulations.
+                  Students can opt for a <strong>Single Major</strong>, <strong>Major with Minor</strong>, or exit with a Certificate (1 Year), Diploma (2 Years), Bachelor's Degree (3 Years), or <strong>Bachelor's Degree with Honours / Research (4 Years)</strong> in alignment with NEP regulations.
                 </span>
               </div>
             </div>
-          </div>
-        )}
+        </div>
 
-        {/* ========================================================
-            TAB 4: LABORATORIES & FACILITIES
-        ======================================================== */}
-        {activeTab === 'facilities' && (
-          <div className="space-y-8 animate-fadeIn">
+        {/* SECTION 4: LABORATORIES & FACILITIES */}
+        <div className="space-y-8">
             <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
               <div>
                 <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
@@ -688,8 +634,7 @@ export default function DepartmentPage({
                 ))}
               </div>
             </div>
-          </div>
-        )}
+        </div>
 
         {/* ========================================================
             4. SIBLING DEPARTMENTS NAVIGATOR IN SAME STREAM
