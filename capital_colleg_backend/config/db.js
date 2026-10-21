@@ -139,9 +139,16 @@ async function setupSQLiteTables(db) {
 
   try {
     await runSQLite(db, `ALTER TABLE faculty ADD COLUMN image_url TEXT`);
-  } catch (e) {
-    // Column may already exist
-  }
+  } catch (e) {}
+  try {
+    await runSQLite(db, `ALTER TABLE faculty ADD COLUMN bio TEXT`);
+  } catch (e) {}
+  try {
+    await runSQLite(db, `ALTER TABLE faculty ADD COLUMN email TEXT`);
+  } catch (e) {}
+  try {
+    await runSQLite(db, `ALTER TABLE faculty ADD COLUMN campus TEXT DEFAULT 'P.R. Hill Campus, Kohima'`);
+  } catch (e) {}
 
   await runSQLite(db, `
     CREATE TABLE IF NOT EXISTS admin_users (
@@ -597,15 +604,26 @@ async function setupSQLiteTables(db) {
 
 // Setup and verify MySQL tables for settings, announcements, governing_body, documents, social_links
 async function setupMySQLTables(pool) {
-  // 0. Column migrations for existing core tables (faculty, notices)
   try {
-    const [facultyCols] = await pool.query("SHOW COLUMNS FROM `faculty` LIKE 'image_url'");
-    if (!facultyCols || facultyCols.length === 0) {
+    const [facultyCols] = await pool.query("SHOW COLUMNS FROM `faculty`");
+    const fColNames = facultyCols.map(c => c.Field);
+    if (!fColNames.includes('image_url')) {
       await pool.query("ALTER TABLE `faculty` ADD COLUMN `image_url` LONGTEXT");
     } else {
       await pool.query("ALTER TABLE `faculty` MODIFY COLUMN `image_url` LONGTEXT");
     }
-  } catch (e) {}
+    if (!fColNames.includes('bio')) {
+      await pool.query("ALTER TABLE `faculty` ADD COLUMN `bio` TEXT");
+    }
+    if (!fColNames.includes('email')) {
+      await pool.query("ALTER TABLE `faculty` ADD COLUMN `email` VARCHAR(150)");
+    }
+    if (!fColNames.includes('campus')) {
+      await pool.query("ALTER TABLE `faculty` ADD COLUMN `campus` VARCHAR(150) DEFAULT 'P.R. Hill Campus, Kohima'");
+    }
+  } catch (e) {
+    console.warn('Faculty table column migration notice:', e.message);
+  }
 
   try {
     const [noticesCols] = await pool.query("SHOW COLUMNS FROM `notices`");

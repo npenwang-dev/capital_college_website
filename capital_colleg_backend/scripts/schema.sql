@@ -83,6 +83,9 @@ CREATE TABLE IF NOT EXISTS faculty (
     designation VARCHAR(150) NOT NULL,
     is_hod BOOLEAN DEFAULT FALSE,
     image_url LONGTEXT,
+    bio TEXT,
+    email VARCHAR(150),
+    campus VARCHAR(150) DEFAULT 'P.R. Hill Campus, Kohima',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

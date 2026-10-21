@@ -285,8 +285,9 @@ export default function DepartmentPage({
           qualification: dbHod.qualification,
           designation: dbHod.designation || 'Head of Department',
           image_url: dbHod.image_url || '',
-          bio: baseline.hod?.bio || 'Head of Department & Academic Lead',
-          email: baseline.hod?.email || `${dept.slug}.hod@capitalcollege.edu.in`
+          bio: dbHod.bio || baseline.hod?.bio || 'Dedicated to inspiring academic rigor and empowering students toward lifelong achievement.',
+          email: dbHod.email || baseline.hod?.email || `${dept.slug}.hod@capitalcollege.edu.in`,
+          campus: dbHod.campus || 'P.R. Hill Campus, Kohima'
         }
       : baseline.hod;
 
@@ -299,8 +300,10 @@ export default function DepartmentPage({
             qualification: t.qualification,
             designation: t.designation || 'Assistant Professor',
             image_url: t.image_url || '',
-            specialization: t.designation || 'Undergraduate Teaching & Research',
-            email: `${t.name.toLowerCase().replace(/[^a-z]/g, '')}@capitalcollege.edu.in`
+            specialization: t.bio || t.designation || 'Undergraduate Teaching & Research',
+            bio: t.bio || '',
+            email: t.email || `${t.name.toLowerCase().replace(/[^a-z]/g, '')}@capitalcollege.edu.in`,
+            campus: t.campus || 'P.R. Hill Campus, Kohima'
           }))
         : baseline.faculty || [];
 
@@ -458,7 +461,7 @@ export default function DepartmentPage({
               </div>
 
               {/* Centered HOD Card */}
-              <div className="max-w-md sm:max-w-lg mx-auto">
+              <div className="max-w-3xl sm:max-w-4xl mx-auto">
                 <PersonCard
                   variant="spotlight"
                   isHod={true}
@@ -470,6 +473,7 @@ export default function DepartmentPage({
                   stream={dept.stream}
                   bio={hodMember.bio || 'Dedicated to inspiring academic rigor and empowering students toward lifelong achievement.'}
                   email={hodMember.email}
+                  campus={hodMember.campus || 'P.R. Hill Campus, Kohima'}
                 />
               </div>
             </div>
@@ -502,8 +506,9 @@ export default function DepartmentPage({
                       imageUrl={fac.image_url}
                       department={dept.name}
                       stream={dept.stream}
-                      bio={fac.specialization}
+                      bio={fac.bio || fac.specialization}
                       email={fac.email}
+                      campus={fac.campus || 'P.R. Hill Campus, Kohima'}
                     />
                   ))}
                 </div>

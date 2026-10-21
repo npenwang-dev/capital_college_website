@@ -423,7 +423,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
     qualification: '',
     designation: 'Assistant Professor',
     is_hod: false,
-    image_url: ''
+    image_url: '',
+    bio: '',
+    email: '',
+    campus: 'P.R. Hill Campus, Kohima'
   });
 
   // Governing Body Form Modal
@@ -4194,7 +4197,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                 qualification: '',
                                 designation: 'Assistant Professor',
                                 is_hod: false,
-                                image_url: ''
+                                image_url: '',
+                                bio: '',
+                                email: '',
+                                campus: facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima'
                               });
                               setShowFacultyModal(true);
                             }}
@@ -4345,7 +4351,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                   qualification: '',
                                   designation: 'Assistant Professor',
                                   is_hod: false,
-                                  image_url: ''
+                                  image_url: '',
+                                  bio: '',
+                                  email: '',
+                                  campus: facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima'
                                 });
                                 setShowFacultyModal(true);
                               }}
@@ -4406,6 +4415,23 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
                                       {currentHOD.designation}
                                     </p>
+                                    {currentHOD.bio && (
+                                      <p className="text-xs text-gray-600 italic border-l-2 border-amber-400 pl-2.5 my-1.5 line-clamp-2">
+                                        "{currentHOD.bio}"
+                                      </p>
+                                    )}
+                                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-[11px] text-gray-600">
+                                      {currentHOD.email && (
+                                        <span className="inline-flex items-center gap-1 font-mono bg-white px-2 py-0.5 rounded border border-gray-200">
+                                          <Mail size={11} className="text-gray-400" />
+                                          {currentHOD.email}
+                                        </span>
+                                      )}
+                                      <span className="inline-flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-gray-200">
+                                        <MapPin size={11} className="text-[#4a6b28]" />
+                                        {currentHOD.campus || (currentHOD.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')}
+                                      </span>
+                                    </div>
                                     <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2">
                                       <button
                                         onClick={() => {
@@ -4417,7 +4443,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                             qualification: currentHOD.qualification || '',
                                             designation: currentHOD.designation || 'Head of Department',
                                             is_hod: true,
-                                            image_url: currentHOD.image_url || ''
+                                            image_url: currentHOD.image_url || '',
+                                            bio: currentHOD.bio || '',
+                                            email: currentHOD.email || '',
+                                            campus: currentHOD.campus || (currentHOD.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
                                           });
                                           setShowFacultyModal(true);
                                         }}
@@ -4460,7 +4489,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                       qualification: '',
                                       designation: 'Head of Department & Assistant Professor',
                                       is_hod: true,
-                                      image_url: ''
+                                      image_url: '',
+                                      bio: '',
+                                      email: '',
+                                      campus: facultyActiveStream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima'
                                     });
                                     setShowFacultyModal(true);
                                   }}
@@ -4560,7 +4592,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                           qualification: teacher.qualification || '',
                                           designation: teacher.designation || 'Assistant Professor',
                                           is_hod: false,
-                                          image_url: teacher.image_url || ''
+                                          image_url: teacher.image_url || '',
+                                          bio: teacher.bio || '',
+                                          email: teacher.email || '',
+                                          campus: teacher.campus || (teacher.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
                                         });
                                         setShowFacultyModal(true);
                                       }}
@@ -4681,7 +4716,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                               qualification: f.qualification || '',
                                               designation: f.designation || 'Assistant Professor',
                                               is_hod: Boolean(f.is_hod),
-                                              image_url: f.image_url || ''
+                                              image_url: f.image_url || '',
+                                              bio: f.bio || '',
+                                              email: f.email || '',
+                                              campus: f.campus || (f.stream === 'SCIENCE' ? 'Thegaba Campus, Kohima' : 'P.R. Hill Campus, Kohima')
                                             });
                                             setShowFacultyModal(true);
                                           }}
@@ -6976,7 +7014,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
       ======================================================== */}
       {showFacultyModal && (
         <div className="fixed inset-0 z-60 bg-black/75 flex items-center justify-center p-3 sm:p-4">
-          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-fadeIn max-h-[92vh] flex flex-col">
+          <div className="bg-white w-full max-w-xl sm:max-w-2xl rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-fadeIn max-h-[92vh] flex flex-col">
             <div className="bg-[#002858] text-white px-6 py-4 flex items-center justify-between border-b-2 border-[#4a6b28] shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[#8fc35e]">
@@ -6987,7 +7025,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                     {editingFaculty ? 'Edit Faculty / HOD Profile' : 'Add Faculty Member / HOD'}
                   </h4>
                   <p className="text-[11px] text-gray-300">
-                    Upload profile picture & categorize by concern department
+                    Upload profile picture, quote, institutional email &amp; campus location
                   </p>
                 </div>
               </div>
@@ -7010,18 +7048,27 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
 
               {/* Live Card Preview */}
               <div className="space-y-1.5 pt-1">
-                <span className="text-[10.5px] font-bold text-gray-500 uppercase tracking-wider block">
-                  Live Card Preview (WYSIWYG)
-                </span>
-                <div className="max-w-[280px] mx-auto">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10.5px] font-bold text-gray-500 uppercase tracking-wider block">
+                    Live Card Preview (WYSIWYG)
+                  </span>
+                  <span className="text-[10px] text-gray-400 font-medium">
+                    {facultyFormData.is_hod ? 'Showcase HOD Layout' : 'Roster Portrait Layout'}
+                  </span>
+                </div>
+                <div className={facultyFormData.is_hod ? 'w-full max-w-xl mx-auto' : 'max-w-[280px] mx-auto'}>
                   <PersonCard
-                    name={facultyFormData.name || 'Faculty Member Name'}
+                    variant={facultyFormData.is_hod ? 'spotlight' : 'standard'}
+                    name={facultyFormData.name || 'Dr. Faculty Member Name'}
                     role={facultyFormData.designation || 'Assistant Professor'}
-                    qualification={facultyFormData.qualification || 'M.A., Ph.D.'}
+                    qualification={facultyFormData.qualification || 'M.A., M.Phil, PhD, PGCTE'}
                     image_url={facultyFormData.image_url}
                     is_hod={Boolean(facultyFormData.is_hod)}
                     department={facultyFormData.department || 'Department of English'}
                     stream={facultyFormData.stream}
+                    bio={facultyFormData.bio || (facultyFormData.is_hod ? 'Pioneering academic excellence, research, and transformative pedagogy at Capital College Kohima.' : '')}
+                    email={facultyFormData.email || `${(facultyFormData.department || 'faculty').toLowerCase().replace(/[^a-z]/g, '')}.hod@capitalcollege.edu.in`}
+                    campus={facultyFormData.campus || 'P.R. Hill Campus, Kohima'}
                   />
                 </div>
               </div>
@@ -7045,7 +7092,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
 
               {/* Full Name */}
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Full Name & Title *</label>
+                <label className="block font-bold text-gray-700 mb-1">Full Name &amp; Title *</label>
                 <input
                   type="text"
                   required
@@ -7166,6 +7213,50 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                     className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-[#4a6b28] bg-white font-mono text-gray-800"
                   />
                   <span className="text-[10px] text-gray-400 block mt-1">Degrees, doctorates, fellowships, NET/JRF</span>
+                </div>
+              </div>
+
+              {/* Academic Vision, Quote & Research Statement */}
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">
+                  Academic Vision, Quote &amp; Research Statement
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder='e.g. "Pioneering Naga literary documentation, post-colonial literature, and transformative pedagogy at Capital College Kohima."'
+                  value={facultyFormData.bio}
+                  onChange={(e) => setFacultyFormData({ ...facultyFormData, bio: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-[#4a6b28] focus:ring-1 focus:ring-[#4a6b28] bg-white font-medium text-gray-800 italic"
+                />
+                <span className="text-[10.5px] text-gray-500 block mt-1">
+                  Featured as the italicized quote with amber accent line on the HOD showcase card and faculty profile.
+                </span>
+              </div>
+
+              {/* Institutional Email & Campus Location */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Institutional Email Address</label>
+                  <input
+                    type="email"
+                    placeholder="e.g. english.hod@capitalcollege.edu.in"
+                    value={facultyFormData.email}
+                    onChange={(e) => setFacultyFormData({ ...facultyFormData, email: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-[#4a6b28] bg-white font-mono text-gray-800"
+                  />
+                  <span className="text-[10px] text-gray-400 block mt-1">Official institutional contact pill</span>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Campus / Office Location</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. P.R. Hill Campus, Kohima"
+                    value={facultyFormData.campus}
+                    onChange={(e) => setFacultyFormData({ ...facultyFormData, campus: e.target.value })}
+                    className="w-full border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:border-[#4a6b28] bg-white text-gray-800 font-medium"
+                  />
+                  <span className="text-[10px] text-gray-400 block mt-1">Campus location pin pill</span>
                 </div>
               </div>
 
