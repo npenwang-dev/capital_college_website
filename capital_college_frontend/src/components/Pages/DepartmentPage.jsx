@@ -217,6 +217,7 @@ export default function DepartmentPage({
   onNavigate,
   onOpenAdmission
 }) {
+  const [activeTab, setActiveTab] = useState('faculty'); // 'faculty' | 'curriculum'
   const [liveFaculty, setLiveFaculty] = useState([]);
 
   // Resolve department details from slug
@@ -397,244 +398,282 @@ export default function DepartmentPage({
         </div>
       </div>
 
+      {/* 2. SUB-NAVIGATION TABS BAR (ONLY FACULTY & CURRICULUM) */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center gap-2 py-2.5 overflow-x-auto no-scrollbar">
+          {[
+            { id: 'faculty', label: 'HOD & Faculty Directory', icon: Users },
+            { id: 'curriculum', label: 'Programmes & FYUGP Curriculum', icon: BookOpen }
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-[#002147] text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
+                }`}
+              >
+                <Icon size={15} className={isActive ? 'text-[#8fc35e]' : 'text-slate-400'} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* 3. MAIN CONTENT CONTAINER */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-14">
-
-        {/* SECTION 1: HOD SPOTLIGHT + FACULTY ROSTER */}
-        <div className="space-y-12">
-            {/* PROMINENT TOP-MIDDLE HOD SPOTLIGHT */}
-            <div>
-              <div className="text-center max-w-2xl mx-auto mb-6">
-                <h2 className="text-2xl sm:text-3xl font-black text-[#002147]">
-                  Head of Department (HOD)
-                </h2>
-                <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                  Guiding academic curriculum, research, and student mentorship for the {dept.name}.
-                </p>
-              </div>
-
-              {/* Centered HOD Card */}
-              <div className="max-w-[340px] sm:max-w-[380px] mx-auto">
-                <PersonCard
-                  isHod={true}
-                  name={hodMember.name}
-                  role={hodMember.designation || 'Head of Department'}
-                  qualification={hodMember.qualification}
-                  imageUrl={hodMember.image_url}
-                  department={dept.name}
-                  stream={dept.stream}
-                  bio={hodMember.bio || 'Dedicated to inspiring academic rigor and empowering students toward lifelong achievement.'}
-                  email={hodMember.email}
-                  campus={hodMember.campus || 'P.R. Hill Campus, Kohima'}
-                />
-              </div>
-            </div>
-
-            {/* DEPARTMENT FACULTY DIRECTORY */}
-            <div className="pt-4 border-t border-gray-200">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-[#002147] flex items-center gap-2">
-                    <Users size={22} className="text-[#4a6b28]" />
-                    <span>Department Faculty Members</span>
-                  </h3>
-                  <p className="text-xs text-gray-600 mt-0.5">
-                    Distinguished assistant professors and subject-matter educators in {dept.name}.
-                  </p>
-                </div>
-              </div>
-
-              {facultyMembers.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3.5 sm:gap-4">
-                  {facultyMembers.map((fac, idx) => (
-                    <PersonCard
-                      key={idx}
-                      name={fac.name}
-                      role={fac.designation}
-                      qualification={fac.qualification}
-                      imageUrl={fac.image_url}
-                      department={dept.name}
-                      stream={dept.stream}
-                      bio={fac.bio || fac.specialization}
-                      email={fac.email}
-                      campus={fac.campus || 'P.R. Hill Campus, Kohima'}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-8 text-center text-gray-500">
-                  <p className="text-sm">
-                    Additional faculty appointments for the {dept.name} are updated in coordination with the Academic Dean and IQAC.
-                  </p>
-                </div>
-              )}
-            </div>
-        </div>
-
-        {/* SECTION 2: ABOUT & OBJECTIVES */}
-        <div className="space-y-8">
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
+        {/* TAB 1: FACULTY & HOD SPOTLIGHT + ABOUT */}
+        {activeTab === 'faculty' && (
+          <div className="space-y-12 animate-fadeIn">
+            {/* SECTION 1: HOD SPOTLIGHT + FACULTY ROSTER */}
+            <div className="space-y-12">
+              {/* PROMINENT TOP-MIDDLE HOD SPOTLIGHT */}
               <div>
-                <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
-                  Department Overview
-                </span>
-                <h3 className="text-2xl font-black text-[#002147]">
-                  About the {dept.name}
-                </h3>
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed mt-3">
-                  {dept.overview}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
-                {/* Vision Box */}
-                <div className="bg-emerald-50/60 p-6 rounded-2xl border border-emerald-200">
-                  <div className="flex items-center gap-2 text-emerald-900 font-bold text-sm mb-2">
-                    <Compass size={18} className="text-[#4a6b28]" />
-                    <span>Departmental Vision</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-emerald-950 leading-relaxed italic">
-                    "{dept.vision}"
+                <div className="text-center max-w-2xl mx-auto mb-6">
+                  <h2 className="text-2xl sm:text-3xl font-black text-[#002147]">
+                    Head of Department (HOD)
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                    Guiding academic curriculum, research, and student mentorship for the {dept.name}.
                   </p>
                 </div>
 
-                {/* Key Objectives */}
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                  <div className="flex items-center gap-2 text-[#002147] font-bold text-sm mb-2">
-                    <ShieldCheck size={18} className="text-[#4a6b28]" />
-                    <span>Core Academic Objectives</span>
-                  </div>
-                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
-                    {dept.objectives.map((obj, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0 mt-0.5" />
-                        <span>{obj}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Centered HOD Card */}
+                <div className="max-w-[340px] sm:max-w-[380px] mx-auto">
+                  <PersonCard
+                    isHod={true}
+                    name={hodMember.name}
+                    role={hodMember.designation || 'Head of Department'}
+                    qualification={hodMember.qualification}
+                    imageUrl={hodMember.image_url}
+                    department={dept.name}
+                    stream={dept.stream}
+                    bio={hodMember.bio || 'Dedicated to inspiring academic rigor and empowering students toward lifelong achievement.'}
+                    email={hodMember.email}
+                    campus={hodMember.campus || 'P.R. Hill Campus, Kohima'}
+                  />
                 </div>
               </div>
-            </div>
 
-            {/* Career Opportunities */}
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8">
-              <h4 className="font-black text-[#002147] text-lg sm:text-xl flex items-center gap-2 mb-4">
-                <Briefcase size={20} className="text-[#4a6b28]" />
-                <span>Graduate Career Pathways &amp; Professional Horizons</span>
-              </h4>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                {dept.careerPaths.map((cp, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-slate-50 hover:bg-[#002147] hover:text-white transition-colors p-3.5 rounded-xl border border-slate-200 text-center font-bold text-xs text-slate-800 shadow-xs flex items-center justify-center"
-                  >
-                    {cp}
+              {/* DEPARTMENT FACULTY DIRECTORY */}
+              <div className="pt-4 border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-[#002147] flex items-center gap-2">
+                      <Users size={22} className="text-[#4a6b28]" />
+                      <span>Department Faculty Members</span>
+                    </h3>
+                    <p className="text-xs text-gray-600 mt-0.5">
+                      Distinguished assistant professors and subject-matter educators in {dept.name}.
+                    </p>
                   </div>
-                ))}
+                </div>
+
+                {facultyMembers.length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                    {facultyMembers.map((fac, idx) => (
+                      <PersonCard
+                        key={idx}
+                        name={fac.name}
+                        role={fac.designation}
+                        qualification={fac.qualification}
+                        imageUrl={fac.image_url}
+                        department={dept.name}
+                        stream={dept.stream}
+                        bio={fac.bio || fac.specialization}
+                        email={fac.email}
+                        campus={fac.campus || 'P.R. Hill Campus, Kohima'}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-8 text-center text-gray-500">
+                    <p className="text-sm">
+                      Additional faculty appointments for the {dept.name} are updated in coordination with the Academic Dean and IQAC.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
-        </div>
 
-        {/* SECTION 3: PROGRAMMES & FYUGP CURRICULUM */}
-        <div className="space-y-8">
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            {/* SECTION 2: ABOUT & OBJECTIVES */}
+            <div className="space-y-8">
+              <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
                 <div>
                   <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
-                    Academic Framework (NEP 2020)
+                    Department Overview
                   </span>
                   <h3 className="text-2xl font-black text-[#002147]">
-                    {dept.degree}
+                    About the {dept.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                    Structured under the Nagaland University Four-Year Undergraduate Programme (FYUGP) credit framework.
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed mt-3">
+                    {dept.overview}
                   </p>
                 </div>
 
-                <div className="bg-slate-100 px-4 py-2 rounded-xl text-center shrink-0 border border-slate-200">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase block">Annual Intake</span>
-                  <span className="text-lg font-black text-[#002147]">{dept.intake} Students</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+                  {/* Vision Box */}
+                  <div className="bg-emerald-50/60 p-6 rounded-2xl border border-emerald-200">
+                    <div className="flex items-center gap-2 text-emerald-900 font-bold text-sm mb-2">
+                      <Compass size={18} className="text-[#4a6b28]" />
+                      <span>Departmental Vision</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-emerald-950 leading-relaxed italic">
+                      "{dept.vision}"
+                    </p>
+                  </div>
+
+                  {/* Key Objectives */}
+                  <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <div className="flex items-center gap-2 text-[#002147] font-bold text-sm mb-2">
+                      <ShieldCheck size={18} className="text-[#4a6b28]" />
+                      <span>Core Academic Objectives</span>
+                    </div>
+                    <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
+                      {dept.objectives.map((obj, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle2 size={14} className="text-[#4a6b28] shrink-0 mt-0.5" />
+                          <span>{obj}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
 
-              {/* Course Outline Table */}
-              <div className="overflow-x-auto rounded-2xl border border-gray-200">
-                <table className="w-full text-left text-xs sm:text-sm">
-                  <thead className="bg-[#002147] text-white font-bold uppercase text-[11px] tracking-wider">
-                    <tr>
-                      <th className="py-3 px-4">Course Code</th>
-                      <th className="py-3 px-4">Course Title &amp; Module</th>
-                      <th className="py-3 px-4">Semester</th>
-                      <th className="py-3 px-4 text-right">Credits</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {dept.curriculum.map((course, idx) => (
-                      <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                        <td className="py-3 px-4 font-mono font-bold text-[#4a6b28]">
-                          {course.code}
-                        </td>
-                        <td className="py-3 px-4 font-semibold text-gray-900">
-                          {course.title}
-                        </td>
-                        <td className="py-3 px-4 text-gray-600">
-                          {course.sem}
-                        </td>
-                        <td className="py-3 px-4 text-right font-mono font-bold text-slate-800">
-                          {course.credits} Credits
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-gray-600 leading-relaxed flex items-start gap-2">
-                <Sparkles size={16} className="text-amber-500 shrink-0 mt-0.5" />
-                <span>
-                  Students can opt for a <strong>Single Major</strong>, <strong>Major with Minor</strong>, or exit with a Certificate (1 Year), Diploma (2 Years), Bachelor's Degree (3 Years), or <strong>Bachelor's Degree with Honours / Research (4 Years)</strong> in alignment with NEP regulations.
-                </span>
+              {/* Career Opportunities */}
+              <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8">
+                <h4 className="font-black text-[#002147] text-lg sm:text-xl flex items-center gap-2 mb-4">
+                  <Briefcase size={20} className="text-[#4a6b28]" />
+                  <span>Graduate Career Pathways &amp; Professional Horizons</span>
+                </h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                  {dept.careerPaths.map((cp, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-slate-50 hover:bg-[#002147] hover:text-white transition-colors p-3.5 rounded-xl border border-slate-200 text-center font-bold text-xs text-slate-800 shadow-xs flex items-center justify-center"
+                    >
+                      {cp}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-        </div>
+          </div>
+        )}
 
-        {/* SECTION 4: LABORATORIES & FACILITIES */}
-        <div className="space-y-8">
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
-              <div>
-                <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
-                  Department Infrastructure
-                </span>
-                <h3 className="text-2xl font-black text-[#002147]">
-                  Laboratories, Learning Resources &amp; Facilities
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                  Tailored infrastructure supporting practical scientific experiments, field research, and seminars.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {dept.facilities.map((fac, idx) => (
-                  <div
-                    key={idx}
-                    className="p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#002147] text-[#8fc35e] flex items-center justify-center shrink-0">
-                      <CheckCircle2 size={16} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 text-sm">
-                        Facility {idx + 1}
-                      </h4>
-                      <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                        {fac}
-                      </p>
-                    </div>
+        {/* TAB 2: PROGRAMMES & FYUGP CURRICULUM */}
+        {activeTab === 'curriculum' && (
+          <div className="space-y-10 animate-fadeIn">
+            {/* SECTION 3: PROGRAMMES & FYUGP CURRICULUM */}
+            <div className="space-y-8">
+              <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
+                      Academic Framework (NEP 2020)
+                    </span>
+                    <h3 className="text-2xl font-black text-[#002147]">
+                      {dept.degree}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                      Structured under the Nagaland University Four-Year Undergraduate Programme (FYUGP) credit framework.
+                    </p>
                   </div>
-                ))}
+
+                  <div className="bg-slate-100 px-4 py-2 rounded-xl text-center shrink-0 border border-slate-200">
+                    <span className="text-[10px] font-bold text-gray-500 uppercase block">Annual Intake</span>
+                    <span className="text-lg font-black text-[#002147]">{dept.intake} Students</span>
+                  </div>
+                </div>
+
+                {/* Course Outline Table */}
+                <div className="overflow-x-auto rounded-2xl border border-gray-200">
+                  <table className="w-full text-left text-xs sm:text-sm">
+                    <thead className="bg-[#002147] text-white font-bold uppercase text-[11px] tracking-wider">
+                      <tr>
+                        <th className="py-3 px-4">Course Code</th>
+                        <th className="py-3 px-4">Course Title &amp; Module</th>
+                        <th className="py-3 px-4">Semester</th>
+                        <th className="py-3 px-4 text-right">Credits</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {dept.curriculum.map((course, idx) => (
+                        <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                          <td className="py-3 px-4 font-mono font-bold text-[#4a6b28]">
+                            {course.code}
+                          </td>
+                          <td className="py-3 px-4 font-semibold text-gray-900">
+                            {course.title}
+                          </td>
+                          <td className="py-3 px-4 text-gray-600">
+                            {course.sem}
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono font-bold text-slate-800">
+                            {course.credits} Credits
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-gray-600 leading-relaxed flex items-start gap-2">
+                  <Sparkles size={16} className="text-amber-500 shrink-0 mt-0.5" />
+                  <span>
+                    Students can opt for a <strong>Single Major</strong>, <strong>Major with Minor</strong>, or exit with a Certificate (1 Year), Diploma (2 Years), Bachelor's Degree (3 Years), or <strong>Bachelor's Degree with Honours / Research (4 Years)</strong> in alignment with NEP regulations.
+                  </span>
+                </div>
               </div>
             </div>
-        </div>
+
+            {/* SECTION 4: LABORATORIES & FACILITIES (IF AVAILABLE) */}
+            {dept.facilities && dept.facilities.length > 0 && (
+              <div className="space-y-8">
+                <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-6">
+                  <div>
+                    <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider block mb-1">
+                      Department Infrastructure
+                    </span>
+                    <h3 className="text-2xl font-black text-[#002147]">
+                      Laboratories, Learning Resources &amp; Facilities
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                      Tailored infrastructure supporting practical scientific experiments, field research, and seminars.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {dept.facilities.map((fac, idx) => (
+                      <div
+                        key={idx}
+                        className="p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-gray-200 shadow-xs flex items-start gap-3"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-[#002147] text-[#8fc35e] flex items-center justify-center shrink-0">
+                          <CheckCircle2 size={16} />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-900 text-sm">
+                            Facility {idx + 1}
+                          </h4>
+                          <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                            {fac}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* ========================================================
             4. SIBLING DEPARTMENTS NAVIGATOR IN SAME STREAM
