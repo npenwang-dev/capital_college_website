@@ -243,12 +243,12 @@ export default function Navbar({
           : 'shadow-lg border-blue-900/80 bg-[#002147]'
       }`}
     >
-      <div className="max-w-[1600px] mx-auto px-3 sm:px-5 xl:px-4 2xl:px-8">
-        <div className="flex items-center justify-between min-h-[85px] md:min-h-[96px] py-2 gap-2 sm:gap-3 xl:gap-3 2xl:gap-4">
+      <div className="max-w-[1600px] mx-auto px-2.5 min-[400px]:px-3 sm:px-5 xl:px-4 2xl:px-8">
+        <div className="flex items-center justify-between min-h-[82px] md:min-h-[96px] py-2 gap-3 sm:gap-3 xl:gap-3 2xl:gap-4">
           
           {/* Official College Brand Identity: Authentic Crest + Razor-Sharp Modern Typography */}
           <div
-            className="flex items-center gap-2 sm:gap-3 cursor-pointer py-1 group select-none shrink-0"
+            className="flex items-center gap-1.5 min-[400px]:gap-2 sm:gap-3 cursor-pointer py-1 group select-none shrink-0"
             onClick={() => onNavigate('home')}
             title="Capital College of Higher Education, Kohima"
           >
@@ -256,7 +256,7 @@ export default function Navbar({
               <img
                 src="/college-crest-hd.png"
                 alt="Capital College Crest"
-                className="h-12 sm:h-14 md:h-16 lg:h-[62px] w-auto object-contain block transition-all duration-400 ease-out group-hover:scale-108 group-hover:-rotate-1 group-hover:drop-shadow-[0_4px_16px_rgba(143,195,94,0.45)] drop-shadow-md shrink-0"
+                className="h-10 min-[400px]:h-12 sm:h-14 md:h-16 lg:h-[62px] w-auto object-contain block transition-all duration-400 ease-out group-hover:scale-108 group-hover:-rotate-1 group-hover:drop-shadow-[0_4px_16px_rgba(143,195,94,0.45)] drop-shadow-md shrink-0"
                 onError={(e) => {
                   e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png';
                 }}
@@ -267,10 +267,10 @@ export default function Navbar({
               </div>
             </div>
             <div className="flex flex-col text-left justify-center">
-              <span className="font-sans font-black text-white text-base sm:text-lg md:text-xl xl:text-[20px] 2xl:text-[22px] tracking-wide uppercase leading-tight drop-shadow-sm group-hover:text-[#b5d697] group-hover:drop-shadow-[0_2px_12px_rgba(181,214,151,0.35)] transition-all duration-300">
+              <span className="font-sans font-black text-white text-[13px] min-[400px]:text-base sm:text-lg md:text-xl xl:text-[20px] 2xl:text-[22px] tracking-wide uppercase leading-tight drop-shadow-sm group-hover:text-[#b5d697] group-hover:drop-shadow-[0_2px_12px_rgba(181,214,151,0.35)] transition-all duration-300">
                 Capital College
               </span>
-              <span className="text-[10px] sm:text-[11px] md:text-xs font-bold text-[#b5d697] tracking-[0.15em] group-hover:tracking-[0.18em] uppercase leading-tight mt-0.5 transition-all duration-300">
+              <span className="text-[8px] min-[400px]:text-[10px] sm:text-[11px] md:text-xs font-bold text-[#b5d697] tracking-[0.1em] min-[400px]:tracking-[0.15em] group-hover:tracking-[0.18em] uppercase leading-tight mt-0.5 transition-all duration-300">
                 Of Higher Education
               </span>
               <span className="text-[9px] sm:text-[9.5px] text-slate-300/85 tracking-widest uppercase font-medium mt-0.5 hidden sm:block">
@@ -587,7 +587,7 @@ export default function Navbar({
           </div>
 
           {/* Mobile & Tablet Toggle Controls */}
-          <div className="xl:hidden flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="xl:hidden flex items-center gap-2 min-[400px]:gap-2.5 sm:gap-2 shrink-0 ml-1">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
