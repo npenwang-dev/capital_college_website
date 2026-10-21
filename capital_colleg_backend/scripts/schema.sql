@@ -23,11 +23,14 @@ CREATE TABLE IF NOT EXISTS notices (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     category VARCHAR(100) DEFAULT 'Notice',
+    item_type VARCHAR(50) DEFAULT 'notice',
     summary TEXT,
     content TEXT,
     event_date VARCHAR(50),
-    image_url TEXT,
+    image_url LONGTEXT,
     link_url TEXT,
+    pdf_url LONGTEXT,
+    pdf_name VARCHAR(255),
     is_featured BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -79,7 +82,7 @@ CREATE TABLE IF NOT EXISTS faculty (
     qualification VARCHAR(255),
     designation VARCHAR(150) NOT NULL,
     is_hod BOOLEAN DEFAULT FALSE,
-    image_url VARCHAR(500),
+    image_url LONGTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

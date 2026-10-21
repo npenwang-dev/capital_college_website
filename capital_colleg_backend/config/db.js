@@ -597,6 +597,31 @@ async function setupSQLiteTables(db) {
 
 // Setup and verify MySQL tables for settings, announcements, governing_body, documents, social_links
 async function setupMySQLTables(pool) {
+  // 0. Column migrations for existing core tables (faculty, notices)
+  try {
+    const [facultyCols] = await pool.query("SHOW COLUMNS FROM `faculty` LIKE 'image_url'");
+    if (!facultyCols || facultyCols.length === 0) {
+      await pool.query("ALTER TABLE `faculty` ADD COLUMN `image_url` LONGTEXT");
+    } else {
+      await pool.query("ALTER TABLE `faculty` MODIFY COLUMN `image_url` LONGTEXT");
+    }
+  } catch (e) {}
+
+  try {
+    const [noticesCols] = await pool.query("SHOW COLUMNS FROM `notices`");
+    const colNames = noticesCols.map(c => c.Field);
+    if (!colNames.includes('item_type')) {
+      await pool.query("ALTER TABLE `notices` ADD COLUMN `item_type` VARCHAR(50) DEFAULT 'notice'");
+    }
+    if (!colNames.includes('pdf_url')) {
+      await pool.query("ALTER TABLE `notices` ADD COLUMN `pdf_url` LONGTEXT");
+    }
+    if (!colNames.includes('pdf_name')) {
+      await pool.query("ALTER TABLE `notices` ADD COLUMN `pdf_name` VARCHAR(255)");
+    }
+    await pool.query("ALTER TABLE `notices` MODIFY COLUMN `image_url` LONGTEXT");
+  } catch (e) {}
+
   // 1. Settings Table
   await pool.query(`
     CREATE TABLE IF NOT EXISTS \`settings\` (
