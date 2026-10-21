@@ -55,11 +55,10 @@ export default function CollegeInfoModal({ isOpen, onClose, topic = 'rules', onO
     },
     iqac: {
       title: 'Internal Quality Assurance Cell (IQAC)',
-      badge: 'Quality & Accreditation',
       subtitle: 'Statutory body ensuring academic excellence, transformative pedagogy, and curriculum delivery',
       render: () => (
         <div className="space-y-4">
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-xs md:text-sm text-gray-700">
+          <div className="bg-slate-50 border border-slate-200 p-4 rounded-lg text-xs md:text-sm text-slate-700">
             <p>
               In accordance with NAAC and UGC guidelines, the IQAC of Capital College of Higher Education guides continuous quality enhancement, faculty development programs, and pedagogical innovation.
             </p>

@@ -3295,91 +3295,85 @@ function IQACSection() {
   ];
 
   return (
-    <div className="space-y-10 font-sans text-gray-800">
-      {/* IQAC Mandate Banner */}
-      <div className="rounded-2xl bg-gradient-to-br from-[#002147] to-[#173a2c] p-6 sm:p-8 text-white shadow-md border border-white/10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4a6b28] text-white text-xs font-bold uppercase tracking-wider mb-3">
-          <ShieldCheck size={13} />
-          <span>Internal Quality Assurance System</span>
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
+    <div className="space-y-8 font-sans text-slate-800">
+      {/* IQAC Mandate Card (Simple, Clean, Minimal) */}
+      <div className="rounded-xl bg-white p-5 sm:p-6 border border-slate-200/90 shadow-2xs">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
           Internal Quality Assurance Cell (IQAC)
         </h2>
-        <p className="text-sm sm:text-base text-gray-200 leading-relaxed max-w-3xl text-justify">
-          Based on the recommendation of the Governing Body, the IQAC has been restructured and the following members are hereby appointed as members of the Internal Quality Assurance Cell (IQAC) of Capital College of Higher Education to benchmark institutional quality, promote academic research, and foster student excellence.
+        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2 text-justify">
+          Based on the recommendation of the Governing Body, the IQAC has been structured to benchmark institutional quality, promote academic research, and foster student excellence in accordance with NAAC and UGC guidelines.
         </p>
       </div>
 
-      {/* Leadership Trio */}
+      {/* Leadership Trio (Neutral, Clean Cards) */}
       <div>
-        <h3 className="text-base font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <BadgeCheck size={16} className="text-[#4a6b28]" />
-          <span>IQAC Executive Leadership</span>
+        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+          IQAC Executive Leadership
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
           {leadership.map((l, idx) => (
             <div
               key={idx}
-              className="card-interactive card-accent-top bg-white rounded-2xl border-2 border-emerald-100 p-5 shadow-xs"
+              className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-2xs flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#002147] text-white">
+              <div>
+                <span className="text-[10.5px] font-semibold text-slate-500 uppercase tracking-wider">
                   {l.role}
                 </span>
-                <ShieldCheck size={16} className="text-[#4a6b28]" />
+                <h4 className="font-bold text-slate-900 text-sm sm:text-base mt-1">{l.name}</h4>
+                <p className="text-xs text-slate-500 mt-0.5">{l.desc}</p>
               </div>
-              <h4 className="font-extrabold text-[#002147] text-base mt-2">{l.name}</h4>
-              <p className="text-xs text-gray-600 mt-1">{l.desc}</p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Categorized Member Panels */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Categorized Member Panels (Clean Neutral Lists) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Arts Faculty Representatives */}
-        <div className="card-interactive bg-white rounded-2xl border border-gray-200 p-6 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <h4 className="font-bold text-base text-[#002147]">Arts Department Heads & Deans</h4>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-[#4a6b28]">8 Members</span>
+        <div className="bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs space-y-3">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <h4 className="font-bold text-sm text-slate-900">Arts Department Heads &amp; Deans</h4>
+            <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-500">8 Members</span>
           </div>
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {artsFacultyMembers.map((m, idx) => (
-              <div key={idx} className="flex items-center justify-between text-xs p-2 rounded-lg bg-gray-50 border border-gray-100">
-                <span className="font-bold text-gray-900">{m.name}</span>
-                <span className="text-gray-500">{m.desc}</span>
+              <div key={idx} className="flex items-center justify-between text-xs py-2 px-2.5 rounded-lg bg-slate-50/70 border border-slate-100">
+                <span className="font-medium text-slate-800">{m.name}</span>
+                <span className="text-slate-500 text-[11px]">{m.desc}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Science Stream & Community Representatives */}
-        <div className="space-y-6">
-          <div className="card-interactive bg-white rounded-2xl border border-gray-200 p-6 shadow-xs space-y-3">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <h4 className="font-bold text-base text-[#002147]">Science Department Heads</h4>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-[#002147]">3 Members</span>
+        <div className="space-y-5">
+          <div className="bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <h4 className="font-bold text-sm text-slate-900">Science Department Heads</h4>
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-500">3 Members</span>
             </div>
             <div className="space-y-2">
               {scienceFacultyMembers.map((m, idx) => (
-                <div key={idx} className="flex items-center justify-between text-xs p-2 rounded-lg bg-gray-50 border border-gray-100">
-                  <span className="font-bold text-gray-900">{m.name}</span>
-                  <span className="text-gray-500">{m.desc}</span>
+                <div key={idx} className="flex items-center justify-between text-xs py-2 px-2.5 rounded-lg bg-slate-50/70 border border-slate-100">
+                  <span className="font-medium text-slate-800">{m.name}</span>
+                  <span className="text-slate-500 text-[11px]">{m.desc}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="card-interactive bg-white rounded-2xl border border-gray-200 p-6 shadow-xs space-y-3">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <h4 className="font-bold text-base text-[#002147]">Management, Community & Students</h4>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-50 text-purple-700">4 Members</span>
+          <div className="bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+              <h4 className="font-bold text-sm text-slate-900">Management, Community &amp; Students</h4>
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-500">4 Members</span>
             </div>
             <div className="space-y-2">
               {managementCommunity.map((m, idx) => (
-                <div key={idx} className="flex items-center justify-between text-xs p-2 rounded-lg bg-gray-50 border border-gray-100">
-                  <span className="font-bold text-gray-900">{m.name}</span>
-                  <span className="text-gray-500">{m.desc}</span>
+                <div key={idx} className="flex items-center justify-between text-xs py-2 px-2.5 rounded-lg bg-slate-50/70 border border-slate-100">
+                  <span className="font-medium text-slate-800">{m.name}</span>
+                  <span className="text-slate-500 text-[11px]">{m.desc}</span>
                 </div>
               ))}
             </div>
