@@ -588,6 +588,22 @@ export default function Navbar({
 
           {/* Mobile & Tablet Toggle Controls */}
           <div className="xl:hidden flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onNavigate('home');
+              }}
+              className={`h-8 w-8 sm:h-9 sm:w-9 rounded-lg flex items-center justify-center transition-all cursor-pointer border ${
+                currentPage === 'home'
+                  ? 'bg-[#4a6b28] text-white border-[#648d35]'
+                  : 'bg-white/10 hover:bg-[#4a6b28] text-slate-200 hover:text-white border-white/20'
+              }`}
+              title="Home"
+              aria-label="Home"
+            >
+              <Home size={16} />
+            </button>
+
             {/* Mobile Notice Board Button */}
             <button
               onClick={() => onNavigate('notice')}

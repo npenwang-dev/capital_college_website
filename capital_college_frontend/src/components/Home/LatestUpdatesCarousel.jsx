@@ -128,6 +128,8 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
   const [isPaused, setIsPaused] = useState(false);
   const [hasLanded, setHasLanded] = useState(false);
   const [isIntroAnimating, setIsIntroAnimating] = useState(false);
+  const [introTransitionDuration, setIntroTransitionDuration] = useState(1150);
+  const introPlayed = useRef(false);
   const touchStartX = useRef(0);
   const sectionRef = useRef(null);
 
@@ -265,24 +267,39 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
     };
   }, []);
 
-  // Single smooth scroll slide highlight when landing over this section
+  // Spin the carousel once when the section first enters the viewport.
   useEffect(() => {
-    if (!hasLanded || displayList.length <= 1) return;
+    if (!hasLanded || displayList.length <= 1 || introPlayed.current) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      introPlayed.current = true;
+      return;
+    }
 
     setIsIntroAnimating(true);
+    const spinDurations = [70, 75, 80, 85, 95, 105, 115, 125, 135];
+    let step = 0;
+    let timer;
 
-    // Single smooth scroll slide into center highlight upon landing
-    const slideTimer = setTimeout(() => {
+    const spin = () => {
+      setIntroTransitionDuration(spinDurations[step]);
       setCenterIndex((prev) => (prev + 1) % displayList.length);
-    }, 350);
+      step += 1;
 
-    const endIntroTimer = setTimeout(() => {
-      setIsIntroAnimating(false);
-    }, 3000);
+      if (step < spinDurations.length) {
+        timer = setTimeout(spin, spinDurations[step - 1]);
+      } else {
+        timer = setTimeout(() => {
+          setIsIntroAnimating(false);
+          introPlayed.current = true;
+        }, spinDurations[step - 1]);
+      }
+    };
+
+    spin();
 
     return () => {
-      clearTimeout(slideTimer);
-      clearTimeout(endIntroTimer);
+      clearTimeout(timer);
     };
   }, [hasLanded, displayList.length]);
 
@@ -339,7 +356,6 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
         
         {/* Section Header: Pure Campus Events */}
         <SectionTitle
-          eyebrow="CAMPUS LIFE & HAPPENINGS"
           title="Campus Events & Activities"
           subtitle="Experience vibrant student life at Capital College — from the annual Trifecta festival and athletic meets to NSS outreach camps and Eco Club expeditions."
         />
@@ -371,14 +387,15 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
           <button
             onClick={prev}
             aria-label="Previous Slide"
-            className="hidden lg:flex absolute -left-5 xl:-left-7 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md hover:shadow-xl items-center justify-center transition-all duration-300 cursor-pointer text-[#002147] hover:bg-[#002147] hover:text-white hover:scale-105 active:scale-95"
+            className="flex absolute left-1 sm:-left-5 xl:-left-7 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md hover:shadow-xl items-center justify-center transition-all duration-300 cursor-pointer text-[#002147] hover:bg-[#002147] hover:text-white hover:scale-105 active:scale-95"
           >
-            <ChevronLeft size={22} />
+            <ChevronLeft size={18} className="sm:hidden" />
+            <ChevronLeft size={22} className="hidden sm:block" />
           </button>
 
           {/* Genuine Circular Swapping Stage (Cards glide into the middle in a seamless loop) */}
           <div
-            className="relative w-full h-[520px] sm:h-[550px] lg:h-[580px] overflow-hidden flex items-center justify-center select-none"
+            className="campus-event-carousel-stage relative w-full h-[460px] sm:h-[550px] lg:h-[580px] overflow-hidden flex items-center justify-center select-none"
             style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
@@ -401,37 +418,42 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
               let opacity = 0;
               let pointerEvents = 'none';
               let visibility = 'hidden';
+              let rotationY = 0;
 
               if (isCenter) {
                 // Middle card: noticeably bigger (scale 1.10), elevated (-16px), full opacity
-                transformStyle = 'translateX(-50%) translateY(-16px) scale(1.10)';
+                transformStyle = 'translateX(-50%) translateY(-16px) scale(var(--campus-carousel-center-scale, 1.10)) rotateY(0deg)';
                 zIndex = 30;
                 opacity = 1;
                 pointerEvents = 'auto';
                 visibility = 'visible';
               } else if (isLeft) {
                 // Left card: recessed (scale 0.88), lower opacity, clickable to swap to center
-                transformStyle = 'translateX(calc(-50% - 105%)) translateY(10px) scale(0.88)';
+                rotationY = isIntroAnimating ? 16 : 0;
+                transformStyle = `translateX(calc(-50% - var(--campus-carousel-side-offset, 105%))) translateY(10px) scale(0.88) rotateY(${rotationY}deg)`;
                 zIndex = 20;
                 opacity = 0.65;
                 pointerEvents = 'auto';
                 visibility = 'visible';
               } else if (isRight) {
                 // Right card: recessed (scale 0.88), lower opacity, clickable to swap to center
-                transformStyle = 'translateX(calc(-50% + 105%)) translateY(10px) scale(0.88)';
+                rotationY = isIntroAnimating ? -16 : 0;
+                transformStyle = `translateX(calc(-50% + var(--campus-carousel-side-offset, 105%))) translateY(10px) scale(0.88) rotateY(${rotationY}deg)`;
                 zIndex = 20;
                 opacity = 0.65;
                 pointerEvents = 'auto';
                 visibility = 'visible';
               } else if (diff === -2) {
                 // Exited stage left: smoothly fades out offstage
-                transformStyle = 'translateX(calc(-50% - 210%)) translateY(16px) scale(0.74)';
+                rotationY = isIntroAnimating ? 24 : 0;
+                transformStyle = `translateX(calc(-50% - 210%)) translateY(16px) scale(0.74) rotateY(${rotationY}deg)`;
                 opacity = 0;
                 pointerEvents = 'none';
                 visibility = 'visible';
               } else if (diff === 2) {
                 // Entering stage right: smoothly fades in from offstage
-                transformStyle = 'translateX(calc(-50% + 210%)) translateY(16px) scale(0.74)';
+                rotationY = isIntroAnimating ? -24 : 0;
+                transformStyle = `translateX(calc(-50% + 210%)) translateY(16px) scale(0.74) rotateY(${rotationY}deg)`;
                 opacity = 0;
                 pointerEvents = 'none';
                 visibility = 'visible';
@@ -451,17 +473,18 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
                   style={{
                     position: 'absolute',
                     left: '50%',
-                    width: 'min(90%, 375px)',
+                    width: 'min(var(--campus-carousel-card-width, 90%), 390px)',
                     transform: transformStyle,
                     zIndex: zIndex,
                     opacity: opacity,
                     visibility: visibility,
                     pointerEvents: pointerEvents,
+                    transformStyle: 'preserve-3d',
                     willChange: 'transform, opacity',
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
                     transition: isIntroAnimating
-                      ? 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 1000ms cubic-bezier(0.22, 1, 0.36, 1)'
+                      ? `transform ${introTransitionDuration}ms linear, opacity ${introTransitionDuration}ms linear, box-shadow ${introTransitionDuration}ms linear`
                       : 'transform 1150ms cubic-bezier(0.22, 1, 0.36, 1), opacity 850ms ease, box-shadow 850ms ease'
                   }}
                   className="py-4"
@@ -482,7 +505,7 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
                     }`}
                   >
                     {/* Event Photographic Cover */}
-                    <div className="relative h-56 sm:h-60 overflow-hidden bg-slate-900">
+                    <div className="relative h-48 sm:h-60 overflow-hidden bg-slate-900">
                       <img
                         src={item.image_url || 'https://capitalcollege.edu.in/wp-content/uploads/2024/10/DSC_5192-scaled.jpg'}
                         alt={item.title}
@@ -527,7 +550,7 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
                     </div>
 
                     {/* Card Content & Dynamic Hover Arrow */}
-                    <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+                    <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between">
                       <div>
                         <h3 className={`font-bold transition-colors line-clamp-2 leading-snug tracking-tight ${
                           isCenter
@@ -549,7 +572,7 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
                       }`}>
                         <span className="font-medium">Capital College Life</span>
                         <span className="inline-flex items-center gap-1 font-bold">
-                          <span>{isCenter ? 'View Details' : 'Click to Focus'}</span>
+                          <span>{isCenter ? 'View Details' : <><span className="sm:hidden">Tap to Focus</span><span className="hidden sm:inline">Click to Focus</span></>}</span>
                           <ArrowRight size={12} className={`transform transition-transform ${isCenter ? 'translate-x-1' : 'group-hover:translate-x-1'}`} />
                         </span>
                       </div>
@@ -564,23 +587,15 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
           <button
             onClick={next}
             aria-label="Next Slide"
-            className="hidden lg:flex absolute -right-5 xl:-right-7 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md hover:shadow-xl items-center justify-center transition-all duration-300 cursor-pointer text-[#002147] hover:bg-[#002147] hover:text-white hover:scale-105 active:scale-95"
+            className="flex absolute right-1 sm:-right-5 xl:-right-7 top-1/2 -translate-y-1/2 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md hover:shadow-xl items-center justify-center transition-all duration-300 cursor-pointer text-[#002147] hover:bg-[#002147] hover:text-white hover:scale-105 active:scale-95"
           >
-            <ChevronRight size={22} />
+            <ChevronRight size={18} className="sm:hidden" />
+            <ChevronRight size={22} className="hidden sm:block" />
           </button>
         </div>
 
         {/* Sleek Minimalist Slider Navigation & Pagination Bar */}
         <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
-          {/* Left Arrow Button */}
-          <button
-            onClick={prev}
-            aria-label="Previous Slide"
-            className="w-10 h-10 rounded-full bg-white border border-slate-200/90 shadow-xs hover:shadow-md flex items-center justify-center text-[#002147] hover:bg-[#002147] hover:text-white transition-all cursor-pointer mr-2"
-          >
-            <ChevronLeft size={18} />
-          </button>
-
           {/* Dynamic Progress Indicator Dashes */}
           {filteredEvents.map((_, idx) => (
             <button
@@ -594,15 +609,6 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
               }`}
             />
           ))}
-
-          {/* Right Arrow Button */}
-          <button
-            onClick={next}
-            aria-label="Next Slide"
-            className="w-10 h-10 rounded-full bg-white border border-slate-200/90 shadow-xs hover:shadow-md flex items-center justify-center text-[#002147] hover:bg-[#002147] hover:text-white transition-all cursor-pointer ml-2"
-          >
-            <ChevronRight size={18} />
-          </button>
         </div>
 
         {/* Understated Link to Full Events Gallery */}
@@ -623,4 +629,3 @@ export default function LatestUpdatesCarousel({ onSelectNotice, onViewMore, onVi
     </section>
   );
 }
-

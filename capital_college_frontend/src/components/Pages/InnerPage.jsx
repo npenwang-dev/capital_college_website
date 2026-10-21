@@ -4,6 +4,7 @@ import {
   Download,
   BookOpen,
   GraduationCap,
+  ArrowLeft,
   ArrowRight,
   Search,
   FileText,
@@ -4082,6 +4083,14 @@ export default function InnerPage({ pageId, onNavigate, onOpenAdmission, onOpenA
         <div className="wrapper inner-main-title bg-[#20252b] text-white py-12 md:py-16 border-b border-gray-700/50 shadow-inner relative overflow-hidden">
           <div className={`${isProgramsPage ? 'max-w-[1440px] 2xl:max-w-[1536px]' : 'max-w-7xl'} mx-auto px-4 sm:px-6 lg:px-8 relative z-10`}>
             <header className="entry-header">
+              <button
+                onClick={() => onNavigate('home')}
+                className="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 hover:text-[#b5d697] sm:hidden"
+                aria-label="Back to home"
+                title="Back to home"
+              >
+                <ArrowLeft size={18} />
+              </button>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-wide uppercase drop-shadow-sm font-sans leading-tight">
                 {pageData.title}
               </h1>

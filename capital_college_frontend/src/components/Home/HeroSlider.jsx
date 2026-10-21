@@ -91,9 +91,11 @@ export default function HeroSlider({ onOpenAdmission, onNavigate }) {
         const rect = el.getBoundingClientRect();
         const headerHeight = rect.top > 0 ? rect.top : (document.querySelector('nav')?.offsetHeight || 96) + 38;
         const available = window.innerHeight - headerHeight;
-        setHeroHeight(`${Math.max(580, available)}px`);
+        const minHeight = window.innerWidth < 640 ? 680 : 580;
+        setHeroHeight(`${Math.max(minHeight, available)}px`);
       } else {
-        setHeroHeight(`${Math.max(580, window.innerHeight - 134)}px`);
+        const minHeight = window.innerWidth < 640 ? 680 : 580;
+        setHeroHeight(`${Math.max(minHeight, window.innerHeight - 134)}px`);
       }
     };
 
@@ -147,7 +149,7 @@ export default function HeroSlider({ onOpenAdmission, onNavigate }) {
       id="hero-slider"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      style={{ height: heroHeight, minHeight: '580px' }}
+      style={{ height: heroHeight, minHeight: 'min(680px, 100vh)' }}
       className="relative w-full overflow-hidden bg-slate-950 select-none flex flex-col justify-between"
     >
       {/* Background Images with smooth crossfade and continuous Ken Burns zoom */}
@@ -180,13 +182,13 @@ export default function HeroSlider({ onOpenAdmission, onNavigate }) {
       ))}
 
       {/* Main Collegiate Stage & Dock Container: Pushed to Left to Harmonize with Header Crest */}
-      <div className="relative z-20 w-full max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-8 2xl:px-10 flex-1 flex flex-col justify-between pt-16 sm:pt-24 lg:pt-32 xl:pt-36 pb-5 sm:pb-7">
+      <div className="relative z-20 w-full max-w-[1600px] mx-auto px-4 sm:px-6 xl:px-8 2xl:px-10 flex-1 flex flex-col justify-between pt-28 sm:pt-24 lg:pt-32 xl:pt-36 pb-4 sm:pb-7">
         
         {/* Top/Middle: Majestic Typography & Symmetrical Dual CTAs */}
-        <div key={current} className="max-w-2xl lg:max-w-3xl text-left space-y-4 sm:space-y-5 pt-4 sm:pt-6 lg:pt-8">
+        <div key={current} className="max-w-2xl lg:max-w-3xl text-left space-y-4 sm:space-y-5 pt-8 sm:pt-6 lg:pt-8">
           
           {/* Main Headline: Sleek Contemporary Geometric Typography (Outfit) */}
-          <h1 className="animate-hero-title-blur font-outfit text-3xl sm:text-5xl lg:text-[54px] xl:text-6xl text-white font-extrabold tracking-tight leading-[1.12] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
+          <h1 className="animate-hero-title-blur font-outfit text-[1.8rem] sm:text-5xl lg:text-[54px] xl:text-6xl text-white font-extrabold tracking-tight leading-[1.12] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)]">
             {activeSlide.title}
           </h1>
 
@@ -266,13 +268,13 @@ export default function HeroSlider({ onOpenAdmission, onNavigate }) {
             {/* 1. Admissions 2026 */}
             <button
               onClick={() => handleAction('admission')}
-              className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
+              className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
-                <FileText size={18} />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
+                <FileText size={16} className="sm:w-[18px] sm:h-[18px]" />
               </div>
               <div className="min-w-0">
-                <h4 className="text-white text-xs sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors truncate">
+                <h4 className="text-white text-[11px] sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors leading-tight">
                   Admissions 2026
                 </h4>
                 <p className="text-slate-300 text-[11px] truncate mt-0.5 group-hover:text-white/90 transition-colors">
@@ -284,13 +286,13 @@ export default function HeroSlider({ onOpenAdmission, onNavigate }) {
             {/* 2. Academic Programmes */}
             <button
               onClick={() => handleAction('programs')}
-              className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
+              className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
-                <GraduationCap size={18} />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
+                <GraduationCap size={16} className="sm:w-[18px] sm:h-[18px]" />
               </div>
               <div className="min-w-0">
-                <h4 className="text-white text-xs sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors truncate">
+                <h4 className="text-white text-[11px] sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors leading-tight">
                   Academic Honours
                 </h4>
                 <p className="text-slate-300 text-[11px] truncate mt-0.5 group-hover:text-white/90 transition-colors">
@@ -306,13 +308,13 @@ export default function HeroSlider({ onOpenAdmission, onNavigate }) {
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
                 else handleAction('notice');
               }}
-              className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
+              className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
-                <Compass size={18} />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
+                <Compass size={16} className="sm:w-[18px] sm:h-[18px]" />
               </div>
               <div className="min-w-0">
-                <h4 className="text-white text-xs sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors truncate">
+                <h4 className="text-white text-[11px] sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors leading-tight">
                   Notice Board
                 </h4>
                 <p className="text-slate-300 text-[11px] truncate mt-0.5 group-hover:text-white/90 transition-colors">
@@ -328,13 +330,13 @@ export default function HeroSlider({ onOpenAdmission, onNavigate }) {
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
                 else handleAction('contact');
               }}
-              className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
+              className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl hover:bg-white/10 transition-all duration-300 text-left group cursor-pointer border border-transparent hover:border-white/15 hover:-translate-y-0.5"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
-                <MapPin size={18} />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/15 text-[#b5d697] border border-emerald-400/25 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#4a6b28] group-hover:text-white group-hover:border-[#4a6b28] group-hover:shadow-md transition-all duration-300">
+                <MapPin size={16} className="sm:w-[18px] sm:h-[18px]" />
               </div>
               <div className="min-w-0">
-                <h4 className="text-white text-xs sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors truncate">
+                <h4 className="text-white text-[11px] sm:text-sm font-bold group-hover:text-[#b5d697] transition-colors leading-tight">
                   Campus Locations
                 </h4>
                 <p className="text-slate-300 text-[11px] truncate mt-0.5 group-hover:text-white/90 transition-colors">

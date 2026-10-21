@@ -11,59 +11,75 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Verify reCAPTCHA token
+    // Verify the Google-issued token before processing credentials.
     const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
-    if (recaptchaSecret && recaptchaSecret.trim() !== '') {
-      if (!captchaToken) {
-        return res.status(400).json({
-          success: false,
-          message: 'Security verification failed: reCAPTCHA confirmation is required.'
-        });
-      }
+
+    if (!captchaToken) {
+      return res.status(400).json({
+        success: false,
+        message: 'Security verification is required. Please verify again.'
+      });
+    }
+
+    if (!recaptchaSecret || !recaptchaSecret.trim()) {
+      console.error('RECAPTCHA_SECRET_KEY is required to verify admin login.');
+      return res.status(503).json({
+        success: false,
+        message: 'Security verification is unavailable. Please contact the site administrator.'
+      });
+    } else {
       try {
         const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `secret=${encodeURIComponent(recaptchaSecret)}&response=${encodeURIComponent(captchaToken)}`
+          body: new URLSearchParams({
+            secret: recaptchaSecret,
+            response: captchaToken
+          })
         });
-        const verifyData = await verifyRes.json();
-        if (verifyData.success) {
-          console.log('Official Google reCAPTCHA verification verified successfully:', verifyData);
-        } else {
-          const errorCodes = verifyData['error-codes'] || [];
-          console.warn('Google reCAPTCHA verification notice:', errorCodes);
-
-          // Detect local development environment or domain mismatch errors (such as testing on localhost)
-          const isDevOrLocal = !process.env.NODE_ENV || 
-                               process.env.NODE_ENV !== 'production' || 
-                               (req.headers.host && req.headers.host.includes('localhost')) ||
-                               (req.headers.origin && req.headers.origin.includes('localhost')) ||
-                               (req.headers.referer && req.headers.referer.includes('localhost'));
-
-          const isDomainOrBrowserMismatch = errorCodes.includes('browser-error') || 
-                                            errorCodes.includes('hostname-mismatch') || 
-                                            errorCodes.includes('timeout-or-duplicate') ||
-                                            errorCodes.includes('invalid-input-response');
-
-          if (isDevOrLocal || isDomainOrBrowserMismatch || captchaToken.startsWith('rc_v2_') || captchaToken.startsWith('rc_v3_') || (captchaToken && captchaToken.length > 20)) {
-            console.warn(`Local development / domain notice: Google returned [${errorCodes.join(', ')}]. Allowing authentication for verified client action.`);
-          } else {
-            console.warn('Google reCAPTCHA verification failed:', errorCodes);
-            return res.status(400).json({
-              success: false,
-              message: 'reCAPTCHA verification failed. Please try again.'
-            });
-          }
+        if (!verifyRes.ok) {
+          console.error(`Google reCAPTCHA siteverify returned HTTP ${verifyRes.status}. Failing closed.`);
+          return res.status(503).json({
+            success: false,
+            message: 'Security verification is temporarily unavailable. Please try again shortly.'
+          });
         }
+
+        const verifyData = await verifyRes.json();
+        if (!verifyData.success) {
+          console.warn('Google reCAPTCHA verification failed:', verifyData['error-codes'] || []);
+          return res.status(400).json({
+            success: false,
+            message: 'Security verification expired or failed. Please verify again.'
+          });
+        }
+
+        if (verifyData.action !== undefined || verifyData.score !== undefined) {
+          console.warn('A reCAPTCHA v3 token was rejected; admin login accepts v2 Checkbox tokens only.');
+          return res.status(400).json({
+            success: false,
+            message: 'Please complete the reCAPTCHA v2 checkbox and try again.'
+          });
+        }
+
+        const allowedHostnames = (process.env.RECAPTCHA_ALLOWED_HOSTNAMES || req.hostname)
+          .split(',')
+          .map((hostname) => hostname.trim().toLowerCase())
+          .filter(Boolean);
+        if (!verifyData.hostname || !allowedHostnames.includes(verifyData.hostname.toLowerCase())) {
+          console.warn('Google reCAPTCHA hostname did not match the configured site.');
+          return res.status(400).json({
+            success: false,
+            message: 'Security verification failed for this site. Please contact the site administrator.'
+          });
+        }
+
+        console.log('Google reCAPTCHA v2 verification passed.');
       } catch (captchaErr) {
-        console.warn('Google reCAPTCHA API verification notice:', captchaErr.message);
-      }
-    } else {
-      // Require security captcha token to prevent direct bot attacks
-      if (!captchaToken) {
-        return res.status(400).json({
+        console.error('Google reCAPTCHA verification error (failing closed):', captchaErr.message);
+        return res.status(503).json({
           success: false,
-          message: 'Security verification required: Please complete the reCAPTCHA checkbox to proceed.'
+          message: 'Security verification is temporarily unavailable. Please try again shortly.'
         });
       }
     }
@@ -364,6 +380,3 @@ exports.getBackupData = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-
-

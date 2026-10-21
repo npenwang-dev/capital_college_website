@@ -158,6 +158,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [captchaToken, setCaptchaToken] = useState('');
   const [captchaError, setCaptchaError] = useState(false);
+  const [captchaResetKey, setCaptchaResetKey] = useState(0);
 
   // Register Custom Admin State
   const [registerData, setRegisterData] = useState({
@@ -735,7 +736,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
     e.preventDefault();
     setLoginError('');
 
-    if (!captchaVerified) {
+    if (!captchaVerified || !captchaToken) {
       setCaptchaError(true);
       setLoginError('Please complete the security reCAPTCHA verification to proceed.');
       return;
@@ -752,7 +753,17 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
           captchaToken
         })
       });
-      const data = await res.json();
+
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error(
+          res.ok
+            ? 'The server returned an unexpected response. Please try again.'
+            : 'Cannot reach the authentication server. Please try again in a moment.'
+        );
+      }
 
       if (!res.ok || !data.success) {
         throw new Error(data.message || 'Invalid administrative credentials.');
@@ -768,6 +779,10 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
       setCaptchaError(false);
     } catch (err) {
       setLoginError(err.message || 'Authentication failed. Please verify credentials.');
+      setCaptchaVerified(false);
+      setCaptchaToken('');
+      setCaptchaError(false);
+      setCaptchaResetKey((key) => key + 1);
     } finally {
       setLoginLoading(false);
     }
@@ -2074,6 +2089,7 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                   verified={captchaVerified}
                   hasError={captchaError}
                   disabled={loginLoading}
+                  resetKey={captchaResetKey}
                   onVerify={(tok) => {
                     setCaptchaVerified(true);
                     setCaptchaToken(tok);

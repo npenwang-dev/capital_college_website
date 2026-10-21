@@ -233,7 +233,46 @@ export default function NoticeBoardPage({ onNavigate }) {
           1. AUTHENTIC INSTITUTIONAL NOTICE BOARD MASTHEAD
           ========================================================================= */}
       <LandingReveal animation="fade-down" duration={600}>
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <div className="sm:hidden space-y-3 border-b border-slate-200 pb-4">
+          <div className="flex items-center gap-3">
+            <img
+              src="/college-crest-hd.png"
+              alt="Capital College Crest"
+              className="h-12 w-12 shrink-0 object-contain"
+              onError={(e) => {
+                e.currentTarget.src = 'https://capitalcollege.edu.in/wp-content/uploads/2021/01/cropped-logo-1-3-1-1.png';
+              }}
+            />
+            <div className="min-w-0">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-[#4a6b28]">
+                Office of the Principal
+              </span>
+              <h1 className="mt-0.5 text-lg font-extrabold leading-tight text-[#002147]">
+                Capital College of Higher Education
+              </h1>
+              <p className="mt-1 text-[11px] leading-snug text-slate-500">
+                P.R. Hill, Kohima · Estd. 2004
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px]">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#002147] px-2.5 py-1 font-bold uppercase tracking-wide text-white">
+              <FileText size={11} className="text-[#b5d697]" />
+              Official Notice Board
+            </span>
+            <span className="font-semibold text-[#4a6b28]">
+              Nagaland University affiliated
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between gap-3 text-[11px] text-slate-500">
+            <span>UGC 2(f) &amp; 12(B) recognized</span>
+            <span className="shrink-0 font-semibold text-slate-400">Session 2024–25</span>
+          </div>
+        </div>
+
+        <div className="hidden sm:block bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
           <div className="border-t-4 border-[#002147] p-6 sm:p-8 bg-gradient-to-b from-slate-50/70 to-white">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pb-6 border-b border-slate-200">
               <div className="flex items-center gap-4">

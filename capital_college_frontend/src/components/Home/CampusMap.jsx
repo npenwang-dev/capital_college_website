@@ -16,17 +16,17 @@ export default function CampusMap() {
         />
 
         {/* 2-Column Layout: Left Official Info & Action, Right Interactive Map */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch pt-2">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-stretch pt-2">
           
           {/* Left Column: Only Verified Factual Details (4 cols) */}
           <LandingReveal
             animation="fade-right"
             duration={800}
-            className="lg:col-span-4 flex flex-col justify-center space-y-4"
+            className="order-2 lg:order-1 lg:col-span-4 grid grid-cols-2 gap-3 sm:gap-4 lg:flex lg:flex-col lg:justify-center lg:space-y-4 lg:gap-0"
           >
             
             {/* Official Address Card */}
-            <div className="card-interactive card-accent-top group bg-white p-5 rounded-2xl border border-slate-200 shadow-sm cursor-default">
+            <div className="card-interactive card-accent-top group bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm cursor-default">
               <div className="flex items-center gap-2.5 mb-2 text-[#002147]">
                 <span className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200 text-[#4a6b28] flex items-center justify-center font-bold shrink-0 icon-spring">
                   <MapPin size={18} />
@@ -35,13 +35,13 @@ export default function CampusMap() {
                   Address
                 </h4>
               </div>
-              <p className="text-sm text-gray-700 font-medium pl-10 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-700 font-medium pl-10 leading-relaxed">
                 P.R. Hill, Kohima, Nagaland 797001
               </p>
             </div>
 
             {/* Official College Timing Card */}
-            <div className="card-interactive card-accent-top group bg-white p-5 rounded-2xl border border-slate-200 shadow-sm cursor-default">
+            <div className="card-interactive card-accent-top group bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-sm cursor-default">
               <div className="flex items-center gap-2.5 mb-2 text-[#002147]">
                 <span className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#002147] flex items-center justify-center font-bold shrink-0 icon-spring">
                   <Clock size={18} />
@@ -50,7 +50,7 @@ export default function CampusMap() {
                   College Timing
                 </h4>
               </div>
-              <p className="text-sm text-gray-700 font-medium pl-10 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-700 font-medium pl-10 leading-relaxed">
                 9:00 am to 4:00 pm
               </p>
             </div>
@@ -60,7 +60,7 @@ export default function CampusMap() {
               href="https://maps.google.com/?q=Capital+College+of+Higher+Education+Kohima+PR+Hill"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-lift bg-[#4a6b28] hover:bg-[#3d5920] text-white p-4 rounded-2xl border border-[#648d35] shadow-sm hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+              className="col-span-2 btn-lift bg-[#4a6b28] hover:bg-[#3d5920] text-white p-3.5 sm:p-4 rounded-2xl border border-[#648d35] shadow-sm hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <span className="w-9 h-9 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center font-bold shrink-0 icon-spring">
@@ -70,13 +70,14 @@ export default function CampusMap() {
                   <h4 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-white">
                     Get Driving Directions
                   </h4>
-                  <p className="text-[11px] text-emerald-100 font-medium">
+                  <p className="hidden sm:block text-[11px] text-emerald-100 font-medium">
                     Open in Google Maps Navigation
                   </p>
                 </div>
               </div>
-              <span className="text-xs font-bold bg-white/20 px-2.5 py-1 rounded-lg border border-white/25 arrow-slide">
-                Navigate &rarr;
+              <span className="text-[11px] sm:text-xs font-bold bg-white/20 px-2.5 py-1 rounded-lg border border-white/25 arrow-slide">
+                <span className="sm:hidden">Open</span>
+                <span className="hidden sm:inline">Navigate &rarr;</span>
               </span>
             </a>
 
@@ -87,9 +88,9 @@ export default function CampusMap() {
             animation="fade-left"
             duration={850}
             delay={150}
-            className="lg:col-span-8 flex flex-col"
+            className="order-1 lg:order-2 lg:col-span-8 flex flex-col"
           >
-            <div className="relative w-full h-[360px] sm:h-[420px] lg:h-full min-h-[380px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white ring-1 ring-slate-200/90 bg-slate-100 group">
+            <div className="relative w-full h-[260px] sm:h-[420px] lg:h-full lg:min-h-[380px] rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border-2 sm:border-4 border-white ring-1 ring-slate-200/90 bg-slate-100 group">
               
               {/* Google Maps Responsive Iframe */}
               <iframe

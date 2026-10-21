@@ -119,13 +119,13 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
   };
 
   return (
-    <footer className="bg-[#002147] text-white pt-12 pb-8 border-t-4 border-[#4a6b28]">
+    <footer className="bg-[#002147] text-white pt-8 pb-6 sm:pt-12 sm:pb-8 border-t-4 border-[#4a6b28]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <LandingReveal animation="fade-up" duration={750}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-blue-900/60">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-7 sm:gap-8 pb-7 sm:pb-10 border-b border-blue-900/60">
             
             {/* Column 1: Campus Address */}
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-white">
                 Campus Address
               </h3>
@@ -142,7 +142,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                     href="https://maps.app.goo.gl/2KvZgYK1h9WKFdvv7?g_st=ac"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-[#b5d697] hover:text-white font-semibold transition-colors group cursor-pointer"
+                    className="inline-flex min-h-9 items-center gap-1.5 py-1 text-[#b5d697] hover:text-white font-semibold transition-colors group cursor-pointer"
                     title="Open Capital College Kohima in Google Maps"
                   >
                     <MapPin size={13} className="text-[#8fc35e] group-hover:scale-110 transition-transform" />
@@ -162,13 +162,13 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                 <span className="h-[2.5px] w-8 bg-[#4a6b28] rounded-full"></span>
                 <span className="h-[2.5px] w-2.5 bg-[#8fc35e] rounded-full"></span>
               </div>
-              <ul className="space-y-2 text-xs text-gray-300 pt-0.5 font-medium">
+              <ul className="space-y-1.5 sm:space-y-2 text-xs text-gray-300 pt-0.5 font-medium">
                 <li>
                   <a
                     href="https://scholarship.nagaland.gov.in/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#b5d697] transition-colors inline-flex items-center gap-1"
+                    className="min-h-9 py-2 hover:text-[#b5d697] transition-colors inline-flex items-center gap-1"
                   >
                     <span>State Scholarship Portal</span>
                     <ExternalLink size={10} className="text-slate-400" />
@@ -179,7 +179,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                     href="https://scholarships.gov.in/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#b5d697] transition-colors inline-flex items-center gap-1"
+                    className="min-h-9 py-2 hover:text-[#b5d697] transition-colors inline-flex items-center gap-1"
                   >
                     <span>National Scholarship Portal</span>
                     <ExternalLink size={10} className="text-slate-400" />
@@ -190,7 +190,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                     href="https://nagalanduniversity.ac.in/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#b5d697] transition-colors inline-flex items-center gap-1"
+                    className="min-h-9 py-2 hover:text-[#b5d697] transition-colors inline-flex items-center gap-1"
                   >
                     <span>Nagaland University</span>
                     <ExternalLink size={10} className="text-slate-400" />
@@ -200,7 +200,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                   <button
                     type="button"
                     onClick={() => onNavigate && onNavigate('contact')}
-                    className="hover:text-[#b5d697] transition-colors inline-flex items-center gap-1 cursor-pointer"
+                    className="min-h-9 py-2 hover:text-[#b5d697] transition-colors inline-flex items-center gap-1 cursor-pointer"
                   >
                     <span>Contact Us &amp; Helpdesk</span>
                   </button>
@@ -209,7 +209,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                   <a
                     href="/admission_form.pdf"
                     download="admission_form.pdf"
-                    className="inline-flex items-center gap-1.5 bg-[#4a6b28] hover:bg-[#3d5920] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer"
+                    className="inline-flex min-h-10 items-center gap-1.5 bg-[#4a6b28] hover:bg-[#3d5920] text-white px-3 py-2 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer"
                   >
                     <Download size={13} />
                     <span>Admission Form (PDF)</span>
@@ -227,7 +227,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                 <span className="h-[2.5px] w-8 bg-[#4a6b28] rounded-full"></span>
                 <span className="h-[2.5px] w-2.5 bg-[#8fc35e] rounded-full"></span>
               </div>
-              <p className="text-xs text-slate-300 mb-3">
+              <p className="hidden sm:block text-xs text-slate-300 mb-3">
                 Follow our official college channels for campus life updates &amp; student activities.
               </p>
               <div className="flex flex-wrap items-center gap-2.5 pt-0.5">
@@ -256,7 +256,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
             </div>
 
             {/* Column 4: Search Widget */}
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-white">
                 Search
               </h3>

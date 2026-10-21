@@ -59,6 +59,10 @@ npm run dev
 ```
 - Web Application: `http://localhost:5173`
 
+### Google reCAPTCHA (Admin Login)
+
+Admin login supports Google reCAPTCHA v2 Checkbox only. Create a v2 Checkbox key in Google reCAPTCHA Admin and register the production and local hostnames. Set the site key in `capital_college_frontend/.env` as `VITE_RECAPTCHA_SITE_KEY` and its paired secret in `capital_colleg_backend/.env` as `RECAPTCHA_SECRET_KEY`. v3 keys and tokens are not supported. Optionally set `RECAPTCHA_ALLOWED_HOSTNAMES` to a comma-separated hostname allowlist. Restart both servers after changing values, and rebuild/redeploy the frontend for production.
+
 ---
 
 ## 🐬 MySQL Database Configuration

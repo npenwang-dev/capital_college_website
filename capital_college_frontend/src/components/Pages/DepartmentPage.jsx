@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-  GraduationCap,
   BookOpen,
   Users,
   Award,
   ChevronRight,
-  Download,
   Mail,
   MapPin,
   Calendar,
@@ -223,8 +221,7 @@ const BASELINE_FACULTY = {
 
 export default function DepartmentPage({
   deptSlug = 'english',
-  onNavigate,
-  onOpenAdmission
+  onNavigate
 }) {
   const [activeTab, setActiveTab] = useState('faculty'); // 'faculty' | 'curriculum'
   const [liveFaculty, setLiveFaculty] = useState([]);
@@ -376,24 +373,6 @@ export default function DepartmentPage({
               </p>
             </div>
 
-            {/* Quick Actions */}
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <button
-                onClick={() => onOpenAdmission && onOpenAdmission(dept.stream, dept.name)}
-                className="bg-[#4a6b28] hover:bg-[#3d5920] text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-lg transition-all hover:scale-105 cursor-pointer"
-              >
-                <GraduationCap size={16} />
-                <span>Apply for Admission</span>
-              </button>
-              <a
-                href="/admission_form.pdf"
-                download="admission_form.pdf"
-                className="bg-white/15 hover:bg-white/25 text-white border border-white/25 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer"
-              >
-                <Download size={15} />
-                <span>Admission Form (PDF)</span>
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -547,13 +526,13 @@ export default function DepartmentPage({
         {/* ========================================================
             4. SIBLING DEPARTMENTS NAVIGATOR IN SAME STREAM
         ======================================================== */}
-        <div className="mt-14 pt-8 border-t border-gray-300">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <div className="mt-10 pt-6 sm:mt-14 sm:pt-8 border-t border-gray-300">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 mb-4 sm:mb-6">
             <div>
-              <span className="text-xs font-bold text-[#4a6b28] uppercase tracking-wider">
+              <span className="text-[11px] sm:text-xs font-bold text-[#4a6b28] uppercase tracking-wider">
                 Explore More Departments
               </span>
-              <h4 className="text-xl font-black text-[#002147]">
+              <h4 className="text-lg sm:text-xl font-black text-[#002147]">
                 Other Departments in {dept.streamLabel}
               </h4>
             </div>
@@ -567,17 +546,17 @@ export default function DepartmentPage({
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
             {siblingDepartments.map((sDept) => (
               <button
                 key={sDept.slug}
                 onClick={() => onNavigate && onNavigate(`department-${sDept.slug}`)}
-                className="bg-white hover:bg-[#002147] hover:text-white p-3.5 rounded-2xl border border-gray-200 shadow-xs text-left transition-all group cursor-pointer"
+                className="min-w-0 bg-white hover:bg-[#002147] hover:text-white p-2 sm:p-3.5 rounded-xl sm:rounded-2xl border border-gray-200 shadow-xs text-left transition-all group cursor-pointer"
               >
-                <span className="text-[10px] font-mono font-bold text-slate-400 group-hover:text-[#8fc35e] block">
+                <span className="text-[9px] sm:text-[10px] font-mono font-bold text-slate-400 group-hover:text-[#8fc35e] block">
                   {sDept.code}
                 </span>
-                <span className="font-bold text-xs text-gray-800 group-hover:text-white line-clamp-1 mt-0.5">
+                <span className="font-bold text-[11px] sm:text-xs text-gray-800 group-hover:text-white line-clamp-1 mt-0.5 leading-tight">
                   {sDept.name.replace('Department of ', '')}
                 </span>
               </button>
