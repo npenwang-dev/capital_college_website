@@ -139,11 +139,7 @@ export default function PrincipalMessage({ onOpenFullMessage, onNavigate }) {
               {/* Main Portrait Card */}
               <div className="relative rounded-2xl overflow-hidden bg-white shadow-2xl border-4 border-white ring-1 ring-slate-200/90 group transition-all duration-300 hover:shadow-emerald-500/10">
                 
-                {/* Floating Office Badge */}
-                <div className="absolute top-3.5 left-3.5 z-20 bg-[#001736]/80 backdrop-blur-md text-[#b5d697] border border-white/20 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md">
-                  <Award size={12} className="text-[#8fc35e]" />
-                  <span>Office of the Principal</span>
-                </div>
+
 
                 {/* Portrait Image */}
                 <div className="overflow-hidden bg-slate-900 aspect-square">

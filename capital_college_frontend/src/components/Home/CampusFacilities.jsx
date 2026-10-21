@@ -80,9 +80,7 @@ export default function CampusFacilities({ onOpenTopic, onOpenAdmission, onNavig
                       e.target.src = 'https://capitalcollege.edu.in/wp-content/uploads/2023/05/1a.jpg';
                     }}
                   />
-                  <div className="absolute top-3 right-3 bg-[#002858]/85 backdrop-blur-sm text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md border border-white/20 group-hover:border-[#4a6b28]/60 transition-colors">
-                    {f.tag}
-                  </div>
+
                 </div>
 
                 <div className="p-5 sm:p-6">

@@ -1702,12 +1702,6 @@ function CollegeProfileSection({ onNavigate, onOpenAdmission }) {
                 alt="Permanent Campus Science Block"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute top-3 left-3 bg-[#002147]/90 backdrop-blur-md text-[#b5d697] text-xs font-bold px-3 py-1 rounded-lg border border-white/20 shadow-md">
-                Permanent Science Campus
-              </div>
-              <div className="absolute top-3 right-3 bg-blue-600/90 backdrop-blur-md text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-md">
-                B.Sc. Stream
-              </div>
               <div className="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs p-2.5 rounded-xl border border-white/15 flex items-center gap-1.5 shadow-lg">
                 <MapPin size={14} className="text-[#8fc35e] shrink-0" />
                 <span className="truncate">Thegaba, Phezhu, Jotsoma (Walking distance from Kohima Town)</span>
@@ -1757,12 +1751,6 @@ function CollegeProfileSection({ onNavigate, onOpenAdmission }) {
                 alt="Arts Block in P.R. Hill, Kohima Town"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute top-3 left-3 bg-[#4a6b28]/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-lg border border-white/20 shadow-md">
-                Kohima Town Campus
-              </div>
-              <div className="absolute top-3 right-3 bg-emerald-700/90 backdrop-blur-md text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-md">
-                B.A. &amp; Hostel
-              </div>
               <div className="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs p-2.5 rounded-xl border border-white/15 flex items-center gap-1.5 shadow-lg">
                 <MapPin size={14} className="text-[#8fc35e] shrink-0" />
                 <span className="truncate">Below State Library, PHQ Junction, P.R. Hill, Kohima</span>
@@ -2048,7 +2036,6 @@ function SponsorshipAndManagementSection({ onNavigate }) {
               role={member.designation}
               qualification={member.role}
               bio={member.background}
-              badgeText={member.badge}
               image_url={member.image_url}
               department="Board of Management"
             />
@@ -2184,9 +2171,7 @@ function GoverningBodySection() {
               role={officer.role}
               bio={officer.affiliation}
               image_url={officer.image_url}
-              badgeText="GOVERNING OFFICER"
               department="College Governing Body"
-              variant="spotlight"
             />
           ))}
         </div>
@@ -2343,7 +2328,6 @@ function CollegeAdministrationSection({ onNavigate }) {
               role={leader.role}
               qualification={leader.qualification}
               bio={leader.desc}
-              badgeText={leader.portfolio}
               image_url={leader.image_url}
               department="College Administration"
             />
@@ -3732,9 +3716,6 @@ function MoUsSection() {
                     alt={mou.title}
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                   />
-                  <div className="absolute top-2.5 left-2.5 bg-[#002147]/90 text-white text-[10px] font-bold px-2.5 py-1 rounded backdrop-blur-xs">
-                    {mou.tag}
-                  </div>
                 </div>
 
                 <div className="p-5">

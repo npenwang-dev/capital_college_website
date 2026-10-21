@@ -198,9 +198,7 @@ export default function EventsPage({ onNavigate }) {
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute top-3 left-3 bg-[#002147]/85 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-white/20">
-                  {item.category}
-                </div>
+
                 <div className="absolute bottom-3 left-3 right-3 text-white flex items-center justify-between text-xs">
                   <span className="font-mono flex items-center gap-1">
                     <Calendar size={12} /> {item.event_date}

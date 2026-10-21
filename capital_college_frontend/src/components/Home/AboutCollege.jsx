@@ -141,10 +141,7 @@ export default function AboutCollege({ onNavigate }) {
               {/* Light Sweep Animation on Hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/photo:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
 
-              {/* Floating Top Badge with subtle floating animation */}
-              <div className="absolute top-4 right-4 bg-[#002147]/90 backdrop-blur-md text-[#b5d697] text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full border border-white/20 shadow-md animate-float-subtle">
-                <span>Kohima, Nagaland</span>
-              </div>
+
 
               {/* Floating Bottom Verified Accreditation Strip */}
               <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-white/50 shadow-lg flex items-center justify-between">

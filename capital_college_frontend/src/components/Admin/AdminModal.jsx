@@ -3949,12 +3949,6 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                   </span>
                                 )}
                               </div>
-                              {notice.is_featured ? (
-                                <span className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow flex items-center gap-1">
-                                  <Sparkles size={10} />
-                                  <span>Featured</span>
-                                </span>
-                              ) : null}
                             </div>
                           ) : (
                             <div className="h-24 bg-gradient-to-br from-[#002858] to-[#0a192f] p-4 flex items-center justify-between text-white relative">
