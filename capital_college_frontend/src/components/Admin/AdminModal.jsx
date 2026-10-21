@@ -4549,41 +4549,31 @@ export default function AdminModal({ isOpen, onClose, onStatusChange }) {
                                     </div>
                                   </div>
 
-                                  <div className="pt-3 border-t border-gray-200/70 flex items-center justify-between gap-1.5 text-xs">
-                                      <button
-                                        onClick={() => handleSetHOD(teacher.id, true)}
-                                        className="text-[11px] font-bold text-amber-800 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 px-2 py-1 rounded-md border border-amber-300 transition-colors cursor-pointer flex items-center gap-1"
-                                        title="Designate this teacher as Head of Department"
-                                      >
-                                        <Award size={11} className="text-amber-700" />
-                                        <span>Designate HOD</span>
-                                      </button>
-                                    <div className="flex items-center gap-1.5">
-                                      <button
-                                        onClick={() => {
-                                          setEditingFaculty(teacher);
-                                          setFacultyFormData({
-                                            name: teacher.name || '',
-                                            stream: teacher.stream || 'ARTS',
-                                            department: teacher.department || 'English',
-                                            qualification: teacher.qualification || '',
-                                            designation: teacher.designation || 'Assistant Professor',
-                                            is_hod: false,
-                                            image_url: teacher.image_url || ''
-                                          });
-                                          setShowFacultyModal(true);
-                                        }}
-                                        className="text-[11px] font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-md border border-blue-200 cursor-pointer"
-                                      >
-                                        Edit
-                                      </button>
-                                      <button
-                                        onClick={() => handleDeleteFaculty(teacher.id)}
-                                        className="text-[11px] font-semibold text-red-700 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-md border border-red-200 cursor-pointer"
-                                      >
-                                        Delete
-                                      </button>
-                                    </div>
+                                  <div className="pt-3 border-t border-gray-200/70 flex items-center justify-end gap-1.5 text-xs">
+                                    <button
+                                      onClick={() => {
+                                        setEditingFaculty(teacher);
+                                        setFacultyFormData({
+                                          name: teacher.name || '',
+                                          stream: teacher.stream || 'ARTS',
+                                          department: teacher.department || 'English',
+                                          qualification: teacher.qualification || '',
+                                          designation: teacher.designation || 'Assistant Professor',
+                                          is_hod: false,
+                                          image_url: teacher.image_url || ''
+                                        });
+                                        setShowFacultyModal(true);
+                                      }}
+                                      className="text-[11px] font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-md border border-blue-200 cursor-pointer"
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeleteFaculty(teacher.id)}
+                                      className="text-[11px] font-semibold text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1 rounded-md border border-red-200 cursor-pointer"
+                                    >
+                                      Delete
+                                    </button>
                                   </div>
                                 </div>
                               ))}
