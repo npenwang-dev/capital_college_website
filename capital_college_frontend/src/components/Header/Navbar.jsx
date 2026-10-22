@@ -160,7 +160,6 @@ export default function Navbar({
         'governing-body', 'college-administration', 'mous', 'iqac'
       ].includes(currentPage),
       children: [
-        { label: "Principal's Message", action: () => onNavigate('principal-message'), desc: 'Leadership vision & welcome' },
         { label: 'College Profile', action: () => onNavigate('profile'), desc: 'History, emblem & objectives' },
         { label: 'Sponsorship & Management', action: () => onNavigate('sponsorship-and-management'), desc: 'Institutional trust & oversight' },
         { label: 'Governing Body', action: () => onNavigate('governing-body'), desc: 'Statutory governing council' },

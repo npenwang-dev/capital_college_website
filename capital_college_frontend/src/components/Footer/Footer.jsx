@@ -122,10 +122,10 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
     <footer className="bg-[#002147] text-white pt-8 pb-6 sm:pt-12 sm:pb-8 border-t-4 border-[#4a6b28]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <LandingReveal animation="fade-up" duration={750}>
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-7 sm:gap-8 pb-7 sm:pb-10 border-b border-blue-900/60">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-7 sm:gap-8 pb-7 sm:pb-10 border-b border-blue-900/60">
             
             {/* Column 1: Campus Address */}
-            <div className="col-span-2 sm:col-span-1">
+            <div>
               <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-white">
                 Campus Address
               </h3>
@@ -227,7 +227,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                 <span className="h-[2.5px] w-8 bg-[#4a6b28] rounded-full"></span>
                 <span className="h-[2.5px] w-2.5 bg-[#8fc35e] rounded-full"></span>
               </div>
-              <p className="hidden sm:block text-xs text-slate-300 mb-3">
+              <p className="text-xs text-slate-300 mb-3">
                 Follow our official college channels for campus life updates &amp; student activities.
               </p>
               <div className="flex flex-wrap items-center gap-2.5 pt-0.5">
@@ -240,7 +240,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg border cursor-pointer ${
+                      className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg border cursor-pointer ${
                         isWa
                           ? 'bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-white border-[#25D366]/40 hover:border-[#25D366]'
                           : 'bg-white/10 hover:bg-[#4a6b28] text-slate-200 hover:text-white border-white/10 hover:border-[#648d35]'
@@ -256,7 +256,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
             </div>
 
             {/* Column 4: Search Widget */}
-            <div className="col-span-2 sm:col-span-1">
+            <div className="hidden sm:block">
               <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-white">
                 Search
               </h3>
@@ -270,13 +270,13 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
                   placeholder="Search courses, notices, routines..."
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
-                  className="bg-white text-gray-900 text-xs px-3.5 py-2 rounded-l-xl focus:outline-none w-full border border-gray-300 h-9.5 placeholder-slate-400"
+                  className="bg-white text-gray-900 text-xs px-3.5 py-2 rounded-l-xl focus:outline-none w-full border border-gray-300 h-11 placeholder-slate-400"
                 />
                 <button
                   type="submit"
                   aria-label="Submit search"
                   title="Search Capital College"
-                  className="bg-[#4a6b28] hover:bg-[#3d5920] text-white px-3.5 py-2 rounded-r-xl transition-colors cursor-pointer h-9.5 flex items-center justify-center shrink-0 border border-l-0 border-[#4a6b28]"
+                  className="bg-[#4a6b28] hover:bg-[#3d5920] text-white px-3.5 py-2 rounded-r-xl transition-colors cursor-pointer h-11 flex items-center justify-center shrink-0 border border-l-0 border-[#4a6b28]"
                 >
                   <Search size={15} />
                 </button>
@@ -301,7 +301,7 @@ export default function Footer({ onOpenAdmission, onOpenAdmin, onOpenTopic, onNa
 
         {/* Bottom Copyright and Official Attribution Bar (Permanently Visible) */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-300 gap-3">
-          <p className="font-normal text-center sm:text-left text-slate-300">
+          <p className="font-normal text-center sm:text-left text-slate-300 max-w-xl">
             © {new Date().getFullYear()} Capital College of Higher Education, Kohima. All Rights Reserved.
           </p>
           <div className="flex items-center">

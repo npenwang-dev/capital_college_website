@@ -839,13 +839,6 @@ function CollegeProfileSection({ onNavigate, onOpenAdmission }) {
               btnText: 'Explore Courses'
             },
             {
-              title: 'Faculty Directory',
-              desc: 'Meet our distinguished professors, HODs, and academic mentors.',
-              icon: Users,
-              action: () => onNavigate && onNavigate('faculty'),
-              btnText: 'View Faculty'
-            },
-            {
               title: 'Governing Body',
               desc: 'Apex policy council, managing director, and institutional board.',
               icon: Landmark,
@@ -1192,7 +1185,7 @@ function GoverningBodySection() {
                     />
                   ) : (
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#002147]/10 to-[#4a6b28]/15 text-[#002147] border border-gray-200 flex items-center justify-center font-bold text-xs shrink-0">
-                      {getMemberInitials(m.name)}
+                      {getFacultyInitials(m.name)}
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
